@@ -95,7 +95,7 @@ export default function ScoutingForm({ onSubmit }: { onSubmit: Function }) {
             <div className="text-xl font-bold pb-2">Scout a team</div>
             <div className="grid gap-6">
                 <div className="grid grid-cols-4 items-center gap-4">
-                    <Label className="text-right" htmlFor='teamNumber'>
+                    <Label className="text-right" htmlFor="teamNumber">
                         Team number
                     </Label>
                     <Input
@@ -109,9 +109,7 @@ export default function ScoutingForm({ onSubmit }: { onSubmit: Function }) {
                     />
                 </div>
                 <div className="grid grid-cols-4 items-center gap-4">
-                    <Label className="text-right">
-                        Drivetrain
-                    </Label>
+                    <Label className="text-right">Drivetrain</Label>
                     <Select
                         onValueChange={(value) =>
                             handleChangeSimple('drivetrain', value)
@@ -199,9 +197,7 @@ export default function ScoutingForm({ onSubmit }: { onSubmit: Function }) {
                                 }
                             />
                             <div className="grid gap-1.5 leading-none ">
-                                <label
-                                    className="text-sm font-medium"
-                                >
+                                <label className="text-sm font-medium">
                                     Level 1
                                 </label>
                             </div>
@@ -223,9 +219,7 @@ export default function ScoutingForm({ onSubmit }: { onSubmit: Function }) {
                                 }
                             />
                             <div className="grid gap-1.5 leading-none">
-                                <label
-                                    className="text-sm font-medium  "
-                                >
+                                <label className="text-sm font-medium  ">
                                     Level 2
                                 </label>
                             </div>
@@ -247,9 +241,7 @@ export default function ScoutingForm({ onSubmit }: { onSubmit: Function }) {
                                 }
                             />
                             <div className="grid gap-1.5 leading-none ">
-                                <label
-                                    className="text-sm font-medium  "
-                                >
+                                <label className="text-sm font-medium  ">
                                     Level 3
                                 </label>
                             </div>
@@ -278,9 +270,7 @@ export default function ScoutingForm({ onSubmit }: { onSubmit: Function }) {
                                 }
                             />
                             <div className="grid gap-1.5 leading-none ">
-                                <label
-                                    className="text-sm font-medium"
-                                >
+                                <label className="text-sm font-medium">
                                     Cones
                                 </label>
                             </div>
@@ -304,9 +294,7 @@ export default function ScoutingForm({ onSubmit }: { onSubmit: Function }) {
                                 }
                             />
                             <div className="grid gap-1.5 leading-none">
-                                <label
-                                    className="text-sm font-medium  "
-                                >
+                                <label className="text-sm font-medium  ">
                                     Cubes
                                 </label>
                             </div>

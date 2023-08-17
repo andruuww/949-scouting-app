@@ -2,52 +2,51 @@ import { ThemeProvider } from '@/components/theme-provider';
 import { Toaster } from '@/components/ui/toaster';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import Head from 'next/head';
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
 
-const APP_NAME = "949 Scout App";
-const APP_DEFAULT_TITLE = "Scout App";
-const APP_TITLE_TEMPLATE = "Scout App";
+const APP_NAME = '949 Scout App';
+const APP_DEFAULT_TITLE = 'Scout App';
+const APP_TITLE_TEMPLATE = 'Scout App';
 const APP_DESCRIPTION = "949's custom scouting app";
 
 export const metadata: Metadata = {
     applicationName: APP_NAME,
     title: {
-      default: APP_DEFAULT_TITLE,
-      template: APP_TITLE_TEMPLATE,
+        default: APP_DEFAULT_TITLE,
+        template: APP_TITLE_TEMPLATE
     },
     description: APP_DESCRIPTION,
-    manifest: "/manifest.json",
-    themeColor: "#020817",
+    manifest: '/manifest.json',
+    themeColor: '#020817',
     appleWebApp: {
-      capable: true,
-      statusBarStyle: "default",
-      title: APP_DEFAULT_TITLE,
-      // startUpImage: [],
+        capable: true,
+        statusBarStyle: 'default',
+        title: APP_DEFAULT_TITLE
+        // startUpImage: [],
     },
     formatDetection: {
-      telephone: false,
+        telephone: false
     },
     openGraph: {
-      type: "website",
-      siteName: APP_NAME,
-      title: {
-        default: APP_DEFAULT_TITLE,
-        template: APP_TITLE_TEMPLATE,
-      },
-      description: APP_DESCRIPTION,
+        type: 'website',
+        siteName: APP_NAME,
+        title: {
+            default: APP_DEFAULT_TITLE,
+            template: APP_TITLE_TEMPLATE
+        },
+        description: APP_DESCRIPTION
     },
     twitter: {
-      card: "summary",
-      title: {
-        default: APP_DEFAULT_TITLE,
-        template: APP_TITLE_TEMPLATE,
-      },
-      description: APP_DESCRIPTION,
-    },
-  };
+        card: 'summary',
+        title: {
+            default: APP_DEFAULT_TITLE,
+            template: APP_TITLE_TEMPLATE
+        },
+        description: APP_DESCRIPTION
+    }
+};
 
 export default function RootLayout({
     children

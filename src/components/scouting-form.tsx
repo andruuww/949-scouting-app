@@ -92,245 +92,251 @@ export default function ScoutingForm({ onSubmit }: { onSubmit: Function }) {
 
     return (
         <>
-        <div className="text-xl font-bold pb-2">Scout a team</div>
-        <div className="grid gap-6">
-            <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="name" className="text-right">
-                    Team number
-                </Label>
-                <Input
-                    name="teamNumber"
-                    type="number"
-                    placeholder="949"
-                    className="col-span-3"
-                    onChange={handleChange}
-                    value={formData.teamNumber ? formData.teamNumber : ''}
-                />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="text" className="text-right">
-                    Drivetrain
-                </Label>
-                <Select
-                    onValueChange={(value) =>
-                        handleChangeSimple('drivetrain', value)
-                    }
-                    value={formData.drivetrain ? formData.drivetrain : ''}
-                >
-                    <SelectTrigger className="col-span-3">
-                        <SelectValue placeholder="Select a type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectItem value="tank">Tank</SelectItem>
-                        <SelectItem value="swerve">Swerve</SelectItem>
-                        <SelectItem value="mech">Mech</SelectItem>
-                    </SelectContent>
-                </Select>
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-                <Label className="text-right">Weight (lbs)</Label>
-                <Input
-                    name="weight"
-                    type="number"
-                    placeholder="100"
-                    className="col-span-3"
-                    onChange={handleChange}
-                    value={formData.weight ? formData.weight : ''}
-                />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-                <Label className="text-right">Dimensions (in, L/W)</Label>
-                <div className="col-span-3 flex flex-row items-stretch gap-x-4">
+            <div className="text-xl font-bold pb-2">Scout a team</div>
+            <div className="grid gap-6">
+                <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="name" className="text-right">
+                        Team number
+                    </Label>
                     <Input
-                        name="dimensionLength"
+                        name="teamNumber"
                         type="number"
-                        placeholder="28"
+                        placeholder="949"
+                        className="col-span-3"
                         onChange={handleChange}
-                        value={
-                            formData.dimensionLength
-                                ? formData.dimensionLength
-                                : ''
-                        }
-                    />
-                    <div>
-                        <Separator orientation="vertical" />
-                    </div>
-                    <Input
-                        name="dimensionWidth"
-                        type="number"
-                        placeholder="32"
-                        onChange={handleChange}
-                        value={
-                            formData.dimensionWidth
-                                ? formData.dimensionWidth
-                                : ''
-                        }
+                        value={formData.teamNumber ? formData.teamNumber : ''}
                     />
                 </div>
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-                <Label className="text-right">Driver hours</Label>
-                <Input
-                    name="driverHours"
-                    type="number"
-                    placeholder="40"
-                    className="col-span-3"
-                    onChange={handleChange}
-                    value={formData.driverHours ? formData.driverHours : ''}
-                />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-                <Label className="text-right">Scoring levels</Label>
-                <div className="col-span-3">
-                    <div className="items-center flex space-x-2">
-                        <Checkbox
-                            name="l1"
-                            onCheckedChange={(checked) =>
-                                handleScoringLevelsChange(
-                                    'l1',
-                                    checked === true
-                                )
-                            }
-                            checked={
-                                formData.scoringLevels?.includes('l1')
-                                    ? true
-                                    : false
+                <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="text" className="text-right">
+                        Drivetrain
+                    </Label>
+                    <Select
+                        onValueChange={(value) =>
+                            handleChangeSimple('drivetrain', value)
+                        }
+                        value={formData.drivetrain ? formData.drivetrain : ''}
+                    >
+                        <SelectTrigger className="col-span-3">
+                            <SelectValue placeholder="Select a type" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="tank">Tank</SelectItem>
+                            <SelectItem value="swerve">Swerve</SelectItem>
+                            <SelectItem value="mech">Mech</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </div>
+                <div className="grid grid-cols-4 items-center gap-4">
+                    <Label className="text-right">Weight (lbs)</Label>
+                    <Input
+                        name="weight"
+                        type="number"
+                        placeholder="100"
+                        className="col-span-3"
+                        onChange={handleChange}
+                        value={formData.weight ? formData.weight : ''}
+                    />
+                </div>
+                <div className="grid grid-cols-4 items-center gap-4">
+                    <Label className="text-right">Dimensions (in, L/W)</Label>
+                    <div className="col-span-3 flex flex-row items-stretch gap-x-4">
+                        <Input
+                            name="dimensionLength"
+                            type="number"
+                            placeholder="28"
+                            onChange={handleChange}
+                            value={
+                                formData.dimensionLength
+                                    ? formData.dimensionLength
+                                    : ''
                             }
                         />
-                        <div className="grid gap-1.5 leading-none ">
-                            <label
-                                htmlFor="terms1"
-                                className="text-sm font-medium"
-                            >
-                                Level 1
-                            </label>
+                        <div>
+                            <Separator orientation="vertical" />
                         </div>
-                    </div>
-
-                    <div className="items-center flex space-x-2">
-                        <Checkbox
-                            name="l2"
-                            onCheckedChange={(checked) =>
-                                handleScoringLevelsChange(
-                                    'l2',
-                                    checked === true
-                                )
-                            }
-                            checked={
-                                formData.scoringLevels?.includes('l2')
-                                    ? true
-                                    : false
+                        <Input
+                            name="dimensionWidth"
+                            type="number"
+                            placeholder="32"
+                            onChange={handleChange}
+                            value={
+                                formData.dimensionWidth
+                                    ? formData.dimensionWidth
+                                    : ''
                             }
                         />
-                        <div className="grid gap-1.5 leading-none">
-                            <label
-                                htmlFor="terms1"
-                                className="text-sm font-medium  "
-                            >
-                                Level 2
-                            </label>
+                    </div>
+                </div>
+                <div className="grid grid-cols-4 items-center gap-4">
+                    <Label className="text-right">Driver hours</Label>
+                    <Input
+                        name="driverHours"
+                        type="number"
+                        placeholder="40"
+                        className="col-span-3"
+                        onChange={handleChange}
+                        value={formData.driverHours ? formData.driverHours : ''}
+                    />
+                </div>
+                <div className="grid grid-cols-4 items-center gap-4">
+                    <Label className="text-right">Scoring levels</Label>
+                    <div className="col-span-3">
+                        <div className="items-center flex space-x-2">
+                            <Checkbox
+                                name="l1"
+                                onCheckedChange={(checked) =>
+                                    handleScoringLevelsChange(
+                                        'l1',
+                                        checked === true
+                                    )
+                                }
+                                checked={
+                                    formData.scoringLevels?.includes('l1')
+                                        ? true
+                                        : false
+                                }
+                            />
+                            <div className="grid gap-1.5 leading-none ">
+                                <label
+                                    htmlFor="terms1"
+                                    className="text-sm font-medium"
+                                >
+                                    Level 1
+                                </label>
+                            </div>
                         </div>
-                    </div>
 
-                    <div className="items-center flex space-x-2">
-                        <Checkbox
-                            name="l3"
-                            onCheckedChange={(checked) =>
-                                handleScoringLevelsChange(
-                                    'l3',
-                                    checked === true
-                                )
-                            }
-                            checked={
-                                formData.scoringLevels?.includes('l3')
-                                    ? true
-                                    : false
-                            }
-                        />
-                        <div className="grid gap-1.5 leading-none ">
-                            <label
-                                htmlFor="terms1"
-                                className="text-sm font-medium  "
-                            >
-                                Level 3
-                            </label>
+                        <div className="items-center flex space-x-2">
+                            <Checkbox
+                                name="l2"
+                                onCheckedChange={(checked) =>
+                                    handleScoringLevelsChange(
+                                        'l2',
+                                        checked === true
+                                    )
+                                }
+                                checked={
+                                    formData.scoringLevels?.includes('l2')
+                                        ? true
+                                        : false
+                                }
+                            />
+                            <div className="grid gap-1.5 leading-none">
+                                <label
+                                    htmlFor="terms1"
+                                    className="text-sm font-medium  "
+                                >
+                                    Level 2
+                                </label>
+                            </div>
+                        </div>
+
+                        <div className="items-center flex space-x-2">
+                            <Checkbox
+                                name="l3"
+                                onCheckedChange={(checked) =>
+                                    handleScoringLevelsChange(
+                                        'l3',
+                                        checked === true
+                                    )
+                                }
+                                checked={
+                                    formData.scoringLevels?.includes('l3')
+                                        ? true
+                                        : false
+                                }
+                            />
+                            <div className="grid gap-1.5 leading-none ">
+                                <label
+                                    htmlFor="terms1"
+                                    className="text-sm font-medium  "
+                                >
+                                    Level 3
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div className="grid grid-cols-4 items-center gap-4">
-                <Label className="text-right">Intake capabilities</Label>
-                <div className="col-span-3">
-                    <div className="items-center flex space-x-2">
-                        <Checkbox
-                            name="cones"
-                            onCheckedChange={(checked) =>
-                                handleIntakeTypesChange(
-                                    'cone',
-                                    checked === true
-                                )
-                            }
-                            checked={
-                                formData.intakeCapabilities?.includes('cone')
-                                    ? true
-                                    : false
-                            }
-                        />
-                        <div className="grid gap-1.5 leading-none ">
-                            <label
-                                htmlFor="terms1"
-                                className="text-sm font-medium"
-                            >
-                                Cones
-                            </label>
+                <div className="grid grid-cols-4 items-center gap-4">
+                    <Label className="text-right">Intake capabilities</Label>
+                    <div className="col-span-3">
+                        <div className="items-center flex space-x-2">
+                            <Checkbox
+                                name="cones"
+                                onCheckedChange={(checked) =>
+                                    handleIntakeTypesChange(
+                                        'cone',
+                                        checked === true
+                                    )
+                                }
+                                checked={
+                                    formData.intakeCapabilities?.includes(
+                                        'cone'
+                                    )
+                                        ? true
+                                        : false
+                                }
+                            />
+                            <div className="grid gap-1.5 leading-none ">
+                                <label
+                                    htmlFor="terms1"
+                                    className="text-sm font-medium"
+                                >
+                                    Cones
+                                </label>
+                            </div>
                         </div>
-                    </div>
 
-                    <div className="items-center flex space-x-2">
-                        <Checkbox
-                            name="cubes"
-                            onCheckedChange={(checked) =>
-                                handleIntakeTypesChange(
-                                    'cube',
-                                    checked === true
-                                )
-                            }
-                            checked={
-                                formData.intakeCapabilities?.includes('cube')
-                                    ? true
-                                    : false
-                            }
-                        />
-                        <div className="grid gap-1.5 leading-none">
-                            <label
-                                htmlFor="terms1"
-                                className="text-sm font-medium  "
-                            >
-                                Cubes
-                            </label>
+                        <div className="items-center flex space-x-2">
+                            <Checkbox
+                                name="cubes"
+                                onCheckedChange={(checked) =>
+                                    handleIntakeTypesChange(
+                                        'cube',
+                                        checked === true
+                                    )
+                                }
+                                checked={
+                                    formData.intakeCapabilities?.includes(
+                                        'cube'
+                                    )
+                                        ? true
+                                        : false
+                                }
+                            />
+                            <div className="grid gap-1.5 leading-none">
+                                <label
+                                    htmlFor="terms1"
+                                    className="text-sm font-medium  "
+                                >
+                                    Cubes
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div className="grid grid-cols-4 items-center gap-4">
-                <Label className="text-right">Additional notes</Label>
-                <Textarea
-                    name="notes"
-                    placeholder="Team lacked spare parts"
-                    className="col-span-3"
-                    onChange={(e) =>
-                        handleChangeSimple('notes', e.target.value)
-                    }
-                    value={formData.notes ? formData.notes : ''}
-                />
+                <div className="grid grid-cols-4 items-center gap-4">
+                    <Label className="text-right">Additional notes</Label>
+                    <Textarea
+                        name="notes"
+                        placeholder="Team lacked spare parts"
+                        className="col-span-3"
+                        onChange={(e) =>
+                            handleChangeSimple('notes', e.target.value)
+                        }
+                        value={formData.notes ? formData.notes : ''}
+                    />
+                </div>
+                {errorMessage && (
+                    <Label className="text-red-500 font-bold">
+                        {errorMessage}
+                    </Label>
+                )}
+                <Button onClick={submit}>Finalize team</Button>
             </div>
-            {errorMessage && (
-                <Label className="text-red-500 font-bold">{errorMessage}</Label>
-            )}
-            <Button onClick={submit}>Finalize team</Button>
-        </div>
         </>
     );
 }

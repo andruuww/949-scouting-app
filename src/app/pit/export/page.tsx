@@ -1,19 +1,26 @@
 'use client';
 
 import MenuBar from '@/components/menu-bar';
+import TeamsList from '@/components/teams-list';
+import { Button } from '@/components/ui/button';
+import { FormData } from '@/lib/types';
+import { ReloadIcon } from '@radix-ui/react-icons';
 // @ts-ignore
 import { toSVG } from 'bwip-js';
-import { useEffect, useState } from 'react';
-import { FormData } from '@/lib/types';
-import TeamsList from '@/components/teams-list';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
+import { useEffect, useState } from 'react';
 
 export default function PitScoutingExport() {
-    const lsTeams = localStorage.getItem('scoutedTeams');
-    const [scoutedTeams, setScoutedTeams] = useState<FormData[]>(
-        lsTeams ? JSON.parse(lsTeams) : []
-    );
+    const [hasLoaded, setHasLoaded] = useState(false);
+    const [scoutedTeams, setScoutedTeams] = useState<FormData[]>([]);
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            setHasLoaded(true);
+            setScoutedTeams(JSON.parse(localStorage.getItem('scoutedTeams')!));
+        }
+    }, [typeof window]);
+
     const [barcodeSVGs, setBarcodeSVGs] = useState<string[]>([]);
 
     useEffect(() => {
@@ -26,25 +33,46 @@ export default function PitScoutingExport() {
     return (
         <main className="flex flex-col p-7 min-h-screen max-w-md mx-auto">
             <MenuBar />
-            <div className="py-3">
-            <TeamsList
-                    teams={scoutedTeams.map((i) => i.teamNumber!.toString())}
-                />
-                </div>
-            <div className="bg-white flex flex-col justify-center rounded-lg">
-                {scoutedTeams.length > 0 && barcodeSVGs.map((i, key) => (
-                    <div key={key} className="flex flex-col justify-center">
-                    <img
-                        src={`data:image/svg+xml;base64,${btoa(i)}`}
-                        className="pt-2 px-2"
-                    />
-                    <div className="pb-2 font-bold text-xl text-black text-center">Barcode {key+1}</div>
+            {hasLoaded ? (
+                <>
+                    <div className="py-3">
+                        <TeamsList
+                            teams={scoutedTeams.map((i) =>
+                                i.teamNumber!.toString()
+                            )}
+                        />
                     </div>
-                ))}
-            </div>
-            <Button className='mt-4' asChild>
-                <Link href="/pit">Back</Link>
-            </Button>
+                    <div className="bg-white flex flex-col justify-center rounded-lg">
+                        {scoutedTeams.length > 0 &&
+                            barcodeSVGs.map((i, key) => (
+                                <div
+                                    key={key}
+                                    className="flex flex-col justify-center"
+                                >
+                                    <img
+                                        src={`data:image/svg+xml;base64,${btoa(
+                                            i
+                                        )}`}
+                                        className="pt-2 px-2"
+                                    />
+                                    <div className="pb-2 font-bold text-xl text-black text-center">
+                                        Barcode {key + 1}
+                                    </div>
+                                </div>
+                            ))}
+                    </div>
+                    <Button className="mt-4" asChild>
+                        <Link href="/pit">Back</Link>
+                    </Button>
+                </>
+            ) : (
+                <div className="flex flex-col justify-center items-center">
+                    <ReloadIcon className="p-8 h-32 w-32 animate-spin" />
+                    <div className="text-2xl font-bold text-gray-900 dark:text-white">
+                        Loading...
+                    </div>
+                </div>
+            )}
         </main>
     );
 }

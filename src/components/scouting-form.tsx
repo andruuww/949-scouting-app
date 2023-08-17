@@ -117,8 +117,11 @@ export default function ScoutingForm({ onSubmit }: { onSubmit: Function }) {
                         value={formData.drivetrain ? formData.drivetrain : ''}
                         defaultValue="swerve"
                     >
-                        <SelectTrigger className="col-span-3" aria-label="Select type" >
-                            <SelectValue placeholder="Select a type"/>
+                        <SelectTrigger
+                            className="col-span-3"
+                            aria-label="Select type"
+                        >
+                            <SelectValue placeholder="Select a type" />
                         </SelectTrigger>
                         <SelectContent>
                             <SelectItem value="tank">Tank</SelectItem>
@@ -185,7 +188,7 @@ export default function ScoutingForm({ onSubmit }: { onSubmit: Function }) {
                         <div className="items-center flex space-x-2">
                             <Checkbox
                                 name="l1"
-                                className='h-5 w-5'
+                                className="h-5 w-5"
                                 aria-label="Level 1"
                                 onCheckedChange={(checked) =>
                                     handleScoringLevelsChange(
@@ -209,7 +212,7 @@ export default function ScoutingForm({ onSubmit }: { onSubmit: Function }) {
                         <div className="items-center flex space-x-2">
                             <Checkbox
                                 name="l2"
-                                className='h-5 w-5 my-2'
+                                className="h-5 w-5 my-2"
                                 aria-label="Level 2"
                                 onCheckedChange={(checked) =>
                                     handleScoringLevelsChange(
@@ -233,7 +236,7 @@ export default function ScoutingForm({ onSubmit }: { onSubmit: Function }) {
                         <div className="items-center flex space-x-2">
                             <Checkbox
                                 name="l3"
-                                className='h-5 w-5'
+                                className="h-5 w-5"
                                 aria-label="Level 3"
                                 onCheckedChange={(checked) =>
                                     handleScoringLevelsChange(
@@ -262,7 +265,7 @@ export default function ScoutingForm({ onSubmit }: { onSubmit: Function }) {
                         <div className="items-center flex space-x-2">
                             <Checkbox
                                 name="cones"
-                                className='h-5 w-5'
+                                className="h-5 w-5"
                                 aria-label="Cones"
                                 onCheckedChange={(checked) =>
                                     handleIntakeTypesChange(
@@ -285,10 +288,10 @@ export default function ScoutingForm({ onSubmit }: { onSubmit: Function }) {
                             </div>
                         </div>
 
-                        <div className="items-center flex space-x-2">
+                        <div className="items-center flex space-x-2 pt-2">
                             <Checkbox
                                 name="cubes"
-                                className='h-5 w-5 mt-2'
+                                className="h-5 w-5"
                                 aria-label="Cubes"
                                 onCheckedChange={(checked) =>
                                     handleIntakeTypesChange(

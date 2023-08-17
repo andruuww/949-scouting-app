@@ -20,7 +20,11 @@ export default function PitScouting() {
     useEffect(() => {
         if (typeof window !== 'undefined') {
             setHasLoaded(true);
-            setScoutedTeams(JSON.parse(localStorage.getItem('scoutedTeams')!));
+            setScoutedTeams(
+                localStorage.getItem('scoutedTeams')
+                    ? JSON.parse(localStorage.getItem('scoutedTeams')!)
+                    : []
+            );
         }
     }, [typeof window]);
 

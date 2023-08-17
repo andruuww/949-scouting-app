@@ -19,7 +19,7 @@ function ResetButton({ resetData }: { resetData?: () => void }) {
     return (
         <AlertDialog>
             <AlertDialogTrigger asChild>
-                <Button variant="outline" size="icon" className="mr-2">
+                <Button variant="outline" size="icon" className="mr-2" aria-label="Remove Data">
                     <XSquare className="h-[1.2rem] w-[1.2rem]" />
                 </Button>
             </AlertDialogTrigger>

@@ -18,20 +18,20 @@ export default function Home() {
     };
 
     return (
-            <main className="flex flex-col p-7 min-h-screen max-w-md mx-auto">
-                <MenuBar />
-                <div className="flex flex-col flex-1 justify-center">
-                    <Input
-                        className="text-center"
-                        name="name"
-                        placeholder="Enter your name"
-                        onChange={(e) => setName(e.target.value)}
-                    />
+        <main className="flex flex-col p-7 min-h-screen max-w-md mx-auto">
+            <MenuBar />
+            <div className="flex flex-col flex-1 justify-center">
+                <Input
+                    className="text-center"
+                    name="name"
+                    placeholder="Enter your name"
+                    onChange={(e) => setName(e.target.value)}
+                />
 
-                    <Button type="submit" className="mt-3" onClick={onSubmit}>
-                        Login
-                    </Button>
-                </div>
-            </main>
+                <Button type="submit" className="mt-3" onClick={onSubmit}>
+                    Login
+                </Button>
+            </div>
+        </main>
     );
 }

@@ -92,7 +92,11 @@ export default function MenuBar({
                     <span>Welcome, {scoutName.substring(0, 11)}</span>
                 )}
             </div>
-            {backButtonPage && (<BackButton onClick={() => router.push(backButtonPage!)}></BackButton>)}
+            {backButtonPage && (
+                <BackButton
+                    onClick={() => router.push(backButtonPage!)}
+                ></BackButton>
+            )}
             <ResetButton resetData={resetData} />
             <ThemeSelector />
         </div>

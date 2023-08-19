@@ -61,7 +61,7 @@ export default function MenuBar({
     backButtonPage?: string;
 }) {
     const router = useRouter();
-    let [scoutName, setScoutName] = useState('');
+    let [scoutName, setScoutName] = useState<string | null>(null);
 
     function BackButton({ backButtonPage }: { backButtonPage?: string }) {
         if (!backButtonPage) return null;
@@ -91,13 +91,9 @@ export default function MenuBar({
         <div className="flex flex-row justify-between items-center">
             <div className="text-2xl font-bold flex-grow">
                 {scoutName === null ? (
-                    '949 Scouting'
+                    ''
                 ) : (
-                    <span>
-                        Welcome,
-                        <br />
-                        {scoutName.substring(0, 11)}
-                    </span>
+                    <span>Welcome, {scoutName.substring(0, 11)}</span>
                 )}
             </div>
             <BackButton backButtonPage={backButtonPage}></BackButton>

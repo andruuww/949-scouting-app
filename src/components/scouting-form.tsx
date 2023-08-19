@@ -105,6 +105,9 @@ export default function ScoutingForm({ onSubmit }: { onSubmit: Function }) {
                         name="teamNumber"
                         id="teamNumber"
                         type="number"
+                        min="0"
+                        inputMode="numeric"
+                        pattern="[0-9]*"
                         placeholder="949"
                         className="col-span-3"
                         onChange={handleChange}
@@ -138,6 +141,9 @@ export default function ScoutingForm({ onSubmit }: { onSubmit: Function }) {
                     <Input
                         name="weight"
                         type="number"
+                        min="0"
+                        inputMode="numeric"
+                        pattern="[0-9]*"
                         placeholder="100"
                         className="col-span-3"
                         onChange={handleChange}
@@ -150,6 +156,9 @@ export default function ScoutingForm({ onSubmit }: { onSubmit: Function }) {
                         <Input
                             name="dimensionLength"
                             type="number"
+                            min="0"
+                            inputMode="numeric"
+                            pattern="[0-9]*"
                             placeholder="28"
                             onChange={handleChange}
                             value={
@@ -164,6 +173,9 @@ export default function ScoutingForm({ onSubmit }: { onSubmit: Function }) {
                         <Input
                             name="dimensionWidth"
                             type="number"
+                            min="0"
+                            inputMode="numeric"
+                            pattern="[0-9]*"
                             placeholder="32"
                             onChange={handleChange}
                             value={
@@ -179,6 +191,9 @@ export default function ScoutingForm({ onSubmit }: { onSubmit: Function }) {
                     <Input
                         name="driverHours"
                         type="number"
+                        min="0"
+                        inputMode="numeric"
+                        pattern="[0-9]*"
                         placeholder="40"
                         className="col-span-3"
                         onChange={handleChange}

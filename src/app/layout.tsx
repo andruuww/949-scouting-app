@@ -45,6 +45,12 @@ export const metadata: Metadata = {
             template: APP_TITLE_TEMPLATE
         },
         description: APP_DESCRIPTION
+    },
+    viewport: {
+        width: 'device-width',
+        initialScale: 1,
+        maximumScale: 1,
+        userScalable: false
     }
 };
 

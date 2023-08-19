@@ -1,58 +1,38 @@
 'use client';
 
-import FInput from '@/components/ui/FInput';
-import { Button } from '@/components/ui/button';
-import { loginSchema } from '@/lib/schemas';
-import { LoginForm } from '@/lib/types';
-
 import MenuBar from '@/components/menu-bar';
-import { Form, Formik, FormikHelpers } from 'formik';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 export default function Home() {
     const router = useRouter();
+    const [name, setName] = useState('');
 
-    const onSubmit = (values: LoginForm, actions: FormikHelpers<LoginForm>) => {
+    const onSubmit = () => {
         if (typeof window !== 'undefined') {
-            localStorage.setItem('scoutName', values.name);
+            localStorage.setItem('scoutName', name);
         }
         router.push('/pit');
     };
 
-    if (typeof window !== 'undefined') {
-        localStorage.removeItem('scoutName');
-    }
-    // impement formik into the rest of the code sometime
     return (
         <>
             <main className="flex flex-col p-7 min-h-screen max-w-md mx-auto">
-                {/* <div className='text-2xl font-bold'>949 Scouting</div> */}
-                <MenuBar></MenuBar>
-                <Formik
-                    initialValues={{
-                        name: ''
-                    }}
-                    onSubmit={onSubmit}
-                    validationSchema={loginSchema}
-                >
-                    <div className="flex flex-col flex-1 justify-center">
-                        <Form className="flex flex-col" autoComplete="off">
-                            <FInput
-                                className="text-center"
-                                name="name"
-                                placeholder="Enter your name"
-                            />
+                <MenuBar />
+                <div className="flex flex-col flex-1 justify-center">
+                    <Input
+                        className="text-center"
+                        name="name"
+                        placeholder="Enter your name"
+                        onChange={(e) => setName(e.target.value)}
+                    />
 
-                            <Button
-                                type="submit"
-                                asChild={false}
-                                className="mt-5"
-                            >
-                                Login
-                            </Button>
-                        </Form>
-                    </div>
-                </Formik>
+                    <Button type="submit" className="mt-3" onClick={onSubmit}>
+                        Login
+                    </Button>
+                </div>
             </main>
         </>
     );

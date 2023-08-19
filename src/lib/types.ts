@@ -1,4 +1,5 @@
 export interface FormData {
+    scoutName?: string;
     teamNumber?: number;
     drivetrain?: 'tank' | 'swerve' | 'mech';
     weight?: number;
@@ -8,8 +9,4 @@ export interface FormData {
     scoringLevels?: string[];
     intakeCapabilities?: string[];
     notes?: string;
-}
-
-export interface FormCollection {
-    forms: FormData[];
 }

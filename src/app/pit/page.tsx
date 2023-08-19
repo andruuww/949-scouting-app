@@ -48,7 +48,7 @@ export default function PitScouting() {
 
     return (
         <main className="flex flex-col p-7 min-h-screen max-w-md mx-auto">
-            <MenuBar resetData={resetData} />
+            <MenuBar resetData={resetData} backButtonPage="/" />
             {hasLoaded ? (
                 <>
                     <div className="py-2">

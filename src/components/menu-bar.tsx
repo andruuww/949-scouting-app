@@ -11,7 +11,9 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import { ThemeSelector } from '@/components/ui/theme-selector';
-import { XSquare } from 'lucide-react';
+import { ArrowLeft, XSquare } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 function ResetButton({ resetData }: { resetData?: () => void }) {
     if (!resetData) return null;
@@ -51,10 +53,50 @@ function ResetButton({ resetData }: { resetData?: () => void }) {
     );
 }
 
-export default function MenuBar({ resetData }: { resetData?: () => void }) {
+function BackButton({ onClick }: { onClick?: () => void }) {
+    return (
+        <Button
+            variant="outline"
+            size="icon"
+            className="mr-2"
+            aria-label="Back Button"
+            onClick={onClick}
+        >
+            <ArrowLeft className="h-[1.2rem] w-[1.2rem]" />
+        </Button>
+    );
+}
+
+export default function MenuBar({
+    resetData,
+    backButtonPage
+}: {
+    resetData?: () => void;
+    backButtonPage?: string;
+}) {
+    const router = useRouter();
+    let [scoutName, setScoutName] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            setScoutName(localStorage.getItem('scoutName')!);
+        }
+    }, []);
+
     return (
         <div className="flex flex-row justify-between items-center">
-            <div className="text-2xl font-bold flex-grow">949 Scouting</div>
+            <div className="text-2xl font-bold flex-grow">
+                {scoutName === null ? (
+                    ''
+                ) : (
+                    <span>Welcome, {scoutName.substring(0, 11)}</span>
+                )}
+            </div>
+            {backButtonPage && (
+                <BackButton
+                    onClick={() => router.push(backButtonPage!)}
+                ></BackButton>
+            )}
             <ResetButton resetData={resetData} />
             <ThemeSelector />
         </div>

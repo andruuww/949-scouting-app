@@ -2,12 +2,10 @@
 
 import MenuBar from '@/components/menu-bar';
 import TeamsList from '@/components/teams-list';
-import { Button } from '@/components/ui/button';
 import { FormData } from '@/lib/types';
 import { ReloadIcon } from '@radix-ui/react-icons';
 // @ts-ignore
 import { toSVG } from 'bwip-js';
-import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 export default function PitScoutingExport() {
@@ -36,7 +34,7 @@ export default function PitScoutingExport() {
 
     return (
         <main className="flex flex-col p-7 min-h-screen max-w-md mx-auto">
-            <MenuBar />
+            <MenuBar backButtonPage="/pit" />
             {hasLoaded ? (
                 <>
                     <div className="py-3">
@@ -65,9 +63,6 @@ export default function PitScoutingExport() {
                                 </div>
                             ))}
                     </div>
-                    <Button className="mt-4" asChild>
-                        <Link href="/pit">Back</Link>
-                    </Button>
                 </>
             ) : (
                 <div className="flex flex-col justify-center items-center">

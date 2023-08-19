@@ -63,9 +63,6 @@ export default function PitScoutingExport() {
                                 </div>
                             ))}
                     </div>
-                    {/* <Button className='mt-4' asChild>
-						<Link href='/pit'>Back</Link>
-					</Button> */}
                 </>
             ) : (
                 <div className="flex flex-col justify-center items-center">

@@ -53,6 +53,20 @@ function ResetButton({ resetData }: { resetData?: () => void }) {
     );
 }
 
+function BackButton({ onClick }: { onClick?: () => void }) {
+    return (
+        <Button
+            variant="outline"
+            size="icon"
+            className="mr-2"
+            aria-label="Back Button"
+            onClick={onClick}
+        >
+            <ArrowLeft className="h-[1.2rem] w-[1.2rem]" />
+        </Button>
+    );
+}
+
 export default function MenuBar({
     resetData,
     backButtonPage
@@ -63,29 +77,11 @@ export default function MenuBar({
     const router = useRouter();
     let [scoutName, setScoutName] = useState<string | null>(null);
 
-    function BackButton({ backButtonPage }: { backButtonPage?: string }) {
-        if (!backButtonPage) return null;
-
-        return (
-            <Button
-                variant="outline"
-                size="icon"
-                className="mr-2"
-                aria-label="Back Button"
-                onClick={() => {
-                    router.push(backButtonPage);
-                }}
-            >
-                <ArrowLeft className="h-[1.2rem] w-[1.2rem]" />
-            </Button>
-        );
-    }
-
     useEffect(() => {
         if (typeof window !== 'undefined') {
             setScoutName(localStorage.getItem('scoutName')!);
         }
-    });
+    }, []);
 
     return (
         <div className="flex flex-row justify-between items-center">
@@ -96,7 +92,7 @@ export default function MenuBar({
                     <span>Welcome, {scoutName.substring(0, 11)}</span>
                 )}
             </div>
-            <BackButton backButtonPage={backButtonPage}></BackButton>
+            {backButtonPage && (<BackButton onClick={() => router.push(backButtonPage!)}></BackButton>)}
             <ResetButton resetData={resetData} />
             <ThemeSelector />
         </div>

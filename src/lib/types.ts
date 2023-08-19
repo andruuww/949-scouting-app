@@ -10,11 +10,3 @@ export interface FormData {
     intakeCapabilities?: string[];
     notes?: string;
 }
-
-export interface LoginForm {
-    name: string;
-}
-
-export interface FormCollection {
-    forms: FormData[];
-}

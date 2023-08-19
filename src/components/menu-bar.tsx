@@ -14,6 +14,8 @@ import { ThemeSelector } from '@/components/ui/theme-selector';
 import { XSquare, ArrowLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
+const router = useRouter();
+
 function ResetButton({ resetData }: { resetData?: () => void }) {
 	if (!resetData) return null;
 
@@ -48,8 +50,6 @@ function ResetButton({ resetData }: { resetData?: () => void }) {
 
 function BackButton({ backButtonPage }: { backButtonPage?: string }) {
 	if (!backButtonPage) return null;
-
-	const router = useRouter();
 
 	return (
 		<Button

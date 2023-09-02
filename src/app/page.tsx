@@ -26,6 +26,7 @@ export default function Home() {
                     name="name"
                     placeholder="Enter your name"
                     onChange={(e) => setName(e.target.value)}
+                    autoComplete="off"
                 />
 
                 <Button type="submit" className="mt-3" onClick={onSubmit}>

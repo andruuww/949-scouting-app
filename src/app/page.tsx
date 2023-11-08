@@ -39,6 +39,7 @@ export default function Home() {
                     name="name"
                     placeholder="Enter your name"
                     onChange={(e) => setName(e.target.value)}
+                    autoComplete="off"
                 />
 
                 <Button

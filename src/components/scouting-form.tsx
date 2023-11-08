@@ -15,9 +15,7 @@ import { FormData } from '@/lib/types';
 import { useState } from 'react';
 
 export default function ScoutingForm({ onSubmit }: { onSubmit: Function }) {
-    const [formData, setFormData] = useState<FormData>({
-        scoutName: localStorage.getItem('scoutName')!
-    });
+    const [formData, setFormData] = useState<FormData>({});
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     const submit = () => {
@@ -30,8 +28,7 @@ export default function ScoutingForm({ onSubmit }: { onSubmit: Function }) {
             setFormData({
                 teamNumber: 0
             });
-            console.log(formData);
-            onSubmit(formData);
+            onSubmit({scoutName: localStorage.getItem('scoutName')!, ...formData});
         } else
             setErrorMessage(
                 'Please fill out all required fields (team number, drivetrain, intake capabilities, and scoring levels)'

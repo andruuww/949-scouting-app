@@ -3,14 +3,13 @@ const withPWA = require('@ducanh2912/next-pwa').default({
     // disable: process.env.NODE_ENV === 'development',
     cacheOnFrontEndNav: true,
     aggressiveFrontEndNavCaching: true,
-    cacheStartUrl: true,
+    cacheStartUrl: true
 });
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {};
 
 module.exports = withPWA(nextConfig);
-
 
 // const { nanoid } = require('nanoid')
 
@@ -32,8 +31,6 @@ module.exports = withPWA(nextConfig);
 //     },
 //   ];
 
-
-
 // function getStaticPrecacheEntries(){
 //   // build list of manifest entries to precache content of public folder
 // }
@@ -45,14 +42,14 @@ module.exports = withPWA(nextConfig);
 // function getPageJSONPath(buildId, pageRoute){
 //     return path.posix.join('/_next/data/', buildId, `${pageRoute}.json`);
 //   }
-  
+
 //   function getJSONEntry(buildId, pageRoute){
 //     return {
 //       url: getPageJSONPath(buildId, pageRoute),
 //       revision: null,
 //     };
 //   }
-  
+
 //   function getHTMLEntry(buildId, pageRoute){
 //     return {
 //       url: pageRoute,
@@ -70,7 +67,7 @@ module.exports = withPWA(nextConfig);
 //     }
 //     return entries;
 //   }
-  
+
 //   function getDynamicPageEntries(buildId, page){
 //     let pageList = page.dynamicPages.map(actualPage => path.posix.join(page.route, actualPage));
 //     let entries = pageList.map(route => getNormalPageEntries(
@@ -78,7 +75,7 @@ module.exports = withPWA(nextConfig);
 //     );
 //     return entries.reduce((acc, curr) => acc.concat(curr), []);
 //   }
-  
+
 //   function getPageEntries(buildId, page){
 //     if (Array.isArray(page.dynamicPages)){
 //       return getDynamicPageEntries(buildId, page);
@@ -86,7 +83,7 @@ module.exports = withPWA(nextConfig);
 //       return getNormalPageEntries(buildId, page);
 //     }
 //   }
-  
+
 //   function getGeneratedPrecacheEntries(buildId){
 //     return pages.map(page => getPageEntries(buildId, page)).reduce((acc, curr) => acc.concat(curr), []);
 //   }
@@ -105,7 +102,7 @@ module.exports = withPWA(nextConfig);
 //         },
 //     }
 
-//     if (phase === PHASE_PRODUCTION_BUILD){  
+//     if (phase === PHASE_PRODUCTION_BUILD){
 //     // Attributes generateBuildId and additionalManifestEntries are only needed
 //     // for the build and calculating their value is time-consuming.
 //     // So we add them here, just for the build.
@@ -125,7 +122,7 @@ module.exports = withPWA(nextConfig);
 //           '!*.ico',
 //           '!browserconfig.xml',
 //         ],
-//       }), 
+//       }),
 //     //   ...getGeneratedPrecacheEntries(buildId),
 //     ]
 //     }

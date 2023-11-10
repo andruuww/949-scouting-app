@@ -12,7 +12,6 @@ import {
 import { Button } from '@/components/ui/button';
 import { ThemeSelector } from '@/components/ui/theme-selector';
 import { ArrowLeft, XSquare } from 'lucide-react';
-import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 function ResetButton({ resetData }: { resetData?: () => void }) {
@@ -74,7 +73,7 @@ export default function MenuBar({
     resetData?: () => void;
     backButtonPage?: string;
 }) {
-    const router = useRouter();
+    // const router = useRouter();
     let [scoutName, setScoutName] = useState<string | null>(null);
 
     useEffect(() => {

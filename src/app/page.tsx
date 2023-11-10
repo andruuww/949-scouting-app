@@ -3,6 +3,7 @@
 import MenuBar from '@/components/menu-bar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { toast } from '@/components/ui/use-toast';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -10,9 +11,7 @@ export default function Home() {
     const router = useRouter();
     const [name, setName] = useState('');
     const [hasLoaded, setHasLoaded] = useState(false);
-    const [alreadyLoggedInAs, setAlreadyLoggedInAs] = useState<null | string>(
-        null
-    );
+    const [alreadyLoggedInAs, setAlreadyLoggedInAs] = useState<null | string>(null);
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -23,6 +22,27 @@ export default function Home() {
         }
     }, [typeof window]);
 
+    const precacheChannel = new BroadcastChannel('precache-messages');
+
+    precacheChannel.addEventListener('message', (event) => {
+        const [type, data] = [event.data.type, event.data.data];
+
+        toast({
+            title: type,
+            description: data,
+        });
+    });
+
+    useEffect(() => {
+        navigator.serviceWorker.ready.then(() => {
+            if (navigator.serviceWorker && navigator.serviceWorker.controller) {
+                navigator.serviceWorker.controller!.postMessage({
+                    type: 'PRECACHE-ASSETS',
+                });
+            }
+        });
+    }, []);
+
     const onSubmit = () => {
         if (typeof window !== 'undefined') {
             localStorage.setItem('scoutName', name);
@@ -31,32 +51,21 @@ export default function Home() {
     };
 
     return (
-        <main className="flex flex-col p-7 min-h-screen max-w-md mx-auto">
+        <main className='flex flex-col p-7 min-h-screen max-w-md mx-auto'>
             <MenuBar />
-            <div className="flex flex-col flex-1 justify-center">
+            <div className='flex flex-col flex-1 justify-center'>
                 <Input
-                    className="text-center"
-                    name="name"
-                    placeholder="Enter your name"
+                    className='text-center'
+                    name='name'
+                    placeholder='Enter your name'
                     onChange={(e) => setName(e.target.value)}
-                    autoComplete="off"
+                    autoComplete='off'
                 />
-
-                <Button
-                    type="submit"
-                    className="mt-3"
-                    onClick={onSubmit}
-                    variant="secondary"
-                >
+                <Button type='submit' className='mt-3' onClick={onSubmit} variant='secondary'>
                     Login
                 </Button>
                 {hasLoaded && alreadyLoggedInAs && (
-                    <Button
-                        type="submit"
-                        className="mt-3"
-                        variant="default"
-                        onClick={() => router.push('/pit')}
-                    >
+                    <Button type='submit' className='mt-3' variant='default' onClick={() => router.push('/pit')}>
                         Continue as {alreadyLoggedInAs}
                     </Button>
                 )}

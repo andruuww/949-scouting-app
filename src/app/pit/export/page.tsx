@@ -2,15 +2,37 @@
 
 import MenuBar from '@/components/menu-bar';
 import TeamsList from '@/components/teams-list';
-import { FormData } from '@/lib/types';
+import { toast } from '@/components/ui/use-toast';
+import { FormData, FormDataClass } from '@/lib/types';
 import { ReloadIcon } from '@radix-ui/react-icons';
 // @ts-ignore
 import { toSVG } from 'bwip-js';
 import { useEffect, useState } from 'react';
+import zlib from 'zlib';
+
+function jsonToCSV(jsonArray: FormData[]) {
+    if (jsonArray && jsonArray.length > 0) {
+        const header = Object.keys(new FormDataClass());
+        const csvData = jsonArray.map((row) =>
+            header.map((key) => {
+                const value = row[key as keyof FormData];
+                if (typeof value === 'number') {
+                    return value.toFixed(0);
+                } else if (typeof value === 'boolean') {
+                    return value ? '1' : '0';
+                }
+                return value !== undefined ? value : '';
+            })
+        );
+        return [header.join(','), ...csvData].join('\n');
+    }
+    return '';
+}
 
 export default function PitScoutingExport() {
     const [hasLoaded, setHasLoaded] = useState(false);
     const [scoutedTeams, setScoutedTeams] = useState<FormData[]>([]);
+    const [barcodeSVGs, setBarcodeSVGs] = useState<string[]>([]);
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -23,13 +45,29 @@ export default function PitScoutingExport() {
         }
     }, [typeof window]);
 
-    const [barcodeSVGs, setBarcodeSVGs] = useState<string[]>([]);
-
     useEffect(() => {
-        const content = JSON.stringify(scoutedTeams);
-        const chunks = content.match(/.{1,500}/g);
-        const barcodes = chunks?.map((i) => toSVG({ bcid: 'qrcode', text: i }));
-        setBarcodeSVGs(barcodes!);
+        if (scoutedTeams) {
+            zlib.gzip(
+                Buffer.from(jsonToCSV(scoutedTeams)),
+                (err, compressedBuffer) => {
+                    if (err) {
+                        toast({
+                            title: 'Error!',
+                            description:
+                                'An error occurred while compressing the data! Contact Andrew...'
+                        });
+                    } else {
+                        const content = compressedBuffer.toString('base64');
+                        console.log(content.length);
+                        const chunks = content.match(/.{1,2000}/g);
+                        const barcodes = chunks?.map((i) =>
+                            toSVG({ bcid: 'qrcode', text: i })
+                        );
+                        setBarcodeSVGs(barcodes!);
+                    }
+                }
+            );
+        }
     }, [scoutedTeams]);
 
     return (

@@ -1,7 +1,7 @@
 'use client';
 
 import MenuBar from '@/components/menu-bar';
-import ScoutingForm from '@/components/pit-scouting-form';
+import ScoutingForm from '@/components/match-scouting-form';//cant test until andrew pushes the change that actually fixes stuff
 import TeamsList from '@/components/teams-list';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
@@ -11,7 +11,7 @@ import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-export default function PitScouting() {
+export default function MatchScouting() {
     const { toast } = useToast();
 
     const [hasLoaded, setHasLoaded] = useState(false);

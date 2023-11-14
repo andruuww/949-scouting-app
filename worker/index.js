@@ -35,10 +35,11 @@ const ASSETS = [
     '/pit',
     '/pit/export',
 
+    // '/_next/static/chunks/webpack.js',
     '/manifest.json',
     '/icons/manifest-icon-192.maskable.png',
     '/icons/manifest-icon-512.maskable.png',
-    '/favicon.ico'
+    '/favicon.ico',
 ];
 const PRECACHE_NAME = 'ASSET-PRECACHE-OFFLINE';
 const precacheChannel = new BroadcastChannel('precache-messages');
@@ -50,47 +51,76 @@ function precacheAssets() {
                 return caches.delete(PRECACHE_NAME).then(() => {
                     console.log('deleted cache');
 
-                    precacheChannel.postMessage({
-                        type: 'Success!',
-                        data: 'Successfuly deleted failed cache.'
-                    });
-
                     return caches
                         .open(PRECACHE_NAME)
                         .then((newCache) => {
                             console.log('caching');
-                            precacheChannel.postMessage({
-                                type: 'Pending',
-                                data: 'Caching page assets for offline use...'
-                            });
                             return newCache.addAll(ASSETS);
                         })
                         .then(() => {
-                            precacheChannel.postMessage({
-                                type: 'Success!',
-                                data: 'Now ready for offline use!'
-                            });
                             console.log('done caching');
                         })
                         .catch((err) => {
-                            precacheChannel.postMessage({
-                                type: 'ERR',
-                                data: 'Unable to cache. Are you connected to the internet?'
-                            });
                             console.log(ASSETS);
                             console.log('error caching', err);
                         });
                 });
             } else {
                 console.log('cache already exists');
-                precacheChannel.postMessage({
-                    type: 'Success!',
-                    data: 'App already ready for offline use!'
-                });
+                return;
             }
         });
     });
 }
+
+// function precacheAssets() {
+//     caches.open(PRECACHE_NAME).then((cache) => {
+//         return cache.keys().then((keys) => {
+//             if (keys.length !== ASSETS.length) {
+//                 return caches.delete(PRECACHE_NAME).then(() => {
+//                     console.log('deleted cache');
+
+//                     precacheChannel.postMessage({
+//                         type: 'Success!',
+//                         data: 'Successfuly deleted failed cache.',
+//                     });
+
+//                     return caches
+//                         .open(PRECACHE_NAME)
+//                         .then((newCache) => {
+//                             console.log('caching');
+//                             precacheChannel.postMessage({
+//                                 type: 'Pending',
+//                                 data: 'Caching page assets for offline use...',
+//                             });
+//                             return newCache.addAll(ASSETS);
+//                         })
+//                         .then(() => {
+//                             precacheChannel.postMessage({
+//                                 type: 'Success!',
+//                                 data: 'Now ready for offline use!',
+//                             });
+//                             console.log('done caching');
+//                         })
+//                         .catch((err) => {
+//                             precacheChannel.postMessage({
+//                                 type: 'ERR',
+//                                 data: 'Unable to cache. Are you connected to the internet?',
+//                             });
+//                             console.log(ASSETS);
+//                             console.log('error caching', err);
+//                         });
+//                 });
+//             } else {
+//                 console.log('cache already exists');
+//                 precacheChannel.postMessage({
+//                     type: 'Success!',
+//                     data: 'App already ready for offline use!',
+//                 });
+//             }
+//         });
+//     });
+// }
 
 self.addEventListener('activate', (evt) => {
     evt.waitUntil(precacheAssets());

@@ -23,3 +23,12 @@ export class FormDataClass {
 }
 
 export interface FormData extends FormDataClass {}
+
+ export enum SWStatus {
+    START = 'START',
+    PENDING = 'PENDING',
+    SUCCESS = 'SUCCESS',
+    DELETED = 'DELETED',
+    ERROR = 'ERROR',
+    OFFLINE = 'OFFLINE',
+}

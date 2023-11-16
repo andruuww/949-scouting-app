@@ -4,6 +4,7 @@ import MenuBar from '@/components/menu-bar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/use-toast';
+import { SWStatus } from '@/lib/types';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -20,34 +21,29 @@ export default function Home() {
                 setAlreadyLoggedInAs(localStorage.getItem('scoutName')!);
             }
         }
-    }, [typeof window]);
+    }, []);
 
     const precacheChannel = new BroadcastChannel('precache-messages');
 
     precacheChannel.addEventListener('message', (event) => {
-        const [type, data] = [event.data.type, event.data.data];
-
         toast({
-            title: type,
-            description: data,
+            title: `Cache status: ${event.data.type}`,
         });
     });
 
     useEffect(() => {
-        navigator.serviceWorker.ready.then(() => {
-            if (navigator.serviceWorker && navigator.serviceWorker.controller) {
-                navigator.serviceWorker.controller!.postMessage({
-                    type: 'PRECACHE-ASSETS',
-                });
-            }
-        });
+        if (navigator.serviceWorker.controller !== null) {
+            navigator.serviceWorker.controller!.postMessage({
+                type: SWStatus.START,
+            });
+        }
     }, []);
 
     const onSubmit = () => {
         if (typeof window !== 'undefined') {
             localStorage.setItem('scoutName', name);
         }
-        router.push('/pit');
+        router.replace('/pit');
     };
 
     return (
@@ -65,7 +61,7 @@ export default function Home() {
                     Login
                 </Button>
                 {hasLoaded && alreadyLoggedInAs && (
-                    <Button type='submit' className='mt-3' variant='default' onClick={() => router.push('/pit')}>
+                    <Button type='submit' className='mt-3' variant='default' onClick={onSubmit}>
                         Continue as {alreadyLoggedInAs}
                     </Button>
                 )}

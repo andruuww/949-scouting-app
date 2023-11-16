@@ -68,7 +68,7 @@ export default function MenuBar({ resetData, backButtonPage }: { resetData?: () 
             <div className='text-2xl font-bold flex-grow'>
                 {scoutName === null ? '' : <span>Welcome, {scoutName.substring(0, 11)}</span>}
             </div>
-            {backButtonPage && <BackButton onClick={() => router.push(backButtonPage!)}></BackButton>}
+            {backButtonPage && <BackButton onClick={() => router.replace(backButtonPage!)}></BackButton>}
             <ResetButton resetData={resetData} />
             <ThemeSelector />
         </div>

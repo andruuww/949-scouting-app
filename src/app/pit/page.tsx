@@ -60,10 +60,12 @@ export default function PitScouting() {
                         (!isLoading ? (
                             <Button
                                 className='bg-green-600 dark:bg-green-400 mt-2'
-                                asChild
-                                onClick={() => setIsLoading(true)}
+                                onClick={() => {
+                                    setIsLoading(true);
+                                    router.replace('/pit/export');
+                                }}
                             >
-                                <Link href='/pit/export'>Export all teams</Link>
+                                Export all teams
                             </Button>
                         ) : (
                             <Button disabled className='mt-2'>

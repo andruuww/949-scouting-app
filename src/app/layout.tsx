@@ -15,58 +15,51 @@ export const metadata: Metadata = {
     applicationName: APP_NAME,
     title: {
         default: APP_DEFAULT_TITLE,
-        template: APP_TITLE_TEMPLATE
+        template: APP_TITLE_TEMPLATE,
     },
     description: APP_DESCRIPTION,
     manifest: '/manifest.json',
-    themeColor: '#020817',
     appleWebApp: {
         capable: true,
         statusBarStyle: 'default',
-        title: APP_DEFAULT_TITLE
+        title: APP_DEFAULT_TITLE,
         // startUpImage: [],
     },
     formatDetection: {
-        telephone: false
+        telephone: false,
     },
     openGraph: {
         type: 'website',
         siteName: APP_NAME,
         title: {
             default: APP_DEFAULT_TITLE,
-            template: APP_TITLE_TEMPLATE
+            template: APP_TITLE_TEMPLATE,
         },
-        description: APP_DESCRIPTION
+        description: APP_DESCRIPTION,
     },
     twitter: {
         card: 'summary',
         title: {
             default: APP_DEFAULT_TITLE,
-            template: APP_TITLE_TEMPLATE
+            template: APP_TITLE_TEMPLATE,
         },
-        description: APP_DESCRIPTION
+        description: APP_DESCRIPTION,
     },
-    viewport: {
-        width: 'device-width',
-        initialScale: 1,
-        maximumScale: 1,
-        userScalable: false
-    }
 };
 
-export default function RootLayout({
-    children
-}: {
-    children: React.ReactNode;
-}) {
+export const viewport = {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 1,
+    userScalable: false,
+    themeColor: '#020817',
+};
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
-        <html lang="en">
+        <html lang='en'>
             <body className={inter.className}>
-                <ThemeProvider
-                    attribute="class"
-                    defaultTheme="system"
-                    enableSystem
-                >
+                <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
                     {children}
                     <Toaster />
                 </ThemeProvider>

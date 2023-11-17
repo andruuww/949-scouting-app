@@ -14,6 +14,8 @@ import { ThemeSelector } from '@/components/ui/theme-selector';
 import { ArrowLeft, XSquare } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import DisablePinchZoomEffect from './useDisablePinchZoomEffect';
+import useDisablePinchZoomEffect from './useDisablePinchZoomEffect';
 
 function ResetButton({ resetData }: { resetData?: () => void }) {
     if (!resetData) return null;

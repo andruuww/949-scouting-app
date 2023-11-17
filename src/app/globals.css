@@ -90,3 +90,7 @@
     -moz-appearance: textfield;
     }
 }
+
+body {
+  touch-action: manipulation;
+}

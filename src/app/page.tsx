@@ -4,6 +4,7 @@ import MenuBar from '@/components/menu-bar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/use-toast';
+import useDisablePinchZoomEffect from '@/components/useDisablePinchZoomEffect';
 import { SWStatus } from '@/lib/types';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -13,6 +14,18 @@ export default function Home() {
     const [name, setName] = useState('');
     const [hasLoaded, setHasLoaded] = useState(false);
     const [alreadyLoggedInAs, setAlreadyLoggedInAs] = useState<null | string>(null);
+
+    useEffect(() => {
+        const disablePinchZoom = (e: TouchEvent) => {
+            if (e.touches.length > 1) {
+                e.preventDefault();
+            }
+        };
+        document.addEventListener('touchmove', disablePinchZoom, { passive: false });
+        return () => {
+            document.removeEventListener('touchmove', disablePinchZoom);
+        };
+    }, []);
 
     useEffect(() => {
         if (typeof window !== 'undefined') {

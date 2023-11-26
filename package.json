@@ -1,9 +1,5 @@
 {
-<<<<<<< HEAD
   "name": "949-scouting-app",
-=======
-  "name": "wolverines-scouting-app",
->>>>>>> 41d56fd (fixed pretty much all service worker and caching issues)
   "version": "0.1.0",
   "private": true,
   "scripts": {

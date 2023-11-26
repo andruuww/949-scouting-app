@@ -12,10 +12,10 @@ const LoadingElement = React.forwardRef<HTMLInputElement>((props, ref) => {
     const pathname = usePathname();
     const searchParams = useSearchParams();
 
-    useEffect(() => {
-        const url = `${pathname}?${searchParams}`;
-        // console.log(url);
-    }, [pathname, searchParams]);
+    // useEffect(() => {
+    //     const url = `${pathname}?${searchParams}`;
+    //     // console.log(url);
+    // }, [pathname, searchParams]);
 
     return (
         <div className='flex flex-col w-full h-screen justify-center items-center'>

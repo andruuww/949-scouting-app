@@ -1,15 +1,16 @@
 'use client';
 
+import { useEffect, useState } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
+
+import { Button } from '@/components/ui/button';
+import { FormData } from '@/lib/types';
+import { LoadingElement } from '@/components/ui/loading-element';
 import MenuBar from '@/components/menu-bar';
+import { ReloadIcon } from '@radix-ui/react-icons';
 import ScoutingForm from '@/components/pit-scouting-form';
 import TeamsList from '@/components/teams-list';
-import { Button } from '@/components/ui/button';
-import { LoadingElement } from '@/components/ui/loading-element';
 import { useToast } from '@/components/ui/use-toast';
-import { FormData } from '@/lib/types';
-import { ReloadIcon } from '@radix-ui/react-icons';
-import { useRouter, usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
 
 export default function PitScouting() {
     const { toast } = useToast();

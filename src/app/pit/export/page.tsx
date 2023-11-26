@@ -3,6 +3,7 @@
 import { FormData, FormDataClass } from '@/lib/types';
 import { useEffect, useState } from 'react';
 
+import { LoadingElement } from '@/components/ui/loading-element';
 import MenuBar from '@/components/menu-bar';
 import { ReloadIcon } from '@radix-ui/react-icons';
 import TeamsList from '@/components/teams-list';
@@ -65,21 +66,31 @@ export default function PitScoutingExport() {
 
     return (
         <main className='flex flex-col p-7 min-h-screen max-w-md mx-auto'>
-            <>
-                <MenuBar backButtonPage='/pit' />
-                <div className='py-3'>
-                    <TeamsList teams={scoutedTeams.map((i) => i.teamNumber!.toString())} />
-                </div>
-                <div className='bg-white flex flex-col justify-center rounded-lg'>
-                    {scoutedTeams.length > 0 &&
-                        barcodeSVGs.map((i, key) => (
-                            <div key={key} className='flex flex-col justify-center'>
-                                <img alt='qrcode' src={`data:image/svg+xml;base64,${btoa(i)}`} className='pt-2 px-2' />
-                                <div className='pb-2 font-bold text-xl text-black text-center'>Barcode {key + 1}</div>
-                            </div>
-                        ))}
-                </div>
-            </>
+            {hasLoaded ? (
+                <>
+                    <MenuBar backButtonPage='/pit' />
+                    <div className='py-3'>
+                        <TeamsList teams={scoutedTeams.map((i) => i.teamNumber!.toString())} />
+                    </div>
+                    <div className='bg-white flex flex-col justify-center rounded-lg'>
+                        {scoutedTeams.length > 0 &&
+                            barcodeSVGs.map((i, key) => (
+                                <div key={key} className='flex flex-col justify-center'>
+                                    <img
+                                        alt='qrcode'
+                                        src={`data:image/svg+xml;base64,${btoa(i)}`}
+                                        className='pt-2 px-2'
+                                    />
+                                    <div className='pb-2 font-bold text-xl text-black text-center'>
+                                        Barcode {key + 1}
+                                    </div>
+                                </div>
+                            ))}
+                    </div>
+                </>
+            ) : (
+                <LoadingElement />
+            )}
         </main>
     );
 }

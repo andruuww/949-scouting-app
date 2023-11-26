@@ -3,7 +3,7 @@
 import { FormData, FormDataClass } from '@/lib/types';
 import { useEffect, useState } from 'react';
 
-import { LoadingElement } from '@/components/ui/loading-element';
+import LoadingElement from '@/components/ui/loading-element';
 import MenuBar from '@/components/menu-bar';
 import { ReloadIcon } from '@radix-ui/react-icons';
 import TeamsList from '@/components/teams-list';

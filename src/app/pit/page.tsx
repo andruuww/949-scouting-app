@@ -5,7 +5,7 @@ import { usePathname, useRouter } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
 import { FormData } from '@/lib/types';
-import { LoadingElement } from '@/components/ui/loading-element';
+import LoadingElement from '@/components/ui/loading-element';
 import MenuBar from '@/components/menu-bar';
 import { ReloadIcon } from '@radix-ui/react-icons';
 import ScoutingForm from '@/components/pit-scouting-form';

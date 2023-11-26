@@ -28,7 +28,9 @@ export interface FormData extends FormDataClass {}
     START = 'START',
     PENDING = 'PENDING',
     SUCCESS = 'SUCCESS',
+    CLEAR = 'CLEAR',
     DELETED = 'DELETED',
     ERROR = 'ERROR',
     OFFLINE = 'OFFLINE',
+    UNREGISTER = 'UNREGISTER',
 }

@@ -40,22 +40,43 @@ async function precacheAssets() {
     }
 }
 
+self.addEventListener('install', (evt) => {
+    self.skipWaiting();
+});
+
 self.addEventListener('activate', (evt) => {
+    console.log('activated', evt);
+
     evt.waitUntil(
         Promise.all([
             new Promise((resolve) => {
                 precacheChannel = new BroadcastChannel('precache-messages');
+                precacheAssets();
                 resolve();
             }),
             self.clients.claim(),
-            precacheAssets(),
         ])
     );
 });
 
 self.addEventListener('message', (event) => {
+    if (event.data && event.data.type === SWStatus.UNREGISTER) {
+        self.registration.unregister({ immediate: true });
+    }
+
     if (event.data && event.data.type === SWStatus.START) {
         precacheAssets();
+    }
+
+    if (event.data && event.data.type === SWStatus.CLEAR) {
+        console.log('CLEARING CACHE');
+        caches.keys().then((cacheNames) => {
+            return Promise.all(
+                cacheNames.map((cacheName) => {
+                    return caches.delete(cacheName);
+                })
+            );
+        });
     }
 });
 

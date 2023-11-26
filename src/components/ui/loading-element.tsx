@@ -1,9 +1,11 @@
 'use client';
 
 import * as React from 'react';
-import { ReloadIcon } from '@radix-ui/react-icons';
+
 import { useEffect, useState } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
+
+import { ReloadIcon } from '@radix-ui/react-icons';
 
 const LoadingElement = React.forwardRef<HTMLInputElement>((props, ref) => {
     const [isLoading, setIsLoading] = useState(false);
@@ -12,7 +14,7 @@ const LoadingElement = React.forwardRef<HTMLInputElement>((props, ref) => {
 
     useEffect(() => {
         const url = `${pathname}?${searchParams}`;
-        console.log(url);
+        // console.log(url);
     }, [pathname, searchParams]);
 
     return (

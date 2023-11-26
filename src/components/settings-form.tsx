@@ -24,27 +24,25 @@ import { Settings } from 'lucide-react';
 import { ThemeSelector } from './ui/theme-selector';
 import { toast } from './ui/use-toast';
 import { useForm } from 'react-hook-form';
+import useIsConnected from './connection-hook';
+import { useRouter } from 'next/navigation';
 import { useTheme } from 'next-themes';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 export default function SettingsForm() {
     const { theme, setTheme } = useTheme();
+    const ping = useIsConnected();
+    const router = useRouter();
 
     async function unregisterSW() {
         if ('serviceWorker' in navigator) {
-            try {
-                await fetch('/ping');
-                navigator.serviceWorker
-                    .getRegistrations()
-                    .then((registrations) => {
-                        registrations.forEach((registration) => {
-                            registration.unregister();
-                        });
-                    })
-                    .then(() => {
-                        window.location.reload();
-                    });
-            } catch {
+            if (await ping()) {
+                const registrations = await navigator.serviceWorker.getRegistrations();
+                registrations.forEach((registration) => {
+                    registration.unregister();
+                });
+                router.replace('/');
+            } else {
                 toast({
                     variant: 'destructive',
                     description: 'No internet connection.',
@@ -163,7 +161,7 @@ export default function SettingsForm() {
 
                         <AlertDialogFooter>
                             <AlertDialogCancel>Close</AlertDialogCancel>
-                            <Button type='submit'>Update</Button>
+                            <Button type='submit'>Apply</Button>
                         </AlertDialogFooter>
                     </form>
                 </Form>

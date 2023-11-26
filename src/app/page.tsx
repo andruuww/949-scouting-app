@@ -13,32 +13,14 @@ import { useRouter } from 'next/navigation';
 async function registerSW() {
     try {
         if ('serviceWorker' in navigator) {
-            // try {
-            //     await fetch('/');
-            // } catch {
-            //     const registrations = await navigator.serviceWorker.getRegistrations();
-            //     registrations.forEach(async (registration) => {
-            //         await registration.unregister();
-            //     });
-            // }
-            await navigator.serviceWorker.register('/sw.js');
-
-            const precacheChannel = new BroadcastChannel('precache-messages');
-
-            precacheChannel.addEventListener('message', (event) => {
-                toast({
-                    description: `Cache status: ${event.data.type}`,
+            navigator.serviceWorker.register('/sw.js').then(() => {
+                const precacheChannel = new BroadcastChannel('precache-messages');
+                precacheChannel.addEventListener('message', (event) => {
+                    toast({
+                        description: `Cache status: ${event.data.type}`,
+                    });
                 });
             });
-
-            // if (navigator.serviceWorker.controller) {
-            //     try {
-            //         await fetch('/ping');
-            //         console.log('caching');
-            //         // navigator.serviceWorker.controller.postMessage(SWStatus.CLEAR);
-            //         // navigator.serviceWorker.controller.postMessage(SWStatus.START);
-            //     } catch {}
-            // }
         }
     } catch (error) {
         console.log('Service Worker registration failed:', error);

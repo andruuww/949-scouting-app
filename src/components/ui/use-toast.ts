@@ -137,6 +137,8 @@ function dispatch(action: Action) {
 
 type Toast = Omit<ToasterToast, 'id'>;
 
+let lastProps: Toast = {};
+
 function toast({ ...props }: Toast) {
     const id = genId();
 
@@ -147,17 +149,21 @@ function toast({ ...props }: Toast) {
         });
     const dismiss = () => dispatch({ type: 'DISMISS_TOAST', toastId: id });
 
-    dispatch({
-        type: 'ADD_TOAST',
-        toast: {
-            ...props,
-            id,
-            open: true,
-            onOpenChange: (open) => {
-                if (!open) dismiss();
+
+    if (props.description != lastProps.description) {
+        dispatch({
+            type: 'ADD_TOAST',
+            toast: {
+                ...props,
+                id,
+                open: true,
+                onOpenChange: (open) => {
+                    if (!open) dismiss();
+                }
             }
-        }
-    });
+        });
+    }
+    lastProps = props;
 
     return {
         id: id,

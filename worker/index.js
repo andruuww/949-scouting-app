@@ -1,4 +1,5 @@
 import { SWStatus } from '@/lib/types';
+import { request } from 'bwip-js';
 
 // production
 const ASSETS = [
@@ -15,7 +16,8 @@ const PRECACHE_NAME = 'ASSET-PRECACHE-OFFLINE';
 let precacheChannel;
 
 async function precacheAssets() {
-    if (navigator.onLine) {
+    const ping = await fetch('/ping');
+    if (ping.ok) {
         try {
             await caches.delete(PRECACHE_NAME);
 
@@ -83,6 +85,11 @@ self.addEventListener('message', (event) => {
 self.addEventListener('fetch', (event) => {
     const requestUrlWithoutQuery = new URL(event.request.url);
     requestUrlWithoutQuery.search = '';
+    const requestPath = new URL(event.request.url).pathname;
+
+    if (requestPath == '/') {
+        precacheAssets();
+    }
 
     event.respondWith(
         caches.match(requestUrlWithoutQuery).then((response) => {

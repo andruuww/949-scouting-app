@@ -1,13 +1,14 @@
 'use client';
 
-import MenuBar from '@/components/menu-bar';
-import TeamsList from '@/components/teams-list';
-import { toast } from '@/components/ui/use-toast';
 import { FormData, FormDataClass } from '@/lib/types';
+import { useEffect, useState } from 'react';
+
+import MenuBar from '@/components/menu-bar';
 import { ReloadIcon } from '@radix-ui/react-icons';
+import TeamsList from '@/components/teams-list';
 // @ts-ignore
 import { toSVG } from 'bwip-js';
-import { useEffect, useState } from 'react';
+import { toast } from '@/components/ui/use-toast';
 import zlib from 'zlib';
 
 function jsonToCSV(jsonArray: FormData[]) {
@@ -53,7 +54,7 @@ export default function PitScoutingExport() {
                     });
                 } else {
                     const content = compressedBuffer.toString('base64');
-                    console.log(content.length);
+                    // console.log(content.length);
                     const chunks = content.match(/.{1,2000}/g);
                     const barcodes = chunks?.map((i) => toSVG({ bcid: 'qrcode', text: i }));
                     setBarcodeSVGs(barcodes!);

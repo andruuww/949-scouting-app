@@ -1,15 +1,17 @@
 'use client';
 
-import MenuBar from '@/components/menu-bar';
-import ScoutingForm from '@/components/match-scouting-form';//cant test until andrew pushes the change that actually fixes stuff
-import TeamsList from '@/components/teams-list';
-import { Button } from '@/components/ui/button';
-import { useToast } from '@/components/ui/use-toast';
-import { FormData } from '@/lib/types';
-import { ReloadIcon } from '@radix-ui/react-icons';
-import Link from 'next/link';
-import { useRouter, usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
+
+import { Button } from '@/components/ui/button';
+import { FormData } from '@/lib/types';
+import Link from 'next/link';
+import MenuBar from '@/components/menu-bar';
+import { ReloadIcon } from '@radix-ui/react-icons';
+import ScoutingForm from '@/components/match-scouting-form';
+import TeamsList from '@/components/teams-list';
+import { useToast } from '@/components/ui/use-toast';
+//cant test until andrew pushes the change that actually fixes stuff
 
 export default function MatchScouting() {
     const { toast } = useToast();
@@ -22,7 +24,6 @@ export default function MatchScouting() {
     const pathName = usePathname();
 
     useEffect(() => {
-        console.log();
         if (typeof window !== 'undefined') {
             setHasLoaded(true);
             setScoutedTeams(

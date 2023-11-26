@@ -11,11 +11,11 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import { ThemeSelector } from '@/components/ui/theme-selector';
-import { ArrowLeft, XSquare } from 'lucide-react';
+import { ArrowLeft, Settings, XSquare } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import DisablePinchZoomEffect from './useDisablePinchZoomEffect';
-import useDisablePinchZoomEffect from './useDisablePinchZoomEffect';
+import { Label } from '@radix-ui/react-dropdown-menu';
+import SettingsForm from './settings-form';
 
 function ResetButton({ resetData }: { resetData?: () => void }) {
     if (!resetData) return null;
@@ -23,7 +23,7 @@ function ResetButton({ resetData }: { resetData?: () => void }) {
     return (
         <AlertDialog>
             <AlertDialogTrigger asChild>
-                <Button variant='outline' size='icon' className='mr-2' aria-label='Remove Data'>
+                <Button variant='outline' size='icon' aria-label='Remove Data'>
                     <XSquare className='h-[1.2rem] w-[1.2rem]' />
                 </Button>
             </AlertDialogTrigger>
@@ -46,10 +46,14 @@ function ResetButton({ resetData }: { resetData?: () => void }) {
 
 function BackButton({ onClick }: { onClick?: () => void }) {
     return (
-        <Button variant='outline' size='icon' className='mr-2' aria-label='Back Button' onClick={onClick}>
+        <Button variant='outline' size='icon' aria-label='Back Button' onClick={onClick}>
             <ArrowLeft className='h-[1.2rem] w-[1.2rem]' />
         </Button>
     );
+}
+
+function SettingsButton({ onClick }: { onClick?: () => void }) {
+    return <SettingsForm />;
 }
 
 export default function MenuBar({ resetData, backButtonPage }: { resetData?: () => void; backButtonPage?: string }) {
@@ -66,13 +70,15 @@ export default function MenuBar({ resetData, backButtonPage }: { resetData?: () 
     }, []);
 
     return (
-        <div className='flex flex-row justify-between items-center'>
-            <div className='text-2xl font-bold flex-grow'>
-                {scoutName === null ? '' : <span>Welcome, {scoutName.substring(0, 11)}</span>}
+        <div className='flex flex-row justify-between items-center space-x-2 mb-4'>
+            <div className='text-2xl font-bold align-middle min-w-min'>
+                {scoutName === null || scoutName === '' ? '949 Scouting' : <span>Welcome, {scoutName}</span>}
             </div>
-            {backButtonPage && <BackButton onClick={() => router.replace(backButtonPage!)}></BackButton>}
-            <ResetButton resetData={resetData} />
-            <ThemeSelector />
+            <div className='space-x-2 flex'>
+                {backButtonPage && <BackButton onClick={() => router.replace(backButtonPage!)}></BackButton>}
+                <ResetButton resetData={resetData} />
+                <SettingsButton />
+            </div>
         </div>
     );
 }

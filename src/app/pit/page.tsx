@@ -4,10 +4,10 @@ import MenuBar from '@/components/menu-bar';
 import ScoutingForm from '@/components/pit-scouting-form';
 import TeamsList from '@/components/teams-list';
 import { Button } from '@/components/ui/button';
+import { LoadingElement } from '@/components/ui/loading-element';
 import { useToast } from '@/components/ui/use-toast';
 import { FormData } from '@/lib/types';
 import { ReloadIcon } from '@radix-ui/react-icons';
-import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -22,7 +22,6 @@ export default function PitScouting() {
     const pathName = usePathname();
 
     useEffect(() => {
-        console.log();
         if (typeof window !== 'undefined') {
             setHasLoaded(true);
             setScoutedTeams(
@@ -49,9 +48,9 @@ export default function PitScouting() {
 
     return (
         <main className='flex flex-col p-7 min-h-screen max-w-md mx-auto'>
-            <MenuBar resetData={resetData} backButtonPage={`/${pathName.split('/').splice(0, -1).join('/')}`} />
             {hasLoaded ? (
                 <>
+                    <MenuBar resetData={resetData} backButtonPage={`/${pathName.split('/').splice(0, -1).join('/')}`} />
                     <div className='py-2'>
                         <TeamsList teams={scoutedTeams.map((i) => i.teamNumber!.toString())} />
                     </div>
@@ -75,10 +74,7 @@ export default function PitScouting() {
                         ))}
                 </>
             ) : (
-                <div className='flex flex-col justify-center items-center'>
-                    <ReloadIcon className='p-8 h-32 w-32 animate-spin' />
-                    <div className='text-2xl font-bold text-gray-900 dark:text-white'>Loading...</div>
-                </div>
+                <LoadingElement />
             )}
         </main>
     );

@@ -1,13 +1,49 @@
 'use client';
 
-import MenuBar from '@/components/menu-bar';
+import { useEffect, useState } from 'react';
+
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { toast } from '@/components/ui/use-toast';
-import useDisablePinchZoomEffect from '@/components/useDisablePinchZoomEffect';
+import MenuBar from '@/components/menu-bar';
 import { SWStatus } from '@/lib/types';
+import { cn } from '@/lib/utils';
+import { toast } from '@/components/ui/use-toast';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+
+async function registerSW() {
+    try {
+        if ('serviceWorker' in navigator) {
+            // try {
+            //     await fetch('/');
+            // } catch {
+            //     const registrations = await navigator.serviceWorker.getRegistrations();
+            //     registrations.forEach(async (registration) => {
+            //         await registration.unregister();
+            //     });
+            // }
+            await navigator.serviceWorker.register('/sw.js');
+
+            const precacheChannel = new BroadcastChannel('precache-messages');
+
+            precacheChannel.addEventListener('message', (event) => {
+                toast({
+                    description: `Cache status: ${event.data.type}`,
+                });
+            });
+
+            // if (navigator.serviceWorker.controller) {
+            //     try {
+            //         await fetch('/ping');
+            //         console.log('caching');
+            //         // navigator.serviceWorker.controller.postMessage(SWStatus.CLEAR);
+            //         // navigator.serviceWorker.controller.postMessage(SWStatus.START);
+            //     } catch {}
+            // }
+        }
+    } catch (error) {
+        console.log('Service Worker registration failed:', error);
+    }
+}
 
 export default function Home() {
     const router = useRouter();
@@ -16,18 +52,8 @@ export default function Home() {
     const [alreadyLoggedInAs, setAlreadyLoggedInAs] = useState<null | string>(null);
 
     useEffect(() => {
-        const disablePinchZoom = (e: TouchEvent) => {
-            if (e.touches.length > 1) {
-                e.preventDefault();
-            }
-        };
-        document.addEventListener('touchmove', disablePinchZoom, { passive: false });
-        return () => {
-            document.removeEventListener('touchmove', disablePinchZoom);
-        };
-    }, []);
+        registerSW();
 
-    useEffect(() => {
         if (typeof window !== 'undefined') {
             setHasLoaded(true);
             if (localStorage.getItem('scoutName')) {
@@ -36,26 +62,14 @@ export default function Home() {
         }
     }, []);
 
-    const precacheChannel = new BroadcastChannel('precache-messages');
-
-    precacheChannel.addEventListener('message', (event) => {
-        toast({
-            title: `Cache status: ${event.data.type}`,
-        });
-    });
-
-    useEffect(() => {
-        if (navigator.serviceWorker.controller !== null) {
-            navigator.serviceWorker.controller!.postMessage({
-                type: SWStatus.START,
-            });
-        }
-    }, []);
-
     const onSubmit = () => {
         if (typeof window !== 'undefined') {
             localStorage.setItem('scoutName', name);
         }
+        router.replace('/pit');
+    };
+
+    const continueSubmit = () => {
         router.replace('/pit');
     };
 
@@ -74,7 +88,7 @@ export default function Home() {
                     Login
                 </Button>
                 {hasLoaded && alreadyLoggedInAs && (
-                    <Button type='submit' className='mt-3' variant='default' onClick={onSubmit}>
+                    <Button type='submit' className='mt-3' variant='default' onClick={continueSubmit}>
                         Continue as {alreadyLoggedInAs}
                     </Button>
                 )}

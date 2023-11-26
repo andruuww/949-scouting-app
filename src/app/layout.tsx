@@ -3,6 +3,9 @@ import { Toaster } from '@/components/ui/toaster';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
+import { useEffect, useState } from 'react';
+import useRouter from 'next/navigation';
+import { LoadingElement } from '@/components/ui/loading-element';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -61,6 +64,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <body className={inter.className}>
                 <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
                     {children}
+                    {/* {isLoading && <LoadingElement />} */}
                     <Toaster />
                 </ThemeProvider>
             </body>

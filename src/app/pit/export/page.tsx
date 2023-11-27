@@ -26,7 +26,7 @@ function jsonToCSV(jsonArray: FormData[]) {
                 return value !== undefined ? value : '';
             })
         );
-        return [header.join(','), ...csvData].join('\n');
+        return [csvData].join('\n');
     }
     return '';
 }

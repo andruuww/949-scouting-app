@@ -15,17 +15,19 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from './ui/form';
 import { RadioGroup, RadioGroupItem } from '@radix-ui/react-radio-group';
+import { set, useForm } from 'react-hook-form';
 
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
+import { ReloadIcon } from '@radix-ui/react-icons';
 import { Separator } from './ui/separator';
 import { Settings } from 'lucide-react';
 import { ThemeSelector } from './ui/theme-selector';
 import { toast } from './ui/use-toast';
-import { useForm } from 'react-hook-form';
 import useIsConnected from './connection-hook';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { useTheme } from 'next-themes';
 import { zodResolver } from '@hookform/resolvers/zod';
 
@@ -34,21 +36,28 @@ export default function SettingsForm() {
     const ping = useIsConnected();
     const router = useRouter();
 
+    const [isUnregistering, setIsUnregistering] = useState(false);
+
     async function unregisterSW() {
+        setIsUnregistering(true);
         if ('serviceWorker' in navigator) {
             if (await ping()) {
                 const registrations = await navigator.serviceWorker.getRegistrations();
                 registrations.forEach((registration) => {
                     registration.unregister();
                 });
+                setIsUnregistering(false);
                 router.replace('/');
             } else {
                 toast({
                     variant: 'destructive',
                     description: 'No internet connection.',
+                    repeatable: true,
                 });
             }
         }
+        await new Promise((resolve) => setTimeout(resolve, 500));
+        setIsUnregistering(false);
     }
 
     function onSubmit(data: z.infer<typeof formSchema>) {
@@ -146,15 +155,26 @@ export default function SettingsForm() {
                         />
 
                         <div className='space-y-3'>
-                            <FormLabel>Service Worker</FormLabel>
+                            <div>
+                                <FormLabel>Service Worker</FormLabel>
+                                <div className='basis-full h-0'></div>
+                                <FormDescription className='text-muted-foreground'>
+                                    The SW manages the cache. Unregister to update or to try to fix strange issues.
+                                </FormDescription>
+                            </div>
                             <div className='flex flex-row items-center justify-between rounded-lg border p-4 align-center'>
                                 <div className='flex-col flex-wrap'>
-                                    <Label>Update SW</Label>
+                                    <FormLabel>Update SW</FormLabel>
                                     <div className='basis-full h-0'></div>
-                                    <Label className='text-xs text-muted-foreground'>WIFI Required</Label>
+                                    <FormDescription className='text-muted-foreground'>WIFI Required</FormDescription>
                                 </div>
-                                <Button type='button' variant='destructive' onClick={unregisterSW}>
-                                    Unregister
+                                <Button
+                                    type='button'
+                                    variant='destructive'
+                                    onClick={unregisterSW}
+                                    className='min-w-[40%]'
+                                >
+                                    {isUnregistering ? <ReloadIcon className='animate-spin' /> : 'Unregister'}
                                 </Button>
                             </div>
                         </div>

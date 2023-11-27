@@ -58,7 +58,7 @@ export default function Home() {
     return (
         <main className='flex flex-col p-7 min-h-screen max-w-md mx-auto'>
             <MenuBar />
-            <div className='flex flex-col flex-1 justify-center'>
+            <div className='flex flex-col flex-1 justify-center space-y-3'>
                 <Input
                     className='text-center'
                     name='name'
@@ -66,15 +66,18 @@ export default function Home() {
                     onChange={(e) => setName(e.target.value)}
                     autoComplete='off'
                 />
-                <Button type='submit' className='mt-3' onClick={onSubmit} variant='secondary'>
+                <Button type='submit' onClick={onSubmit} variant='default'>
                     Login
                 </Button>
                 {hasLoaded && alreadyLoggedInAs && (
-                    <Button type='submit' className='mt-3' variant='default' onClick={continueSubmit}>
+                    <Button type='submit' className='mt-3' variant='secondary' onClick={continueSubmit}>
                         Continue as {alreadyLoggedInAs}
                     </Button>
                 )}
             </div>
+            <Button type='submit' variant='secondary' onClick={() => router.replace('/scan')}>
+                Aggregate Data
+            </Button>
         </main>
     );
 }

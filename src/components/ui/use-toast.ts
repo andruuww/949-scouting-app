@@ -11,6 +11,7 @@ type ToasterToast = ToastProps & {
     title?: React.ReactNode;
     description?: React.ReactNode;
     action?: ToastActionElement;
+    repeatable?: boolean;
 };
 
 const actionTypes = {
@@ -139,7 +140,7 @@ type Toast = Omit<ToasterToast, 'id'>;
 
 let lastProps: Toast = {};
 
-function toast({ ...props }: Toast) {
+function toast({ repeatable = false, ...props }: Toast) {
     const id = genId();
 
     const update = (props: ToasterToast) =>
@@ -150,7 +151,7 @@ function toast({ ...props }: Toast) {
     const dismiss = () => dispatch({ type: 'DISMISS_TOAST', toastId: id });
 
 
-    if (props.description != lastProps.description) {
+    if (props.description != lastProps.description || repeatable) {
         dispatch({
             type: 'ADD_TOAST',
             toast: {

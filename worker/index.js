@@ -6,6 +6,7 @@ const ASSETS = [
     '/',
     '/pit',
     '/pit/export',
+    '/scan',
 
     '/manifest.json',
     '/icons/manifest-icon-192.maskable.png',

@@ -9,13 +9,14 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import { Button } from '@/components/ui/button';
-import { ThemeSelector } from '@/components/ui/theme-selector';
 import { ArrowLeft, Settings, XSquare } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+
+import { Button } from '@/components/ui/button';
 import { Label } from '@radix-ui/react-dropdown-menu';
 import SettingsForm from './settings-form';
+import { ThemeSelector } from '@/components/ui/theme-selector';
+import { useRouter } from 'next/navigation';
 
 function ResetButton({ resetData }: { resetData?: () => void }) {
     if (!resetData) return null;
@@ -31,8 +32,7 @@ function ResetButton({ resetData }: { resetData?: () => void }) {
                 <AlertDialogHeader>
                     <AlertDialogTitle>Do you want to delete all data?</AlertDialogTitle>
                     <AlertDialogDescription>
-                        This action cannot be undone. This will permanently delete all scouting data from the
-                        application state and from backups. This will not delete data already scannned into the server.
+                        This action cannot be undone. This will permanently delete all collected data.
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>

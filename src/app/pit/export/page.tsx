@@ -26,7 +26,7 @@ function jsonToCSV(jsonArray: FormData[]) {
                 return value !== undefined ? value : '';
             })
         );
-        return [csvData].join('\n');
+        return csvData.join('\n');
     }
     return '';
 }
@@ -46,6 +46,7 @@ export default function PitScoutingExport() {
     }, [typeof window]);
 
     useEffect(() => {
+        console.log(jsonToCSV(scoutedTeams));
         if (scoutedTeams) {
             zlib.gzip(Buffer.from(jsonToCSV(scoutedTeams)), (err, compressedBuffer) => {
                 if (err) {

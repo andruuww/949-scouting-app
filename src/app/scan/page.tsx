@@ -62,6 +62,7 @@ export default function Scanning() {
                     variant: 'destructive',
                     description: `There was an error processing the data! Please rescan all QR code parts!`,
                 });
+                lastData = '';
             } else {
                 if (!localStorage.getItem('scoutData')) {
                     localStorage.setItem('scoutData', JSON.stringify({ data: [] }));
@@ -101,7 +102,7 @@ export default function Scanning() {
 
             // Create a Blob and append header row to it
             const header = Object.keys(new FormDataClass());
-            const blob = new Blob([header.join(','), csvContent], { type: 'text/csv;charset=utf-8' });
+            const blob = new Blob([`${header.join(',')}\n`, csvContent], { type: 'text/csv;charset=utf-8' });
 
             // Use file-saver to trigger the download
             saveAs(blob, 'scoutData.csv');
@@ -113,7 +114,7 @@ export default function Scanning() {
     return (
         <>
             <main className='flex flex-col p-7 h-screen max-w-md mx-auto justify-between'>
-                <MenuBar backButtonPage='/' />
+                <MenuBar backButtonPage='/' resetData={() => localStorage.removeItem('scoutData')} />
                 <div className='w-full h-[70%]' ref={containerRef}>
                     <Scanner handleData={handleData} containerRef={containerRef} />
                 </div>

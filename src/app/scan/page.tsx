@@ -44,7 +44,6 @@ export default function Scanning() {
             });
         } else {
             toast({
-                repeatable: true,
                 title: 'Duplicate!',
                 description: `This barcode was scanned as part ${rawData.indexOf(data) + 1}!`,
             });

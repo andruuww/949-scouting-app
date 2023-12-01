@@ -203,7 +203,7 @@ export default function ScoutingForm({ onSubmit }: { onSubmit: Function }) {
                         <div className="items-center flex space-x-2">
                             <Checkbox
                                 name="l1"
-                                className="h-5 w-5"
+                                className="h-6 w-6"
                                 aria-label="Level 1"
                                 onCheckedChange={(checked) =>
                                     handleScoringLevelsChange(
@@ -227,7 +227,7 @@ export default function ScoutingForm({ onSubmit }: { onSubmit: Function }) {
                         <div className="items-center flex space-x-2">
                             <Checkbox
                                 name="l2"
-                                className="h-5 w-5 my-2"
+                                className="h-6 w-6 my-2"
                                 aria-label="Level 2"
                                 onCheckedChange={(checked) =>
                                     handleScoringLevelsChange(
@@ -251,7 +251,7 @@ export default function ScoutingForm({ onSubmit }: { onSubmit: Function }) {
                         <div className="items-center flex space-x-2">
                             <Checkbox
                                 name="l3"
-                                className="h-5 w-5"
+                                className="h-6 w-6"
                                 aria-label="Level 3"
                                 onCheckedChange={(checked) =>
                                     handleScoringLevelsChange(
@@ -280,7 +280,7 @@ export default function ScoutingForm({ onSubmit }: { onSubmit: Function }) {
                         <div className="items-center flex space-x-2">
                             <Checkbox
                                 name="cones"
-                                className="h-5 w-5"
+                                className="h-6 w-6"
                                 aria-label="Cones"
                                 onCheckedChange={(checked) =>
                                     handleIntakeTypesChange(
@@ -306,7 +306,7 @@ export default function ScoutingForm({ onSubmit }: { onSubmit: Function }) {
                         <div className="items-center flex space-x-2 pt-2">
                             <Checkbox
                                 name="cubes"
-                                className="h-5 w-5"
+                                className="h-6 w-6"
                                 aria-label="Cubes"
                                 onCheckedChange={(checked) =>
                                     handleIntakeTypesChange(

@@ -5,7 +5,6 @@ import { usePathname, useRouter } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
 import { FormData } from '@/lib/types';
-import LoadingElement from '@/components/ui/loading-element';
 import MenuBar from '@/components/menu-bar';
 import { ReloadIcon } from '@radix-ui/react-icons';
 import ScoutingForm from '@/components/pit-scouting-form';
@@ -48,35 +47,32 @@ export default function PitScouting() {
     };
 
     return (
-        <main className='flex flex-col p-7 min-h-screen max-w-md mx-auto'>
-            {hasLoaded ? (
-                <>
-                    <MenuBar resetData={resetData} backButtonPage={`/${pathName.split('/').splice(0, -1).join('/')}`} />
-                    <div className='py-2'>
-                        <TeamsList teams={scoutedTeams.map((i) => i.teamNumber!.toString())} />
-                    </div>
-                    <ScoutingForm onSubmit={submitForm} />
-                    {scoutedTeams.length > 0 &&
-                        (!isLoading ? (
-                            <Button
-                                className='bg-green-600 dark:bg-green-400 mt-2'
-                                onClick={() => {
-                                    setIsLoading(true);
-                                    router.replace('/pit/export');
-                                }}
-                            >
-                                Export all teams
-                            </Button>
-                        ) : (
-                            <Button disabled className='mt-2'>
-                                <ReloadIcon className='mr-2 h-4 w-4 animate-spin' />
-                                Please wait
-                            </Button>
-                        ))}
-                </>
-            ) : (
-                <LoadingElement />
-            )}
+        <main className='flex flex-col p-7 min-h-screen mx-auto'>
+            <MenuBar resetData={resetData} backButtonPage={`/${pathName.split('/').splice(0, -1).join('/')}`} />
+            <div className='py-2'>
+                <TeamsList teams={scoutedTeams.map((i) => i.teamNumber!.toString())} />
+            </div>
+            <div className='space-y-3'>
+                <ScoutingForm onSubmit={submitForm} />
+                {scoutedTeams.length > 0 &&
+                    (!isLoading ? (
+                        <Button
+                            variant='secondary'
+                            onClick={() => {
+                                setIsLoading(true);
+                                router.push('/pit/export');
+                            }}
+                            className='w-full'
+                        >
+                            Export all teams
+                        </Button>
+                    ) : (
+                        <Button disabled className='mt-2 w-full'>
+                            <ReloadIcon className='mr-2 h-4 w-4 animate-spin' />
+                            Please wait
+                        </Button>
+                    ))}
+            </div>
         </main>
     );
 }

@@ -11,6 +11,7 @@ import { ReloadIcon } from '@radix-ui/react-icons';
 import ScoutingForm from '@/components/match-scouting-form';
 import TeamsList from '@/components/teams-list';
 import { useToast } from '@/components/ui/use-toast';
+
 //cant test until andrew pushes the change that actually fixes stuff
 
 export default function MatchScouting() {
@@ -20,7 +21,7 @@ export default function MatchScouting() {
     const [isLoading, setIsLoading] = useState(false);
     const [scoutedTeams, setScoutedTeams] = useState<FormData[]>([]);
 
-    const router = useRouter();
+    // const router = useRouter();
     const pathName = usePathname();
 
     useEffect(() => {

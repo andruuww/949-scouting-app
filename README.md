@@ -1,34 +1,64 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Introduction
 
-## Getting Started
+This is an app made to facilitate the process of scouting at FRC competitions.
 
-First, run the development server:
+There
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+## App Link
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Note: This is hosted on vercel's platform. BSD Wifi blocks this, make sure to load the app on a different network. This QRCode is a link to the app.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+If you are developing this app, use Chrome, it has much better developer tools.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+![Scouting App Link](scout-app-link.png)
 
-## Learn More
+https://949-scouting-app-i4kp.vercel.app/
 
-To learn more about Next.js, take a look at the following resources:
+## Installation and Updates
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Android
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+-   Open the website
+-   Click the three dots in the top right corner
+-   Click Install App or Add to Home Screen
+-   Click Add
 
-## Deploy on Vercel
+### IOS
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+-   Open the website
+-   Click the share icon at the bottom
+-   Scroll down and click "Add to Home Screen"
+-   Click Add
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### Offline
+
+To make sure that the app is ready for offline use
+
+-   Open the app on the homescreen and wait for the notification: `Cache status: SUCCESS`
+-   If this message does not show up, click the settings icon, under Service Worker, click `Unregister`
+-   Close and reopen the app.
+
+### Updates
+
+If there are any updates to the app released by the app's software team
+
+-   Open the app
+-   Click the settings icon
+-   Under Service Worker, click `Unregister`
+-   Wait for the notification: `Cache status: SUCCESS`
+
+## Usage
+
+The login page requires the scouter to submit their name, in order to know who to blame when the data claims 949 won.
+
+### Data Collection
+
+-   Once you're done filling out form, click `Finalize team`
+-   Once all teams have been scouted, click `Export`
+
+### Data Aggregation
+
+-   On the homescreen hit `Aggregate Data`
+-   Allow all permissions, and select the correct camera
+-   Scan all QR codes of one device in order, and hit `Finish Scout`
+-   Once all devices are scanned, hit `export`

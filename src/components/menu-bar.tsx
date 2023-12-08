@@ -11,12 +11,11 @@ import {
 } from '@/components/ui/alert-dialog';
 import { ArrowLeft, Settings, XSquare } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
 import { Label } from '@radix-ui/react-dropdown-menu';
-import SettingsForm from './settings-form';
 import { ThemeSelector } from '@/components/ui/theme-selector';
-import { useRouter } from 'next/navigation';
 
 function ResetButton({ resetData }: { resetData?: () => void }) {
     if (!resetData) return null;
@@ -45,6 +44,9 @@ function ResetButton({ resetData }: { resetData?: () => void }) {
 }
 
 function BackButton({ onClick }: { onClick?: () => void }) {
+    const pathname = usePathname();
+    if (pathname === '/') return null;
+
     return (
         <Button variant='outline' size='icon' aria-label='Back Button' onClick={onClick}>
             <ArrowLeft className='h-[1.2rem] w-[1.2rem]' />
@@ -53,7 +55,15 @@ function BackButton({ onClick }: { onClick?: () => void }) {
 }
 
 function SettingsButton({ onClick }: { onClick?: () => void }) {
-    return <SettingsForm />;
+    const router = useRouter();
+    const pathname = usePathname();
+    if (pathname === '/settings') return null;
+
+    return (
+        <Button variant='outline' size='icon' aria-label='Settings Button' onClick={() => router.push('/settings')}>
+            <Settings className='h-[1.2rem] w-[1.2rem]' />
+        </Button>
+    );
 }
 
 export default function MenuBar({ resetData, backButtonPage }: { resetData?: () => void; backButtonPage?: string }) {
@@ -75,7 +85,11 @@ export default function MenuBar({ resetData, backButtonPage }: { resetData?: () 
                 {scoutName === null || scoutName === '' ? '949 Scouting' : <span>Welcome, {scoutName}</span>}
             </div>
             <div className='space-x-2 flex'>
-                {backButtonPage && <BackButton onClick={() => router.replace(backButtonPage!)}></BackButton>}
+                <BackButton
+                    onClick={() => {
+                        backButtonPage ? router.push(backButtonPage!) : router.back();
+                    }}
+                ></BackButton>
                 <ResetButton resetData={resetData} />
                 <SettingsButton />
             </div>

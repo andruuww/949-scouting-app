@@ -1,4 +1,5 @@
 import { SWStatus } from '@/lib/types';
+import { prefetch } from 'webpack';
 import { request } from 'bwip-js';
 
 // production
@@ -7,6 +8,7 @@ const ASSETS = [
     '/pit',
     '/pit/export',
     '/scan',
+    '/settings',
 
     '/manifest.json',
     '/icons/manifest-icon-192.maskable.png',
@@ -14,20 +16,51 @@ const ASSETS = [
     '/favicon.ico',
 ];
 const PRECACHE_NAME = 'ASSET-PRECACHE-OFFLINE';
+const PRECACHE_TEMP_NAME = 'ASSET-PRECACHE-OFFLINE-TEMP';
 let precacheChannel;
+
+async function replaceDataWithTemp() {
+    try {
+        const oldCache = await caches.open(PRECACHE_TEMP_NAME);
+        const newCache = await caches.open(PRECACHE_NAME);
+
+        const requests = await oldCache.keys();
+
+        await Promise.all(
+            requests.map(async (request) => {
+                const response = await oldCache.match(request);
+                if (response) {
+                    await newCache.put(request, response);
+                }
+            })
+        );
+
+        // await new Promise((resolve) => {
+        //     setTimeout(resolve, 5000);
+        // });
+
+        await caches.delete(PRECACHE_TEMP_NAME);
+    } catch (error) {
+        console.error('Error replacing data with temp:', error);
+    }
+}
 
 async function precacheAssets() {
     const ping = await fetch('/ping');
-    if (ping.ok) {
+    console.log('attempting to precache assets');
+    if (navigator.onLine && ping.ok) {
         try {
-            await caches.delete(PRECACHE_NAME);
-
-            const cache = await caches.open(PRECACHE_NAME);
             precacheChannel.postMessage({
                 type: SWStatus.PENDING,
             });
 
-            await cache.addAll(ASSETS);
+            // const cache = await caches.open(PRECACHE_NAME);
+            const cacheTemp = await caches.open(PRECACHE_TEMP_NAME);
+
+            await cacheTemp.addAll(ASSETS);
+
+            await replaceDataWithTemp();
+
             precacheChannel.postMessage({
                 type: SWStatus.SUCCESS,
             });
@@ -36,10 +69,6 @@ async function precacheAssets() {
                 type: err,
             });
         }
-    } else {
-        precacheChannel.postMessage({
-            type: SWStatus.OFFLINE,
-        });
     }
 }
 
@@ -48,7 +77,10 @@ self.addEventListener('install', (evt) => {
 });
 
 self.addEventListener('activate', (evt) => {
-    console.log('activated', evt);
+    precacheChannel = new BroadcastChannel('precache-messages');
+    precacheChannel.postMessage({
+        type: SWStatus.ACTIVATED,
+    });
 
     evt.waitUntil(
         Promise.all([
@@ -67,12 +99,11 @@ self.addEventListener('message', (event) => {
         self.registration.unregister({ immediate: true });
     }
 
-    if (event.data && event.data.type === SWStatus.START) {
+    if (event.data && event.data.type === SWStatus.START_PRECACHE) {
         precacheAssets();
     }
 
-    if (event.data && event.data.type === SWStatus.CLEAR) {
-        console.log('CLEARING CACHE');
+    if (event.data && event.data.type === SWStatus.FORCE_CLEAR) {
         caches.keys().then((cacheNames) => {
             return Promise.all(
                 cacheNames.map((cacheName) => {
@@ -88,13 +119,16 @@ self.addEventListener('fetch', (event) => {
     requestUrlWithoutQuery.search = '';
     const requestPath = new URL(event.request.url).pathname;
 
-    if (requestPath == '/') {
-        precacheAssets();
-    }
+    // if (requestPath == '/') {
+    //     precacheAssets();
+    // }
 
     event.respondWith(
-        caches.match(requestUrlWithoutQuery).then((response) => {
-            return response || fetch(event.request);
+        caches.match(event.request, { ignoreSearch: true }).then((response) => {
+            if (response) {
+                return response;
+            }
+            return fetch(event.request);
         })
     );
 });

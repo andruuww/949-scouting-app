@@ -17,7 +17,7 @@ async function registerSW() {
                 const precacheChannel = new BroadcastChannel('precache-messages');
                 precacheChannel.addEventListener('message', (event) => {
                     toast({
-                        description: `Cache status: ${event.data.type}`,
+                        description: `${event.data.type}`,
                     });
                 });
             });
@@ -48,15 +48,15 @@ export default function Home() {
         if (typeof window !== 'undefined') {
             localStorage.setItem('scoutName', name);
         }
-        router.replace('/pit');
+        router.push('/pit');
     };
 
     const continueSubmit = () => {
-        router.replace('/pit');
+        router.push('/pit');
     };
 
     return (
-        <main className='flex flex-col p-7 min-h-screen max-w-md mx-auto'>
+        <main className='flex flex-col p-7 min-h-screen mx-auto'>
             <MenuBar />
             <div className='flex flex-col flex-1 justify-center space-y-3'>
                 <Input
@@ -75,7 +75,7 @@ export default function Home() {
                     </Button>
                 )}
             </div>
-            <Button type='submit' variant='secondary' onClick={() => router.replace('/scan')}>
+            <Button type='submit' variant='secondary' onClick={() => router.push('/scan')}>
                 Aggregate Data
             </Button>
         </main>

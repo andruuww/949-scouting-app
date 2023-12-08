@@ -76,6 +76,10 @@
   }
 }
 
+ @viewport {
+   orientation: portrait;
+ }
+
 @layer base {
     /* remove arrows */
     /* Chrome, Safari, Edge, Opera */

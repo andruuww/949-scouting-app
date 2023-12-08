@@ -3,6 +3,8 @@ import * as React from 'react';
 
 import type { ToastActionElement, ToastProps } from '@/components/ui/toast';
 
+import router from 'next/navigation';
+
 const TOAST_LIMIT = 2;
 const TOAST_REMOVE_DELAY = 10000;
 
@@ -177,13 +179,20 @@ function useToast() {
     const [state, setState] = React.useState<State>(memoryState);
 
     React.useEffect(() => {
+        lastProps = {};
+    }, []);
+
+    React.useEffect(() => {
         listeners.push(setState);
+
         return () => {
             const index = listeners.indexOf(setState);
             if (index > -1) {
                 listeners.splice(index, 1);
             }
+
         };
+
     }, [state]);
 
     return {

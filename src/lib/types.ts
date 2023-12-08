@@ -24,13 +24,12 @@ export class FormDataClass {
 
 export interface FormData extends FormDataClass {}
 
- export enum SWStatus {
-    START = 'START',
-    PENDING = 'PENDING',
-    SUCCESS = 'SUCCESS',
-    CLEAR = 'CLEAR',
-    DELETED = 'DELETED',
+export enum SWStatus {
+    START_PRECACHE = 'START',
+    PENDING = 'Precache pending.',
+    SUCCESS = 'Precache complete.',
+    FORCE_CLEAR = 'CLEAR',
     ERROR = 'ERROR',
-    OFFLINE = 'OFFLINE',
-    UNREGISTER = 'UNREGISTER',
+    UNREGISTER = 'ServiceWorker unregistered.',
+    ACTIVATED = 'ServiceWorker activated.',
 }

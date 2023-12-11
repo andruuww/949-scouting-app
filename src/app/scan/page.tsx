@@ -1,13 +1,10 @@
 'use client';
-
-import { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { FormDataClass } from '@/lib/types';
-import { Html5QrcodeScanner } from 'html5-qrcode';
 import MenuBar from '@/components/menu-bar';
 import Scanner from '@/components/qr-scanner';
-import { raw } from 'bwip-js';
 import { saveAs } from 'file-saver';
 import { toast } from '@/components/ui/use-toast';
 import zlib from 'zlib';
@@ -44,6 +41,10 @@ export default function Scanning() {
                 title: 'Scanned!',
                 description: `Barcode part ${rawData.length} scanned!`,
             });
+            console.log(data);
+            if (data.slice(-2) === '==') {
+                processData();
+            }
         } else {
             toast({
                 title: 'Duplicate!',

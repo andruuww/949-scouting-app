@@ -3,19 +3,7 @@ import zlib from 'zlib';
 // @ts-ignore
 import { toSVG } from 'bwip-js';
 
-import TeamsList from '@/components/teams-list';
 import { FormData, FormDataClass } from '@/lib/types';
-import { useEffect, useRef, useState } from 'react';
-
-function fetchScoutedTeams(): FormData[] {
-    if (typeof window !== 'undefined') {
-        const scoutedTeams = localStorage.getItem('scoutedTeams')
-            ? JSON.parse(localStorage.getItem('scoutedTeams')!)
-            : [];
-        return scoutedTeams;
-    }
-    return [];
-}
 
 async function renderQRCodes(
     scoutedTeams: FormData[]
@@ -30,6 +18,7 @@ async function renderQRCodes(
                 });
             } else {
                 const content = compressedBuffer.toString('base64');
+                console.log(content);
                 const chunks = content.match(/.{1,500}/g);
                 const barcodes = chunks?.map((i) => toSVG({ bcid: 'qrcode', text: i }));
                 // setBarcodeSVGs(barcodes!);
@@ -45,14 +34,19 @@ function jsonToCSV(jsonArray: FormData[]) {
         const csvData = jsonArray.map((row) =>
             header.map((key) => {
                 const value = row[key as keyof FormData];
-                if (typeof value === 'number') {
-                    return value.toFixed(0);
-                } else if (typeof value === 'boolean') {
-                    return value ? '1' : '0';
-                }
                 return value !== undefined ? value : '';
             })
         );
+        console.log(csvData.map(row => {
+            return row.map((select) => {
+                let result = '';
+                result = select.constructor === Array ? select.join(' ') : select.toString();
+                if (result.includes(',')) {
+                    result = `"${result}"`;
+                }
+                return result;
+            }).join(',')
+        }).join('\n'));
         return csvData.join('\n');
     }
     return '';

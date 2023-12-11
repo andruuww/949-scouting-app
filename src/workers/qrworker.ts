@@ -17,7 +17,7 @@ async function renderQRCodes(
                     description: 'An error occurred while compressing the data! Contact Andrew...',
                 });
             } else {
-                const content = compressedBuffer.toString('base64');
+                const content = compressedBuffer.toString('base64') + "!";
                 console.log(content);
                 const chunks = content.match(/.{1,500}/g);
                 const barcodes = chunks?.map((i) => toSVG({ bcid: 'qrcode', text: i }));
@@ -37,7 +37,7 @@ function jsonToCSV(jsonArray: FormData[]) {
                 return value !== undefined ? value : '';
             })
         );
-        console.log(csvData.map(row => {
+        return csvData.map(row => {
             return row.map((select) => {
                 let result = '';
                 result = select.constructor === Array ? select.join(' ') : select.toString();
@@ -46,8 +46,7 @@ function jsonToCSV(jsonArray: FormData[]) {
                 }
                 return result;
             }).join(',')
-        }).join('\n'));
-        return csvData.join('\n');
+        }).join('\n');
     }
     return '';
 }

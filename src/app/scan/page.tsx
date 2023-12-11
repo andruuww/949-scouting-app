@@ -42,7 +42,8 @@ export default function Scanning() {
                 description: `Barcode part ${rawData.length} scanned!`,
             });
             console.log(data);
-            if (data.slice(-2) === '==') {
+            if (data.slice(-1) === '!') {
+                data = data.slice(0, -1);
                 processData();
             }
         } else {

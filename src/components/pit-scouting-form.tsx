@@ -177,20 +177,11 @@ export default function ScoutingForm({ onSubmit }: { onSubmit: Function }) {
                     <div className='col-span-3'>
                         <div className='items-center flex space-x-2'>
                             <Checkbox
-                                name="l1"
-                                className="h-6 w-6"
-                                aria-label="Level 1"
-                                onCheckedChange={(checked) =>
-                                    handleScoringLevelsChange(
-                                        'l1',
-                                        checked === true
-                                    )
-                                }
-                                checked={
-                                    formData.scoringLevels?.includes('l1')
-                                        ? true
-                                        : false
-                                }
+                                name='l1'
+                                className='h-6 w-6'
+                                aria-label='Level 1'
+                                onCheckedChange={(checked) => handleScoringLevelsChange('l1', checked === true)}
+                                checked={formData.scoringLevels?.includes('l1') ? true : false}
                             />
                             <div className='grid gap-1.5 leading-none '>
                                 <label className='text-sm font-medium'>Level 1</label>
@@ -199,20 +190,11 @@ export default function ScoutingForm({ onSubmit }: { onSubmit: Function }) {
 
                         <div className='items-center flex space-x-2'>
                             <Checkbox
-                                name="l2"
-                                className="h-6 w-6 my-2"
-                                aria-label="Level 2"
-                                onCheckedChange={(checked) =>
-                                    handleScoringLevelsChange(
-                                        'l2',
-                                        checked === true
-                                    )
-                                }
-                                checked={
-                                    formData.scoringLevels?.includes('l2')
-                                        ? true
-                                        : false
-                                }
+                                name='l2'
+                                className='h-6 w-6 my-2'
+                                aria-label='Level 2'
+                                onCheckedChange={(checked) => handleScoringLevelsChange('l2', checked === true)}
+                                checked={formData.scoringLevels?.includes('l2') ? true : false}
                             />
                             <div className='grid gap-1.5 leading-none'>
                                 <label className='text-sm font-medium  '>Level 2</label>
@@ -221,20 +203,11 @@ export default function ScoutingForm({ onSubmit }: { onSubmit: Function }) {
 
                         <div className='items-center flex space-x-2'>
                             <Checkbox
-                                name="l3"
-                                className="h-6 w-6"
-                                aria-label="Level 3"
-                                onCheckedChange={(checked) =>
-                                    handleScoringLevelsChange(
-                                        'l3',
-                                        checked === true
-                                    )
-                                }
-                                checked={
-                                    formData.scoringLevels?.includes('l3')
-                                        ? true
-                                        : false
-                                }
+                                name='l3'
+                                className='h-6 w-6'
+                                aria-label='Level 3'
+                                onCheckedChange={(checked) => handleScoringLevelsChange('l3', checked === true)}
+                                checked={formData.scoringLevels?.includes('l3') ? true : false}
                             />
                             <div className='grid gap-1.5 leading-none '>
                                 <label className='text-sm font-medium  '>Level 3</label>
@@ -248,22 +221,11 @@ export default function ScoutingForm({ onSubmit }: { onSubmit: Function }) {
                     <div className='col-span-3'>
                         <div className='items-center flex space-x-2'>
                             <Checkbox
-                                name="cones"
-                                className="h-6 w-6"
-                                aria-label="Cones"
-                                onCheckedChange={(checked) =>
-                                    handleIntakeTypesChange(
-                                        'cone',
-                                        checked === true
-                                    )
-                                }
-                                checked={
-                                    formData.intakeCapabilities?.includes(
-                                        'cone'
-                                    )
-                                        ? true
-                                        : false
-                                }
+                                name='cones'
+                                className='h-6 w-6'
+                                aria-label='Cones'
+                                onCheckedChange={(checked) => handleIntakeTypesChange('cone', checked === true)}
+                                checked={formData.intakeCapabilities?.includes('cone') ? true : false}
                             />
                             <div className='grid gap-1.5 leading-none '>
                                 <label className='text-sm font-medium'>Cones</label>
@@ -272,22 +234,11 @@ export default function ScoutingForm({ onSubmit }: { onSubmit: Function }) {
 
                         <div className='items-center flex space-x-2 pt-2'>
                             <Checkbox
-                                name="cubes"
-                                className="h-6 w-6"
-                                aria-label="Cubes"
-                                onCheckedChange={(checked) =>
-                                    handleIntakeTypesChange(
-                                        'cube',
-                                        checked === true
-                                    )
-                                }
-                                checked={
-                                    formData.intakeCapabilities?.includes(
-                                        'cube'
-                                    )
-                                        ? true
-                                        : false
-                                }
+                                name='cubes'
+                                className='h-6 w-6'
+                                aria-label='Cubes'
+                                onCheckedChange={(checked) => handleIntakeTypesChange('cube', checked === true)}
+                                checked={formData.intakeCapabilities?.includes('cube') ? true : false}
                             />
                             <div className='grid gap-1.5 leading-none'>
                                 <label className='text-sm font-medium  '>Cubes</label>

@@ -35,6 +35,7 @@ export default function Scanning() {
 
     function handleData(data: string) {
         if (lastData === data) return;
+        lastData = data;
         if (!rawData.includes(data)) {
             rawData.push(data);
             toast({
@@ -52,7 +53,6 @@ export default function Scanning() {
                 description: `This barcode was scanned as part ${rawData.indexOf(data) + 1}!`,
             });
         }
-        lastData = data;
     }
 
     function processData() {

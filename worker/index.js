@@ -115,20 +115,9 @@ self.addEventListener('message', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-    const requestUrlWithoutQuery = new URL(event.request.url);
-    requestUrlWithoutQuery.search = '';
-    const requestPath = new URL(event.request.url).pathname;
-
-    // if (requestPath == '/') {
-    //     precacheAssets();
-    // }
-
     event.respondWith(
-        caches.match(event.request, { ignoreSearch: true }).then((response) => {
-            if (response) {
-                return response;
-            }
-            return fetch(event.request);
+        fetch(event.request).catch(() => {
+            return caches.match(event.request);
         })
     );
 });

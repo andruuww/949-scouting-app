@@ -1,3 +1,4 @@
+'use client';
 import {
     AlertDialog,
     AlertDialogAction,
@@ -14,8 +15,6 @@ import { useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
-import { Label } from '@radix-ui/react-dropdown-menu';
-import { ThemeSelector } from '@/components/ui/theme-selector';
 
 function ResetButton({ resetData }: { resetData?: () => void }) {
     if (!resetData) return null;

@@ -1,12 +1,9 @@
 'use client';
-
 import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import MenuBar from '@/components/menu-bar';
-import { SWStatus } from '@/lib/types';
-import { cn } from '@/lib/utils';
 import { toast } from '@/components/ui/use-toast';
 import { useRouter } from 'next/navigation';
 

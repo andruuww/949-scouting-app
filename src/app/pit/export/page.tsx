@@ -1,8 +1,6 @@
-'use client';
-
-import Loading from '@/app/loading';
 import MenuBar from '@/components/menu-bar';
 import React from 'react';
+// const QRContent = dynamic(() => import('./qrcode-content'), { ssr: false });
 import QRContent from './qrcode-content';
 
 export default function PitScoutingExport() {

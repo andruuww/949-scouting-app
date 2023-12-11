@@ -1,11 +1,9 @@
 import './globals.css';
 
-import HistoryProvider from '@/components/history-provider';
 import { Inter } from 'next/font/google';
 import type { Metadata } from 'next';
 import { ThemeProvider } from '@/components/theme-provider';
 import { Toaster } from '@/components/ui/toaster';
-import UnregisterFaultySW from '@/components/unregister-faulty-sw';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -24,15 +22,9 @@ export const metadata: Metadata = {
     manifest: '/manifest.json',
     appleWebApp: {
         capable: true,
-        title: 'Apple Web App',
-        statusBarStyle: 'black-translucent',
-        startupImage: [
-            '/assets/startup/apple-touch-startup-image-768x1004.png',
-            {
-                url: '/assets/startup/apple-touch-startup-image-1536x2008.png',
-                media: '(device-width: 768px) and (device-height: 1024px)',
-            },
-        ],
+        statusBarStyle: 'default',
+        title: APP_DEFAULT_TITLE,
+        // startUpImage: [],
     },
     formatDetection: {
         telephone: false,
@@ -68,8 +60,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     return (
         <html lang='en'>
             <body className={inter.className}>
-                <HistoryProvider />
-                <UnregisterFaultySW />
                 <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
                     {children}
                     <Toaster />

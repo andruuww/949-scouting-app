@@ -4,10 +4,10 @@ import TeamsList from '@/components/teams-list';
 import { FormData } from '@/lib/types';
 import { useEffect, useRef, useState } from 'react';
 
-function fetchScoutedTeams(): FormData[] {
+function fetchScoutedTeams(): Record<string, string>[] {
     if (typeof window !== 'undefined') {
-        const scoutedTeams = localStorage.getItem('scoutedTeams')
-            ? JSON.parse(localStorage.getItem('scoutedTeams')!)
+        const scoutedTeams = localStorage.getItem('pitScoutedTeams')
+            ? JSON.parse(localStorage.getItem('pitScoutedTeams')!)
             : [];
         return scoutedTeams;
     }
@@ -15,7 +15,7 @@ function fetchScoutedTeams(): FormData[] {
 }
 
 export default function QRContent() {
-    const [scoutedTeams, setScoutedTeams] = useState<FormData[]>([]);
+    const [scoutedTeams, setScoutedTeams] = useState<Record<string, string>[]>([]);
     const [barcodeSVGs, setBarcodeSVGs] = useState<string[]>([]);
 
     const workerRef = useRef<Worker>();
@@ -25,7 +25,8 @@ export default function QRContent() {
         setScoutedTeams(data);
         workerRef.current = new Worker(new URL('@/workers/qrworker.ts', import.meta.url));
 
-        workerRef.current.postMessage(data);
+        workerRef.current.postMessage({ data: data, scoutName: localStorage.getItem('scoutName') });
+
         workerRef.current.onmessage = (e) => {
             setBarcodeSVGs(e.data.barcodes);
         };

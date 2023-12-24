@@ -1,3 +1,5 @@
+import { z } from 'zod';
+
 export class FormDataClass {
     // scoutName? = string;
     // teamNumber? = number;
@@ -23,6 +25,44 @@ export class FormDataClass {
 }
 
 export interface FormData extends FormDataClass {}
+
+export interface CounterSettings {
+    increment?: number;
+    min?: number;
+    max?: number;
+}
+
+export interface JSONFormElement {
+    label?: string;
+    placeholder?: string;
+    type?: FormElementsType;
+    name?: string;
+    required?: boolean;
+    errorMessage?: string;
+    schema?: z.ZodTypeAny;
+    options?: string[];
+    elements?: JSONFormElement[];
+    settings?: CounterSettings;
+}
+
+export enum FormElementsType {
+    ROOT = 'root',
+    TEXT = 'text',
+    NUMBER = 'number',
+    SELECT = 'select',
+    CHECKBOX = 'checkbox',
+    TEXTAREA = 'textarea',
+    GROUP = 'group',
+    INPUTS = 'inputs',
+    SUBMIT = 'submit',
+    RESET = 'reset',
+    COUNTER = 'counter',
+}
+
+export enum FormType {
+    PIT = 'PIT',
+    MATCH = 'MATCH',
+}
 
 export enum SWStatus {
     START_PRECACHE = 'START',

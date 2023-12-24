@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import MenuBar from '@/components/menu-bar';
 import { ReloadIcon } from '@radix-ui/react-icons';
 import { SWStatus } from '@/lib/types';
-import { Separator } from '@radix-ui/react-dropdown-menu';
+import { Separator } from '@/components/ui/separator';
 import { toast } from '@/components/ui/use-toast';
 import useIsConnected from '@/components/connection-hook';
 import { useTheme } from 'next-themes';
@@ -77,7 +77,6 @@ export default function SettingsForm() {
         <main className='flex flex-col p-7 min-h-screen mx-auto'>
             <MenuBar backButtonPage={prevPath.current} />
             <Form {...form}>
-                <Separator />
                 <form onSubmit={form.handleSubmit(update)} className='space-y-8'>
                     <FormField
                         control={form.control}
@@ -148,6 +147,7 @@ export default function SettingsForm() {
                     <div className='space-y-3'>
                         <div>
                             <FormLabel>Service Worker and Cache</FormLabel>
+
                             <div className='basis-full h-0'></div>
                             <FormDescription className='text-muted-foreground'>
                                 The SW manages the cache. Unregister to update the SW or to try to fix strange issues.

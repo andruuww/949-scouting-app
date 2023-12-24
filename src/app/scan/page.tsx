@@ -2,12 +2,13 @@
 import { useRef } from 'react';
 
 import { Button } from '@/components/ui/button';
-import { FormDataClass } from '@/lib/types';
+import { FormDataClass, FormElementsType, JSONFormElement } from '@/lib/types';
 import MenuBar from '@/components/menu-bar';
 import Scanner from '@/components/qr-scanner';
 import { saveAs } from 'file-saver';
 import { toast } from '@/components/ui/use-toast';
 import zlib from 'zlib';
+import pitJSON from '@/jsons/2023/pitscoutingjson';
 
 export default function Scanning() {
     const containerRef = useRef(null);
@@ -45,7 +46,7 @@ export default function Scanning() {
             console.log(data);
             if (data.slice(-1) === '!') {
                 data = data.slice(0, -1);
-                processData();
+                bundleQRData();
             }
         } else {
             toast({
@@ -55,7 +56,7 @@ export default function Scanning() {
         }
     }
 
-    function processData() {
+    function bundleQRData() {
         decompress(rawData.join(''), (decompressed) => {
             console.log(decompressed);
             if (decompressed === ScanState.ERROR) {
@@ -66,16 +67,16 @@ export default function Scanning() {
                 });
                 lastData = '';
             } else {
-                if (!localStorage.getItem('scoutData')) {
-                    localStorage.setItem('scoutData', JSON.stringify({ data: [] }));
+                if (!localStorage.getItem('scannedData')) {
+                    localStorage.setItem('scannedData', JSON.stringify({ data: [] }));
                 }
-                const scoutData: { data: string[] } = JSON.parse(localStorage.getItem('scoutData')!);
-                console.log(scoutData);
-                scoutData.data.push(decompressed);
-                localStorage.setItem('scoutData', JSON.stringify(scoutData));
+                const scannedData: { data: string[] } = JSON.parse(localStorage.getItem('scannedData')!);
+                console.log(scannedData);
+                scannedData.data.push(decompressed);
+                localStorage.setItem('scannedData', JSON.stringify(scannedData));
 
                 toast({
-                    description: `Scout number ${scoutData.data.length} has been saved!`,
+                    description: `Scout number ${scannedData.data.length} has been saved!`,
                 });
             }
 
@@ -83,8 +84,24 @@ export default function Scanning() {
         });
     }
 
+    function generateHeader(json: JSONFormElement): string[] {
+        let header: string[] = [];
+
+        function traverse(element: JSONFormElement) {
+            if (element.elements) {
+                element.elements.forEach(traverse);
+            } else if (element.type !== FormElementsType.SUBMIT) {
+                header.push(element.name || '');
+            }
+        }
+
+        traverse(json);
+
+        return header;
+    }
+
     function exportData() {
-        const storedData = localStorage.getItem('scoutData');
+        const storedData = localStorage.getItem('scannedData');
 
         if (!storedData) {
             console.error('No data found in localStorage.');
@@ -92,22 +109,20 @@ export default function Scanning() {
         }
 
         try {
-            const scoutData = JSON.parse(storedData);
-            const dataArray = scoutData.data;
+            const scannedDataArray: Record<string, string>[] = JSON.parse(storedData).data;
 
-            if (!dataArray || !Array.isArray(dataArray) || dataArray.length === 0) {
-                console.error('No data array found in scoutData.');
+            if (!scannedDataArray || !Array.isArray(scannedDataArray) || scannedDataArray.length === 0) {
+                console.error('No data array found in scannedData.');
                 return;
             }
 
-            const csvContent = dataArray.join('\n');
+            const csvContent = scannedDataArray.join('\n');
 
-            // Create a Blob and append header row to it
-            const header = Object.keys(new FormDataClass());
-            const blob = new Blob([`${header.join(',')}\n`, csvContent], { type: 'text/csv;charset=utf-8' });
+            const blob = new Blob([`${['scoutName', ...generateHeader(pitJSON)].join(',')}\n`, csvContent], {
+                type: 'text/csv;charset=utf-8',
+            });
 
-            // Use file-saver to trigger the download
-            saveAs(blob, 'scoutData.csv');
+            saveAs(blob, 'scannedData.csv');
         } catch (error) {
             console.error('Error parsing stored data:', error);
         }
@@ -116,12 +131,12 @@ export default function Scanning() {
     return (
         <>
             <main className='flex flex-col p-7 h-screen max-w-md mx-auto justify-between'>
-                <MenuBar backButtonPage='/' resetData={() => localStorage.removeItem('scoutData')} />
+                <MenuBar backButtonPage='/' resetData={() => localStorage.removeItem('scannedData')} />
                 <div className='w-full h-[70%]' ref={containerRef}>
                     <Scanner handleData={handleData} containerRef={containerRef} />
                 </div>
                 <div className='flex flex-col space-y-3'>
-                    <Button onClick={processData}>Finish Scout</Button>
+                    <Button onClick={bundleQRData}>Finish Scout</Button>
                     <Button onClick={exportData} variant='secondary'>
                         Export
                     </Button>

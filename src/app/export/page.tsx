@@ -128,7 +128,11 @@ export default function Export() {
                     {scoutedTeams!.length > 0 &&
                         barcodeSVGs.map((i, key) => (
                             <div key={key} className='bg-white rounded-lg flex flex-col justify-center'>
-                                <img alt='qrcode' src={`data:image/svg+xml;base64,${btoa(i)}`} className='pt-2 px-2' />
+                                <img
+                                    alt='qrcode'
+                                    src={`data:image/svg+xml;base64,${btoa(i)}`}
+                                    className='p-4 visible'
+                                />
                                 <div className='pb-2 font-bold text-xl text-black text-center'>Barcode {key + 1}</div>
                             </div>
                         ))}

@@ -95,6 +95,6 @@
 }
 
 
-img {
+img:not(.visible) {
   display: none;
 }

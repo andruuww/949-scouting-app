@@ -1,25 +1,118 @@
-import { Badge } from '@/components/ui/badge';
+'use client';
+import { cache, useEffect, useState } from 'react';
+import { Button } from './ui/button';
+import { cn } from '@/lib/utils';
 
-export default function TeamsList({ teams }: { teams: string[] }) {
+export default function TeamsList({
+    teamsJSON,
+    label,
+    mode,
+    cacheName,
+    displayDataStringArray,
+    jsonKeyDisplayName,
+    setFormValues,
+    update = () => {},
+    className,
+}: {
+    teamsJSON: Record<string, any>[];
+    label: string;
+    mode: 'edit' | 'mark' | 'view' | 'delete';
+    cacheName?: string;
+    displayDataStringArray?: string[];
+    jsonKeyDisplayName?: string;
+    setFormValues?: (index: number) => void;
+    update?: () => void;
+    className?: string;
+}) {
+    if (!displayDataStringArray && !jsonKeyDisplayName) {
+        throw new Error('jsonKeyDisplayName cannot be undefined without displayDataStringArray');
+    }
+    if (mode === 'edit' && !setFormValues) {
+        throw new Error('setFormValues cannot be undefined in edit mode');
+    }
+    if (mode === 'mark' && !cacheName) {
+        throw new Error('cacheName cannot be undefined in mark mode');
+    }
+    if (mode === 'delete' && !cacheName) {
+        throw new Error('cacheName cannot be undefined in delete mode');
+    }
+
+    const teamsArray: string[] = displayDataStringArray
+        ? displayDataStringArray
+        : teamsJSON!.map((i: Record<string, any>) => i[jsonKeyDisplayName!].toString());
+    const [, forceUpdate] = useState<boolean>(false);
+
     return (
-        <div className='border rounded-xl border-gray-300 dark:border-gray-800 p-2 mb-4'>
-            {teams.length ? (
-                <>
-                    <div className='text-center flex justify-center gap-x-4 items-center'>
-                        <div className='font-bold text-sm'>Scouted teams</div>
+        <>
+            <div className={cn('border rounded-xl border-gray-300 dark:border-gray-800 p-4', className)}>
+                {teamsJSON && teamsJSON.length > 0 ? (
+                    <>
+                        <div className='text-center flex justify-center items-center'>
+                            <span className='font-bold'>{label}</span>
+                        </div>
+                        <div className='py-2 flex flex-row flex-wrap gap-3 justify-center'>
+                            {teamsArray.map((i, key) => (
+                                <Button
+                                    variant={teamsJSON[key].marked ? 'outline' : 'secondary'}
+                                    className='pl-4 pr-4 h-8 ext-xs rounded-lg '
+                                    key={key}
+                                    onClick={() => {
+                                        if (mode === 'edit') {
+                                            if (setFormValues) {
+                                                setFormValues(key);
+                                            }
+                                        } else if (mode === 'mark') {
+                                            teamsJSON[key].marked = !teamsJSON[key].marked;
+                                            localStorage.setItem(cacheName!, JSON.stringify(teamsJSON));
+                                            forceUpdate((i) => !i);
+                                            update();
+                                        } else if (mode === 'delete') {
+                                            teamsJSON.splice(key, 1);
+                                            localStorage.setItem(cacheName!, JSON.stringify(teamsJSON));
+                                            forceUpdate((i) => !i);
+                                            update();
+                                        }
+                                    }}
+                                >
+                                    {i}
+                                </Button>
+                            ))}
+                        </div>
+                    </>
+                ) : (
+                    <div className='text-center flex justify-center items-center'>
+                        <span className='font-bold'>No {label}</span>
                     </div>
-                    <div className='py-2 flex flex-row flex-wrap gap-y-1 gap-x-1 justify-center font-mono'>
-                        {/*  map the numbers 900-930 and display a badge for each */}
-                        {teams.map((i, key) => (
-                            <Badge variant='secondary' key={key}>
-                                {i}
-                            </Badge>
-                        ))}
+                )}
+                {mode === 'mark' && (
+                    <div className='flex justify-center items-center mt-4 gap-3'>
+                        <Button
+                            variant='default'
+                            className='w-full'
+                            onClick={() => {
+                                teamsJSON!.forEach((i: Record<string, any>) => (i.marked = true));
+                                localStorage.setItem(cacheName!, JSON.stringify(teamsJSON));
+                                forceUpdate((i) => !i);
+                                update();
+                            }}
+                        >
+                            Mark All Done
+                        </Button>
+                        <Button
+                            variant='default'
+                            className='w-full'
+                            onClick={() => {
+                                teamsJSON!.forEach((i: Record<string, any>) => (i.marked = false));
+                                localStorage.setItem(cacheName!, JSON.stringify(teamsJSON));
+                                forceUpdate((i) => !i);
+                                update();
+                            }}
+                        >
+                            Unmark All
+                        </Button>
                     </div>
-                </>
-            ) : (
-                <div className='font-bold text-sm text-center py-2'>No teams scouted (yet)</div>
-            )}
-        </div>
+                )}
+            </div>
+        </>
     );
 }

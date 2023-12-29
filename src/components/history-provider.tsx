@@ -4,7 +4,6 @@ import { useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 
 export default function HistoryProvider() {
-    const router = useRouter();
     const pathName = usePathname();
 
     useEffect(() => storePathValues, [pathName]);
@@ -22,6 +21,10 @@ export default function HistoryProvider() {
 
         storage.setItem('prevPath', prevPath!);
         storage.setItem('currentPath', currentPath);
+
+        if (currentPath === '/pit' || currentPath === '/match') {
+            storage.setItem('exportBackPath', currentPath);
+        }
 
         if (currentPath !== '/settings') {
             storage.setItem('settingsBackPath', currentPath);

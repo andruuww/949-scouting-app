@@ -6,6 +6,10 @@ import { Input } from '@/components/ui/input';
 import MenuBar from '@/components/menu-bar';
 import { toast } from '@/components/ui/use-toast';
 import { useRouter } from 'next/navigation';
+import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
+import { z } from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 async function registerSW() {
     try {
@@ -26,51 +30,85 @@ async function registerSW() {
 
 export default function Home() {
     const router = useRouter();
-    const [name, setName] = useState('');
-    const [hasLoaded, setHasLoaded] = useState(false);
-    const [alreadyLoggedInAs, setAlreadyLoggedInAs] = useState<null | string>(null);
+
+    const scoutName = typeof window !== 'undefined' ? localStorage.getItem('scoutName') || '' : '';
 
     useEffect(() => {
         registerSW();
-
-        if (typeof window !== 'undefined') {
-            setHasLoaded(true);
-            if (localStorage.getItem('scoutName')) {
-                setAlreadyLoggedInAs(localStorage.getItem('scoutName')!);
-            }
-        }
     }, []);
 
-    const onSubmit = () => {
-        if (typeof window !== 'undefined') {
-            localStorage.setItem('scoutName', name);
-        }
-        router.push('/pit');
-    };
+    const schema = z.object({
+        name: z
+            .string()
+            .optional()
+            .refine((data) => data && data.length > 0, {
+                message: 'Name is required',
+            }),
+    });
 
-    const continueSubmit = () => {
-        router.push('/pit');
-    };
+    const formResolver = useForm<z.infer<typeof schema>>({
+        resolver: zodResolver(schema),
+        mode: 'onChange',
+        defaultValues: {
+            name: scoutName,
+        },
+    });
 
     return (
         <main className='flex flex-col p-7 min-h-screen mx-auto'>
             <MenuBar />
             <div className='flex flex-col flex-1 justify-center space-y-3'>
-                <Input
-                    className='text-center'
-                    name='name'
-                    placeholder='Enter your name'
-                    onChange={(e) => setName(e.target.value)}
-                    autoComplete='off'
-                />
-                <Button type='submit' onClick={onSubmit} variant='default'>
-                    Login
-                </Button>
-                {hasLoaded && alreadyLoggedInAs && (
-                    <Button type='submit' className='mt-3' variant='secondary' onClick={continueSubmit}>
-                        Continue as {alreadyLoggedInAs}
-                    </Button>
-                )}
+                <Form {...formResolver}>
+                    <form>
+                        <div className='flex flex-col flex-1 justify-center space-y-3'>
+                            <FormField
+                                control={formResolver.control}
+                                name='name'
+                                render={({ field }) => {
+                                    return (
+                                        <FormItem>
+                                            <FormControl>
+                                                <Input
+                                                    className='text-center'
+                                                    placeholder='Enter your name'
+                                                    autoComplete='off'
+                                                    {...field}
+                                                />
+                                            </FormControl>
+                                            <FormMessage className='text-xs' />
+                                        </FormItem>
+                                    );
+                                }}
+                            />
+                            <Button
+                                type='submit'
+                                onClick={formResolver.handleSubmit((values) => {
+                                    if (typeof window !== 'undefined') {
+                                        localStorage.setItem('scoutName', values.name!);
+                                    }
+                                    router.push('/pit');
+                                })}
+                                variant='default'
+                                className='w-full'
+                            >
+                                Pit Scout
+                            </Button>
+                            <Button
+                                type='submit'
+                                onClick={formResolver.handleSubmit((values) => {
+                                    if (typeof window !== 'undefined') {
+                                        localStorage.setItem('scoutName', values.name!);
+                                    }
+                                    router.push('/match');
+                                })}
+                                variant='default'
+                                className='w-full'
+                            >
+                                Match Scout
+                            </Button>
+                        </div>
+                    </form>
+                </Form>
             </div>
             <Button type='submit' variant='secondary' onClick={() => router.push('/scan')}>
                 Aggregate Data

@@ -5,7 +5,6 @@ import { Inter } from 'next/font/google';
 import type { Metadata } from 'next';
 import { ThemeProvider } from '@/components/theme-provider';
 import { Toaster } from '@/components/ui/toaster';
-import UnregisterFaultySW from '@/components/unregister-faulty-sw';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -69,7 +68,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <html lang='en'>
             <body className={inter.className}>
                 <HistoryProvider />
-                <UnregisterFaultySW />
                 <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
                     {children}
                     <Toaster />

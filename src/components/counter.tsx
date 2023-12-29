@@ -1,10 +1,12 @@
+'use client';
+
 import { CounterSettings, JSONFormElement } from '@/lib/types';
 import { Button } from './ui/button';
-import { FormControl, FormField, FormItem, FormLabel, FormMessage } from './ui/form';
-import { useState } from 'react';
+import { FormField, FormItem, FormLabel, FormMessage } from './ui/form';
+import { useEffect, useState } from 'react';
 import { UseFormReturn } from 'react-hook-form';
 import { Input } from './ui/input';
-import { set } from 'zod';
+import { isNumberObject } from 'util/types';
 
 export default function Counter({
     element,
@@ -25,16 +27,16 @@ export default function Counter({
         undefined
     >;
 }) {
-    const [count, setCount] = useState<number>(0);
-    function handleCountChange(increment: number) {
-        const updatedCount = isNaN(count) ? 0 : count + increment;
+    function handleCountChange(increment: number, current: any) {
+        // parseInt returns NaN if it isn't parsable
+        current = parseFloat(current);
+        const updatedCount: number = isNaN(current) ? 0 : current + increment;
 
         if (updatedCount < counterSettings.min! || updatedCount > counterSettings.max!) {
             return;
         }
 
         form.setValue(element.name!, updatedCount);
-        setCount(updatedCount);
         form.trigger(element.name!);
     }
 
@@ -53,36 +55,36 @@ export default function Counter({
                                     type='button'
                                     className='h-10 w-10'
                                     onClick={() => {
-                                        handleCountChange(-counterSettings.increment!);
+                                        handleCountChange(-counterSettings.increment!, field.value);
                                     }}
                                 >
                                     -
                                 </Button>
                             </div>
                             <div className='flex-1'>
+                                <label className='hidden' htmlFor={element.label}></label>
                                 <Input
                                     type='number'
                                     {...field}
                                     className='text-center w-full'
+                                    id={element.name}
                                     onChange={(e) => {
-                                        const value = parseInt(e.target.value);
+                                        const value = parseFloat(e.target.value);
                                         if (value < counterSettings.min! || value > counterSettings.max!) {
                                             return;
                                         }
-                                        setCount(value);
                                         form.setValue(element.name!, isNaN(value) ? '' : value);
                                         form.trigger(element.name!);
                                     }}
                                 />
                             </div>
-
                             <div className='flex items-center'>
                                 <Button
                                     variant='secondary'
                                     type='button'
                                     className='h-10 w-10'
                                     onClick={() => {
-                                        handleCountChange(counterSettings.increment!);
+                                        handleCountChange(counterSettings.increment!, field.value);
                                     }}
                                 >
                                     +

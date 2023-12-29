@@ -1,5 +1,5 @@
 'use client';
-import { FormElementsType, FormType, JSONFormElement } from '@/lib/types';
+import { FormElementsType, JSONFormElement } from '@/lib/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { UseFormReturn, useForm } from 'react-hook-form';
 import * as z from 'zod';
@@ -9,13 +9,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from './ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from './ui/button';
-import pitJSON from '@/jsons/2023/pitscoutingjson';
 import Counter from './counter';
 import { toast } from './ui/use-toast';
-import React from 'react';
+import React, { useImperativeHandle } from 'react';
+import { Switch } from './ui/switch';
 
 // TODO THIS CAN BE MULTITHREADED!!!
-function generateFormSchemaArray(formElementData: JSONFormElement): { name: string; schema: z.ZodTypeAny }[] {
+function generateSchemaArray(formElementData: JSONFormElement): { name: string; schema: z.ZodTypeAny }[] {
     let schema: { name: string; schema: z.ZodTypeAny }[] = [];
 
     if (!formElementData) return schema;
@@ -34,7 +34,7 @@ function generateFormSchemaArray(formElementData: JSONFormElement): { name: stri
                 switch (type) {
                     case FormElementsType.GROUP:
                         if (field.elements) {
-                            const nestedSchema = generateFormSchemaArray(field);
+                            const nestedSchema = generateSchemaArray(field);
                             schema = [...schema, ...nestedSchema];
                         }
                         break;
@@ -76,6 +76,10 @@ function generateFormSchemaArray(formElementData: JSONFormElement): { name: stri
                         });
                         break;
 
+                    case FormElementsType.SWITCH:
+                        fieldSchema = z.coerce.boolean();
+                        break;
+
                     default:
                         break;
                 }
@@ -94,6 +98,20 @@ function generateFormSchemaArray(formElementData: JSONFormElement): { name: stri
             }
         }
     }
+
+    return schema;
+}
+
+export function generateSchemaObject(formJSON: JSONFormElement): z.ZodObject<Record<string, z.ZodTypeAny>> {
+    const schema = z.object(
+        generateSchemaArray(formJSON!).reduce(
+            (acc, entry) => {
+                acc[entry.name] = entry.schema;
+                return acc;
+            },
+            {} as Record<string, z.ZodTypeAny>
+        )
+    );
 
     return schema;
 }
@@ -131,6 +149,10 @@ function generateDefaultValues(formElementData: JSONFormElement): Record<string,
                     defaultValues[name] = [];
                     break;
 
+                case FormElementsType.SWITCH:
+                    defaultValues[name] = false;
+                    break;
+
                 default:
                     break;
             }
@@ -163,6 +185,13 @@ function renderItem(
     >
 ) {
     switch (element.type) {
+        case FormElementsType.TITLE:
+            return (
+                <div key={key} className='text-2xl font-bold'>
+                    {element.label}
+                </div>
+            );
+
         case FormElementsType.TEXTAREA:
             return (
                 <FormField
@@ -260,10 +289,12 @@ function renderItem(
                         return (
                             <FormItem key={key}>
                                 <FormLabel className='text-base'>{element.label}</FormLabel>
-                                <Select onValueChange={field.onChange}>
+                                <Select onValueChange={field.onChange} defaultValue='' value={field.value}>
                                     <FormControl>
                                         <SelectTrigger>
-                                            <SelectValue placeholder={element.placeholder} />
+                                            <SelectValue placeholder={element.placeholder}>
+                                                {field.value === '' ? element.placeholder : field.value}
+                                            </SelectValue>
                                         </SelectTrigger>
                                     </FormControl>
                                     <SelectContent>
@@ -280,6 +311,31 @@ function renderItem(
                     }}
                 />
             );
+        case FormElementsType.SWITCH:
+            return (
+                <FormField
+                    control={form.control}
+                    name={element.name!}
+                    key={key}
+                    render={({ field }) => {
+                        return (
+                            <FormItem key={key} className='h-full'>
+                                <div className='flex flex-row items-center justify-between border h-full rounded-xl border-gray-300 dark:border-gray-800 p-4'>
+                                    <FormLabel className='leading-relaxed'>{element.label}</FormLabel>
+                                    <FormControl>
+                                        <Switch
+                                            checked={field.value}
+                                            onCheckedChange={(checked) => field.onChange(checked)}
+                                            className='ml-2'
+                                        />
+                                    </FormControl>
+                                    <FormMessage className='text-xs' />
+                                </div>
+                            </FormItem>
+                        );
+                    }}
+                />
+            );
         case FormElementsType.CHECKBOX:
             return (
                 <FormField
@@ -290,7 +346,7 @@ function renderItem(
                         return (
                             <FormItem key={key}>
                                 <FormLabel className='text-base'>{element.label}</FormLabel>
-                                <div className='w-full grid grid-cols-2 gap-6'>
+                                <div className='w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6'>
                                     {element.options!.map((option, index) => (
                                         <FormField
                                             control={form.control}
@@ -299,7 +355,7 @@ function renderItem(
                                             render={({ field }) => {
                                                 return (
                                                     <FormItem key={index}>
-                                                        <div className='flex flex-row items-center space-x-10'>
+                                                        <div className='flex flex-row items-center space-x-4'>
                                                             <div className='flex items-center'>
                                                                 <FormControl>
                                                                     <Checkbox
@@ -337,54 +393,91 @@ function renderItem(
             );
         case FormElementsType.COUNTER:
             return <Counter element={element} counterSettings={element.settings} form={form} key={key} />;
-        case FormElementsType.SUBMIT:
+        case FormElementsType.CLEAR_SUBMIT_BUTTONS:
             return (
-                <FormItem key={key}>
-                    <Button type='submit' variant='default' className='w-full'>
-                        {element.label}
+                <div key={key} className='space-y-2'>
+                    <Button type='button' variant='default' className='w-full' onClick={form.reset}>
+                        {element.options![0]}
                     </Button>
-                </FormItem>
+                    <Button type='submit' variant='default' className='w-full'>
+                        {element.options![1]}
+                    </Button>
+                </div>
             );
         default:
             return <React.Fragment key={key}></React.Fragment>;
     }
 }
 
-export default function Parser({ formType }: { formType: FormType }) {
-    let formJSON = {};
-    switch (formType) {
-        case FormType.PIT:
-            formJSON = pitJSON;
+const Parser = React.forwardRef(({ formJSON, update }: { formJSON: JSONFormElement; update?: () => void }, ref) => {
+    const defaultValues = generateDefaultValues(formJSON);
+
+    function areFormValuesDefault() {
+        const formValues = formResolver.getValues();
+        for (const key in defaultValues) {
+            if (defaultValues.hasOwnProperty(key)) {
+                const defaultValue = defaultValues[key];
+                const formValue = formValues[key];
+
+                if (JSON.stringify(formValue) !== JSON.stringify(defaultValue)) {
+                    toast({
+                        title: `Warning: Data Loss!`,
+                        description: `Please submit or clear the form.`,
+                        variant: 'destructive',
+                        repeatable: true,
+                    });
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
-    const schema = z.object(
-        generateFormSchemaArray(formJSON!).reduce(
-            (acc, entry) => {
-                acc[entry.name] = entry.schema;
-                return acc;
+    useImperativeHandle(ref, () => {
+        return {
+            setValues: (teamIndex: number) => {
+                if (formResolver) {
+                    if (areFormValuesDefault()) {
+                        setTimeout(() => {
+                            const teams = JSON.parse(
+                                localStorage.getItem(formJSON.name!) ? localStorage.getItem(formJSON.name!)! : '[]'
+                            );
+                            const team = teams ? teams[teamIndex] : null;
+                            formResolver.reset(team);
+                            teams.splice(teamIndex, 1);
+                            localStorage.setItem(formJSON.name!, JSON.stringify(teams));
+                            if (update) update();
+                        }, 0);
+                    }
+                }
             },
-            {} as Record<string, z.ZodTypeAny>
-        )
-    );
+            clearForm: () => {
+                if (formResolver) {
+                    formResolver.reset(defaultValues);
+                }
+            },
+            isFormClear: () => areFormValuesDefault(),
+        };
+    });
+
+    const schema = generateSchemaObject(formJSON);
     const formResolver = useForm<z.infer<typeof schema>>({
         resolver: zodResolver(schema!),
-        defaultValues: generateDefaultValues(formJSON),
+        defaultValues: defaultValues,
         mode: 'onChange',
     });
 
     const formDOM = renderDOM(formJSON, formResolver);
 
     function onSubmit(values: z.infer<typeof schema>) {
-        const scoutedTeams = localStorage.getItem('pitScoutedTeams')
-            ? JSON.parse(localStorage.getItem('pitScoutedTeams')!)
-            : [];
-        console.log(values);
+        values['marked'] = false;
+
+        const cacheName = formJSON.name!;
+        const scoutedTeams = localStorage.getItem(cacheName) ? JSON.parse(localStorage.getItem(cacheName)!) : [];
         const teams = [...scoutedTeams, values];
-        if (typeof window !== 'undefined') localStorage.setItem('pitScoutedTeams', JSON.stringify(teams));
-        toast({
-            title: `Submitted!`,
-            description: `Team ${values.teamNumber} has been scouted!`,
-        });
+        if (typeof window !== 'undefined') localStorage.setItem(cacheName, JSON.stringify(teams));
+        if (update) update();
+        formResolver.reset(generateDefaultValues(formJSON));
     }
 
     if (!formResolver || !onSubmit) return null;
@@ -395,4 +488,7 @@ export default function Parser({ formType }: { formType: FormType }) {
             </form>
         </Form>
     );
-}
+});
+
+Parser.displayName = 'Parser';
+export default Parser;

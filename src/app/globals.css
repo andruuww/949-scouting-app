@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -93,4 +92,9 @@
     input[type=number] {
     -moz-appearance: textfield;
     }
+}
+
+
+img {
+  display: none;
 }

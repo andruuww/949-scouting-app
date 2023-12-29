@@ -3,16 +3,15 @@ import * as z from 'zod';
 import { useForm } from 'react-hook-form';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { RadioGroup, RadioGroupItem } from '@radix-ui/react-radio-group';
-import { use, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import MenuBar from '@/components/menu-bar';
 import { ReloadIcon } from '@radix-ui/react-icons';
 import { SWStatus } from '@/lib/types';
-import { Separator } from '@/components/ui/separator';
-import { toast } from '@/components/ui/use-toast';
 import useIsConnected from '@/components/connection-hook';
 import { useTheme } from 'next-themes';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { toast } from '@/components/ui/use-toast';
 
 export default function SettingsForm() {
     const { theme, setTheme } = useTheme();
@@ -175,6 +174,31 @@ export default function SettingsForm() {
                                 Clear Cache
                             </Button>
                         </div>
+                        {globalThis.sessionStorage.getItem('settingsBackPath') === '/' && (
+                            <div className='flex flex-row items-center justify-between rounded-lg border p-4 align-center'>
+                                <div className='flex-col flex-wrap'>
+                                    <FormLabel>Delete All Data</FormLabel>
+                                    <div className='basis-full h-0'></div>
+                                    <FormDescription className='text-muted-foreground'>Cannot undo</FormDescription>
+                                </div>
+                                <Button
+                                    type='button'
+                                    variant='destructive'
+                                    onClick={() => {
+                                        if (typeof window !== 'undefined') {
+                                            localStorage.clear();
+                                            globalThis?.sessionStorage.clear();
+                                            toast({
+                                                title: 'Deleted all data',
+                                            });
+                                        }
+                                    }}
+                                    className='min-w-[40%]'
+                                >
+                                    Clear Cache
+                                </Button>
+                            </div>
+                        )}
                     </div>
                     <Button type='submit' className='w-full'>
                         Update

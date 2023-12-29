@@ -6,7 +6,7 @@ import { request } from 'bwip-js';
 const ASSETS = [
     '/',
     '/pit',
-    '/pit/export',
+    '/export',
     '/scan',
     '/settings',
 

@@ -53,44 +53,49 @@ function BackButton({ onClick }: { onClick?: () => void }) {
     );
 }
 
-function SettingsButton({ onClick }: { onClick?: () => void }) {
+function SettingsButton({ navigationCondition = () => true }: { navigationCondition?: () => boolean }) {
     const router = useRouter();
     const pathname = usePathname();
     if (pathname === '/settings') return null;
 
     return (
-        <Button variant='outline' size='icon' aria-label='Settings Button' onClick={() => router.push('/settings')}>
+        <Button
+            variant='outline'
+            size='icon'
+            aria-label='Settings Button'
+            onClick={() => {
+                if (navigationCondition()) router.push('/settings');
+            }}
+        >
             <Settings className='h-[1.2rem] w-[1.2rem]' />
         </Button>
     );
 }
 
-export default function MenuBar({ resetData, backButtonPage }: { resetData?: () => void; backButtonPage?: string }) {
+export default function MenuBar({
+    resetData,
+    backButtonPage,
+    navigationCondition = () => true,
+}: {
+    resetData?: () => void;
+    backButtonPage?: string;
+    navigationCondition?: () => boolean;
+}) {
     const router = useRouter();
-    let [scoutName, setScoutName] = useState<string | null>(null);
-
-    useEffect(() => {
-        if (typeof window !== 'undefined') {
-            const storedScoutName = localStorage.getItem('scoutName');
-            if (storedScoutName !== null) {
-                setScoutName(storedScoutName);
-            }
-        }
-    }, []);
 
     return (
         <div className='flex flex-row justify-between items-center space-x-2 mb-4'>
             <div className='text-2xl font-bold align-middle min-w-min'>
-                {scoutName === null || scoutName === '' ? '949 Scouting' : <span>Welcome, {scoutName}</span>}
+                <span>949 Scouting</span>
             </div>
             <div className='space-x-2 flex'>
                 <BackButton
                     onClick={() => {
-                        backButtonPage ? router.push(backButtonPage!) : router.back();
+                        if (navigationCondition()) backButtonPage ? router.push(backButtonPage!) : router.back();
                     }}
                 ></BackButton>
                 <ResetButton resetData={resetData} />
-                <SettingsButton />
+                <SettingsButton navigationCondition={() => navigationCondition()} />
             </div>
         </div>
     );

@@ -1,52 +1,46 @@
 import { toast } from '@/components/ui/use-toast';
 import zlib from 'zlib';
+import * as fflate from 'fflate';
 // @ts-ignore
 import { toSVG } from 'bwip-js';
-import pitJSON from '@/jsons/2023/pitscoutingjson';
+import { JSONFormElement, ProtobufOperation } from '@/lib/types';
+import { generateProtoRoot, protoParse } from './protoworker';
 
-import { FormElementsType, JSONFormElement } from '@/lib/types';
-
-async function renderQRCodes(scoutedTeams: Record<string, string>[], scoutName: string): Promise<string[]> {
-    return new Promise((resolve, reject) => {
-        zlib.gzip(Buffer.from(jsonToCSV(scoutedTeams, scoutName)), (err, compressedBuffer) => {
-            if (err) {
-                toast({
-                    title: 'Error!',
-                    description: 'An error occurred while compressing the data! Contact Andrew...',
-                });
-            } else {
-                const content = compressedBuffer.toString('base64') + '!';
-                console.log(content);
-                const chunks = content.match(/.{1,500}/g);
-                const barcodes = chunks?.map((i) => toSVG({ bcid: 'qrcode', text: i }));
-                // setBarcodeSVGs(barcodes!);
-                resolve(barcodes!);
-            }
-        });
-    });
+function chunkString(str: string, chunkSize: number) {
+    const chunks = [];
+    let index = 0;
+    while (index < str.length) {
+        chunks.push(str.slice(index, (index += chunkSize)));
+    }
+    return chunks;
 }
 
-function jsonToCSV(jsonArray: Record<string, string>[], scoutName: string): string {
-    const result: string[] = [];
-    console.log(jsonArray);
-    jsonArray.map((row) => {
-        const rowResult: string[] = [];
-        Object.keys(row).map((key) => {
-            const value = row[key];
-            if (Array.isArray(value) && value.length > 0) {
-                rowResult.push(`"${value.join(',')}"`);
-            } else {
-                rowResult.push(value !== undefined ? String(value) : '');
-            }
-        });
-
-        result.push([scoutName, ...rowResult].join(','));
-    });
-    console.log(result);
-    return result.join('\n');
+function renderQRCodes(compressedData: string): string[] {
+    console.log(compressedData.length);
+    const chunks = chunkString(compressedData, 500);
+    const barcodes: string[] = chunks!.map((i) => toSVG({ bcid: 'qrcode', text: i }));
+    return barcodes;
 }
 
-self.onmessage = async (event) => {
-    const barcodes = await renderQRCodes(event.data.data, event.data.scoutName);
-    self.postMessage({ barcodes });
+self.onmessage = async (event: {
+    data: { data: Record<string, any>[]; schemaJSON: JSONFormElement; scoutName: string };
+}) => {
+    const protoWorker = new Worker(new URL('./protoworker.ts', import.meta.url));
+    event.data.data.map((i) => {
+        i['scoutName'] = event.data.scoutName;
+        return i;
+    });
+    protoWorker.postMessage({
+        data: event.data.data,
+        operation: ProtobufOperation.SERALIZE,
+        schemaJSON: event.data.schemaJSON,
+    });
+
+    protoWorker.onmessage = (response) => {
+        let { seralizedData } = response.data;
+        seralizedData = `${event.data.schemaJSON.signature!}${seralizedData}!`;
+        const barcodes = renderQRCodes(seralizedData);
+        self.postMessage({ barcodes });
+        protoWorker.terminate();
+    };
 };

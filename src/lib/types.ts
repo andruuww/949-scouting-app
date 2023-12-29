@@ -1,31 +1,5 @@
 import { z } from 'zod';
 
-export class FormDataClass {
-    // scoutName? = string;
-    // teamNumber? = number;
-    // drivetrain? = 'tank' | 'swerve' | 'mech';
-    // weight? = number;
-    // dimensionLength? = number;
-    // dimensionWidth? = number;
-    // driverHours? = number;
-    // scoringLevels? = string[];
-    // intakeCapabilities? = string[];
-    // notes? = string;
-
-    scoutName? = '';
-    teamNumber? = 0;
-    drivetrain?: '';
-    weight? = 0;
-    dimensionLength? = 0;
-    dimensionWidth? = 0;
-    driverHours? = 0;
-    scoringLevels?: string[] = [];
-    intakeCapabilities?: string[] = [];
-    notes? = '';
-}
-
-export interface FormData extends FormDataClass {}
-
 export interface CounterSettings {
     increment?: number;
     min?: number;
@@ -43,10 +17,12 @@ export interface JSONFormElement {
     options?: string[];
     elements?: JSONFormElement[];
     settings?: CounterSettings;
+    signature?: string;
 }
 
 export enum FormElementsType {
     ROOT = 'root',
+    TITLE = 'title',
     TEXT = 'text',
     NUMBER = 'number',
     SELECT = 'select',
@@ -54,14 +30,10 @@ export enum FormElementsType {
     TEXTAREA = 'textarea',
     GROUP = 'group',
     INPUTS = 'inputs',
-    SUBMIT = 'submit',
     RESET = 'reset',
     COUNTER = 'counter',
-}
-
-export enum FormType {
-    PIT = 'PIT',
-    MATCH = 'MATCH',
+    SWITCH = 'switch',
+    CLEAR_SUBMIT_BUTTONS = 'clear_submit_buttons',
 }
 
 export enum SWStatus {
@@ -72,4 +44,9 @@ export enum SWStatus {
     ERROR = 'ERROR',
     UNREGISTER = 'ServiceWorker unregistered.',
     ACTIVATED = 'ServiceWorker activated.',
+}
+
+export enum ProtobufOperation {
+    SERALIZE = 'SERALIZE',
+    PARSE = 'PARSE',
 }

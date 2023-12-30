@@ -6,6 +6,7 @@ import { request } from 'bwip-js';
 const ASSETS = [
     '/',
     '/pit',
+    '/match',
     '/export',
     '/scan',
     '/settings',
@@ -21,14 +22,23 @@ let precacheChannel;
 
 async function replaceDataWithTemp() {
     try {
-        const oldCache = await caches.open(PRECACHE_TEMP_NAME);
+        const tempCache = await caches.open(PRECACHE_TEMP_NAME);
         const newCache = await caches.open(PRECACHE_NAME);
 
-        const requests = await oldCache.keys();
+        const requests = await tempCache.keys();
+
+        // Clear the newCache before adding new items
+        await newCache.keys().then((keys) => {
+            return Promise.all(
+                keys.map((key) => {
+                    return newCache.delete(key);
+                })
+            );
+        });
 
         await Promise.all(
             requests.map(async (request) => {
-                const response = await oldCache.match(request);
+                const response = await tempCache.match(request);
                 if (response) {
                     await newCache.put(request, response);
                 }

@@ -47,9 +47,13 @@ const Scanner: React.FC<ScannerProps> = ({ handleData, containerRef }) => {
         }
 
         // css garbage because library awful styling
-        const secondaryButton = ['rounded-xl', 'p-4', 'h-full', 'bg-secondary', 'w-full'];
+        const secondaryButton = ['rounded-xl', 'p-4', 'h-full', 'bg-secondary', 'w-full', 'item-center'];
 
-        applyTailwindClassesByID('reader__dashboard_section', [...secondaryButton, 'm-0', 'mt-4']);
+        applyTailwindClassesByID('reader__dashboard_section', [...secondaryButton, 'm-0']);
+
+        applyTailwindClassesByID('reader__dashboard', ['mt-4']);
+
+        applyTailwindClassesByID('reader', ['h-full', 'flex', 'flex-col', 'justify-between', 'items-center']);
 
         // applyTailwindClassesByID('html5-qrcode-anchor-scan-type-change', [...secondaryButton]);
         // applyTailwindClassesByID('html5-qrcode-button-file-selection', [...secondaryButton]);

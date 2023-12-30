@@ -57,10 +57,10 @@ export default function Home() {
     return (
         <main className='flex flex-col p-7 min-h-screen mx-auto'>
             <MenuBar />
-            <div className='flex flex-col flex-1 justify-center space-y-3'>
+            <div className='flex flex-col flex-1 justify-center space-y-2'>
                 <Form {...formResolver}>
                     <form>
-                        <div className='flex flex-col flex-1 justify-center space-y-3'>
+                        <div className='flex flex-col flex-1 justify-center space-y-2'>
                             <FormField
                                 control={formResolver.control}
                                 name='name'

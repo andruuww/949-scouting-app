@@ -44,11 +44,36 @@ export default function SettingsForm() {
         setIsUnregistering(false);
     }
 
-    async function clearCache() {
+    async function reloadCache() {
         if (await ping()) {
             if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
                 navigator.serviceWorker.controller.postMessage({ type: SWStatus.START_PRECACHE });
             }
+        }
+    }
+
+    function clearAllData() {
+        if (typeof window !== 'undefined') {
+            localStorage.clear();
+            globalThis?.sessionStorage.clear();
+            if ('caches' in window) {
+                caches
+                    .keys()
+                    .then(function (cacheNames) {
+                        cacheNames.forEach(function (cacheName) {
+                            caches.delete(cacheName);
+                        });
+                    })
+                    .then(function () {
+                        console.log('Cache cleared successfully');
+                    })
+                    .catch(function (error) {
+                        console.error('Error clearing cache:', error);
+                    });
+            }
+            toast({
+                title: 'Deleted all data',
+            });
         }
     }
 
@@ -143,7 +168,7 @@ export default function SettingsForm() {
                         )}
                     />
 
-                    <div className='space-y-3'>
+                    <div className='space-y-2'>
                         <div>
                             <FormLabel>Service Worker and Cache</FormLabel>
 
@@ -160,7 +185,12 @@ export default function SettingsForm() {
                                     WIFI + Restart Required
                                 </FormDescription>
                             </div>
-                            <Button type='button' variant='destructive' onClick={unregisterSW} className='min-w-[40%]'>
+                            <Button
+                                type='button'
+                                variant='destructive'
+                                onClick={() => unregisterSW()}
+                                className='min-w-[40%]'
+                            >
                                 {isUnregistering ? <ReloadIcon className='animate-spin' /> : 'Unregister'}
                             </Button>
                         </div>
@@ -170,8 +200,13 @@ export default function SettingsForm() {
                                 <div className='basis-full h-0'></div>
                                 <FormDescription className='text-muted-foreground'>WIFI Required</FormDescription>
                             </div>
-                            <Button type='button' variant='destructive' onClick={clearCache} className='min-w-[40%]'>
-                                Clear Cache
+                            <Button
+                                type='button'
+                                variant='destructive'
+                                onClick={() => reloadCache()}
+                                className='min-w-[40%]'
+                            >
+                                Reload
                             </Button>
                         </div>
                         {globalThis.sessionStorage.getItem('settingsBackPath') === '/' && (
@@ -179,23 +214,17 @@ export default function SettingsForm() {
                                 <div className='flex-col flex-wrap'>
                                     <FormLabel>Delete All Data</FormLabel>
                                     <div className='basis-full h-0'></div>
-                                    <FormDescription className='text-muted-foreground'>Cannot undo</FormDescription>
+                                    <FormDescription className='text-muted-foreground'>
+                                        Including scout data
+                                    </FormDescription>
                                 </div>
                                 <Button
                                     type='button'
                                     variant='destructive'
-                                    onClick={() => {
-                                        if (typeof window !== 'undefined') {
-                                            localStorage.clear();
-                                            globalThis?.sessionStorage.clear();
-                                            toast({
-                                                title: 'Deleted all data',
-                                            });
-                                        }
-                                    }}
+                                    onClick={() => clearAllData()}
                                     className='min-w-[40%]'
                                 >
-                                    Clear Cache
+                                    Clear
                                 </Button>
                             </div>
                         )}

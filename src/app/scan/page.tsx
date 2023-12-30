@@ -137,37 +137,39 @@ export default function Scanning() {
 
     return (
         <>
-            <main className='flex flex-col p-7 min-h-screen max-w-md mx-auto justify-between'>
-                <MenuBar
-                    backButtonPage='/'
-                    resetData={() => {
-                        localStorage.removeItem(`${pitJSON.name}Scanned`);
-                        localStorage.removeItem(`${matchJSON.name}Scanned`);
-                        updateScannedData();
-                    }}
-                />
-                <div className='space-y-4'>
-                    <TeamsList
-                        teamsJSON={pitScoutingScanned}
-                        label='Scanned Teams'
-                        mode='delete'
-                        cacheName={`${pitJSON.name}Scanned`}
-                        jsonKeyDisplayName='teamNumber'
+            <main className='flex flex-col p-7 min-h-screen max-w-md mx-auto justify-between space-y-4'>
+                <div>
+                    <MenuBar
+                        backButtonPage='/'
+                        resetData={() => {
+                            localStorage.removeItem(`${pitJSON.name}Scanned`);
+                            localStorage.removeItem(`${matchJSON.name}Scanned`);
+                            updateScannedData();
+                        }}
                     />
-                    <TeamsList
-                        teamsJSON={matchScoutingScanned}
-                        label='Scanned Matches'
-                        mode='delete'
-                        cacheName={`${matchJSON.name}Scanned`}
-                        displayDataStringArray={matchScoutingScanned.map(
-                            (i: Record<string, any>) => `#${i.matchNumber.toString()}: ${i.teamNumber.toString()}`
-                        )}
-                    />
+                    <div className='space-y-2'>
+                        <TeamsList
+                            teamsJSON={pitScoutingScanned}
+                            label='Scanned Teams'
+                            mode='delete'
+                            cacheName={`${pitJSON.name}Scanned`}
+                            jsonKeyDisplayName='teamNumber'
+                        />
+                        <TeamsList
+                            teamsJSON={matchScoutingScanned}
+                            label='Scanned Matches'
+                            mode='delete'
+                            cacheName={`${matchJSON.name}Scanned`}
+                            displayDataStringArray={matchScoutingScanned.map(
+                                (i: Record<string, any>) => `#${i.matchNumber.toString()}: ${i.teamNumber.toString()}`
+                            )}
+                        />
+                    </div>
                 </div>
-                <div className='w-full aspect-square mb-10 mt-10' ref={containerRef}>
+                <div className='aspect-square' ref={containerRef}>
                     <Scanner handleData={handleData} containerRef={containerRef} />
                 </div>
-                <div className='flex flex-col space-y-4'>
+                <div className='flex flex-col space-y-2'>
                     <Button
                         variant='secondary'
                         onClick={() => {
@@ -180,22 +182,12 @@ export default function Scanning() {
                     >
                         Cancel parts
                     </Button>
-                    <div className='w-full space-y-2'>
-                        <Button
-                            onClick={() => exportData(pitJSON.name + 'Scanned')}
-                            variant='default'
-                            className='w-full'
-                        >
-                            Export {pitJSON.label} Data
-                        </Button>
-                        <Button
-                            onClick={() => exportData(matchJSON.name + 'Scanned')}
-                            variant='default'
-                            className='w-full'
-                        >
-                            Export {matchJSON.label} Data
-                        </Button>
-                    </div>
+                    <Button onClick={() => exportData(pitJSON.name + 'Scanned')} variant='default' className='w-full'>
+                        Export {pitJSON.label} Data
+                    </Button>
+                    <Button onClick={() => exportData(matchJSON.name + 'Scanned')} variant='default' className='w-full'>
+                        Export {matchJSON.label} Data
+                    </Button>
                 </div>
             </main>
         </>

@@ -188,7 +188,7 @@ function renderItem(
         case FormElementsType.TITLE:
             return (
                 <div key={key} className='text-2xl font-bold'>
-                    {element.label}
+                    <div className='mt-8'>{element.label}</div>
                 </div>
             );
 
@@ -260,7 +260,7 @@ function renderItem(
                     key={key}
                     render={({ field }) => (
                         <FormItem key={key}>
-                            <FormLabel className='text-base'>{element.label}</FormLabel>
+                            {element.label && <FormLabel className='text-base'>{element.label}</FormLabel>}
                             <div key={`group-div-${key}`} className='flex space-x-4 flex-grow'>
                                 {groupItems.map((item, index) => (
                                     <React.Fragment key={`group-item-${index}`}>
@@ -395,13 +395,15 @@ function renderItem(
             return <Counter element={element} counterSettings={element.settings} form={form} key={key} />;
         case FormElementsType.CLEAR_SUBMIT_BUTTONS:
             return (
-                <div key={key} className='space-y-2'>
-                    <Button type='button' variant='default' className='w-full' onClick={form.reset}>
-                        {element.options![0]}
-                    </Button>
-                    <Button type='submit' variant='default' className='w-full'>
-                        {element.options![1]}
-                    </Button>
+                <div key={key}>
+                    <div className='space-y-2 mt-4'>
+                        <Button type='button' variant='default' className='w-full' onClick={form.reset}>
+                            {element.options![0]}
+                        </Button>
+                        <Button type='submit' variant='default' className='w-full'>
+                            {element.options![1]}
+                        </Button>
+                    </div>
                 </div>
             );
         default:
@@ -484,7 +486,7 @@ const Parser = React.forwardRef(({ formJSON, update }: { formJSON: JSONFormEleme
     return (
         <Form {...formResolver}>
             <form onSubmit={formResolver.handleSubmit(onSubmit)} autoComplete='off' className='space-y-8' noValidate>
-                {formDOM.map((element) => element)}
+                <div className='flex flex-col space-y-4'>{formDOM.map((element) => element)}</div>
             </form>
         </Form>
     );

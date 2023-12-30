@@ -17,7 +17,7 @@ const pitJSON: JSONFormElement = {
             elements: [
                 {
                     label: 'Match Number',
-                    placeholder: '1',
+                    placeholder: '64',
                     type: FormElementsType.NUMBER,
                     name: 'matchNumber',
                     required: true,
@@ -37,7 +37,7 @@ const pitJSON: JSONFormElement = {
             label: 'Robot Position',
             placeholder: 'Select Position',
             type: FormElementsType.SELECT,
-            name: 'drivetrain',
+            name: 'robotPosition',
             options: ['Red 1', 'Red 2', 'Red 3', 'Blue 1', 'Blue 2', 'Blue 3'],
         },
         {
@@ -145,6 +145,20 @@ const pitJSON: JSONFormElement = {
             options: ['Offensive', 'Defensive', 'Balanced'],
         },
         {
+            label: 'Overall Match Notes',
+            type: FormElementsType.TITLE,
+        },
+        {
+            label: 'Broke Down',
+            type: FormElementsType.SWITCH,
+            name: 'brokeDown',
+        },
+        {
+            label: 'Yellow Card',
+            type: FormElementsType.SWITCH,
+            name: 'yellowCard',
+        },
+        {
             label: 'Links',
             type: FormElementsType.COUNTER,
             name: 'links',
@@ -159,7 +173,7 @@ const pitJSON: JSONFormElement = {
             type: FormElementsType.COUNTER,
             name: 'fouls',
             settings: {
-                increment: 1,
+                increment: 5,
                 min: 0,
                 max: 100,
             },
@@ -169,16 +183,12 @@ const pitJSON: JSONFormElement = {
             type: FormElementsType.COUNTER,
             name: 'techFouls',
             settings: {
-                increment: 1,
+                increment: 12,
                 min: 0,
                 max: 100,
             },
         },
-        {
-            label: 'Broke Down',
-            type: FormElementsType.SWITCH,
-            name: 'brokeDown',
-        },
+
         {
             label: 'Charge Station Points',
             type: FormElementsType.COUNTER,

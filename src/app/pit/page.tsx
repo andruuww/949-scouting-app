@@ -52,7 +52,7 @@ export default function PitScouting() {
                     className='mb-4'
                 />
             </div>
-            <div className='space-y-3'>
+            <div className='space-y-2'>
                 <Parser formJSON={pitJSON} update={() => updateFormSubmit()} ref={formRef} />
                 {scoutedTeams.length > 0 &&
                     (!exportIsLoading ? (
@@ -61,7 +61,6 @@ export default function PitScouting() {
                             onClick={() => {
                                 if (formRef.current?.isFormClear()) {
                                     setExportIsLoading(true);
-                                    router.push('/export');
                                 }
                             }}
                             className='w-full'
@@ -69,7 +68,7 @@ export default function PitScouting() {
                             Export Data
                         </Button>
                     ) : (
-                        <Button disabled className='mt-2 w-full'>
+                        <Button disabled className='w-full'>
                             <ReloadIcon className='mr-2 h-4 w-4 animate-spin' />
                             Please wait
                         </Button>

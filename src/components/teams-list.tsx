@@ -53,8 +53,8 @@ export default function TeamsList({
                         <div className='py-2 flex flex-row flex-wrap gap-3 justify-center'>
                             {teamsArray.map((i, key) => (
                                 <Button
-                                    variant={teamsJSON[key].marked ? 'outline' : 'secondary'}
-                                    className='pl-4 pr-4 h-8 ext-xs rounded-lg '
+                                    variant={teamsJSON[key].marked ? 'outline' : 'default'}
+                                    className='pl-4 pr-4 h-8 ext-xs rounded-lg select-none'
                                     key={key}
                                     onClick={() => {
                                         if (mode === 'edit') {
@@ -87,7 +87,7 @@ export default function TeamsList({
                 {mode === 'mark' && (
                     <div className='flex justify-center items-center mt-4 gap-3'>
                         <Button
-                            variant='default'
+                            variant='secondary'
                             className='w-full'
                             onClick={() => {
                                 teamsJSON!.forEach((i: Record<string, any>) => (i.marked = true));
@@ -99,7 +99,7 @@ export default function TeamsList({
                             Mark All Done
                         </Button>
                         <Button
-                            variant='default'
+                            variant='secondary'
                             className='w-full'
                             onClick={() => {
                                 teamsJSON!.forEach((i: Record<string, any>) => (i.marked = false));

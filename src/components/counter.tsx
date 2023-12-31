@@ -1,12 +1,9 @@
 'use client';
-
 import { CounterSettings, JSONFormElement } from '@/lib/types';
 import { Button } from './ui/button';
 import { FormField, FormItem, FormLabel, FormMessage } from './ui/form';
-import { useEffect, useState } from 'react';
 import { UseFormReturn } from 'react-hook-form';
 import { Input } from './ui/input';
-import { isNumberObject } from 'util/types';
 
 export default function Counter({
     element,

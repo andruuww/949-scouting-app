@@ -38,12 +38,12 @@ export enum FormElementsType {
 
 export enum SWStatus {
     START_PRECACHE = 'START',
-    PENDING = 'Precache pending.',
-    SUCCESS = 'Precache complete.',
+    PENDING = 'Precache Pending',
+    SUCCESS = 'Precache Complete',
     FORCE_CLEAR = 'CLEAR',
     ERROR = 'ERROR',
-    UNREGISTER = 'ServiceWorker unregistered.',
-    ACTIVATED = 'ServiceWorker activated.',
+    UNREGISTER = 'ServiceWorker Unregistered.',
+    ACTIVATED = 'ServiceWorker Activated.',
 }
 
 export enum ProtobufOperation {

@@ -1,10 +1,6 @@
-import { toast } from '@/components/ui/use-toast';
-import zlib from 'zlib';
-import * as fflate from 'fflate';
 // @ts-ignore
 import { toSVG } from 'bwip-js';
 import { JSONFormElement, ProtobufOperation } from '@/lib/types';
-import { generateProtoRoot, protoParse } from './protoworker';
 
 function chunkString(str: string, chunkSize: number) {
     const chunks = [];
@@ -17,7 +13,7 @@ function chunkString(str: string, chunkSize: number) {
 
 function renderQRCodes(compressedData: string): string[] {
     console.log(compressedData.length);
-    const chunks = chunkString(compressedData, 500);
+    const chunks = chunkString(compressedData, 300);
     const barcodes: string[] = chunks!.map((i) => toSVG({ bcid: 'qrcode', text: i }));
     return barcodes;
 }

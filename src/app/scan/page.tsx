@@ -1,5 +1,5 @@
 'use client';
-import { use, useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { ProtobufOperation } from '@/lib/types';
@@ -180,7 +180,7 @@ export default function Scanning() {
                             });
                         }}
                     >
-                        Cancel parts
+                        Cancel Parts
                     </Button>
                     <Button onClick={() => exportData(pitJSON.name + 'Scanned')} variant='default' className='w-full'>
                         Export {pitJSON.label} Data

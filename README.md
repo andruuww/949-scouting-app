@@ -1,64 +1,78 @@
-## Introduction
+# 949's Scouting App
 
-This is an app made to facilitate the process of scouting at FRC competitions.
+This app was developed to facilitate the process of scouting at FRC competitions with no wifi, instead relying on QR Codes for communication.
 
-There
+It is built on Next.js 14, uses a service worker and PWA for offline use, Protobuf and fflate for data serialization and compression, and bwip-js and html5-qrcode for qrcode generation and scanning.
 
 ## App Link
 
-Note: This is hosted on vercel's platform. BSD Wifi blocks this, make sure to load the app on a different network. This QRCode is a link to the app.
-
-If you are developing this app, use Chrome, it has much better developer tools.
+Note: The app hosted on vercel's hosting platform - BSD Wifi blocks this domain.
 
 ![Scouting App Link](scout-app-link.png)
 
 https://949-scouting-app-i4kp.vercel.app/
 
-## Installation and Updates
+## Installation
 
 ### Android
 
--   Open the website
--   Click the three dots in the top right corner
--   Click Install App or Add to Home Screen
--   Click Add
+-   Open the website.
+-   Click the three dots in the top right corner.
+-   Click `Install App` or Add to `Home Screen`.
+-   Click Add.
 
 ### IOS
 
--   Open the website
--   Click the share icon at the bottom
--   Scroll down and click "Add to Home Screen"
--   Click Add
+-   Open the website.
+-   Click the share icon at the bottom.
+-   Scroll down and click `Add to Home Screen`.
+-   Click Add.
 
 ### Offline
 
 To make sure that the app is ready for offline use
 
--   Open the app on the homescreen and wait for the notification: `Cache status: SUCCESS`
--   If this message does not show up, click the settings icon, under Service Worker, click `Unregister`
+-   Open the app on the homescreen and wait up to a minute for the notification: `Precache Complete`.
+-   If this message does not show up, click the settings icon, under Service Worker, click `Unregister`.
 -   Close and reopen the app.
 
 ### Updates
 
-If there are any updates to the app released by the app's software team
+To update the app on a device:
 
--   Open the app
--   Click the settings icon
--   Under Service Worker, click `Unregister`
--   Wait for the notification: `Cache status: SUCCESS`
+-   Open the app to the homepage.
+-   Click the settings icon.
+-   Under the Delete All Data option, click `Clear`.
+-   Under Service Worker, click `Unregister`.
+-   Wait for the notification: `Precache Complete`.
+-   Close and reopen the app.
 
 ## Usage
 
-The login page requires the scouter to submit their name, in order to know who to blame when the data claims 949 won.
+The login page requires the scouter to submit their name, in order to know who to blame when the data claims 949 lost.
 
 ### Data Collection
 
--   Once you're done filling out form, click `Finalize team`
--   Once all teams have been scouted, click `Export`
+-   Click `Pit Scout` or `Match Scout`.
+-   Fill the form.
+-   Once you're done filling out form, click `Submit`.
+-   To edit, click the desired entry at the top of the page.
+
+### Export to QRCode
+
+-   Once data has been collected, click `Export` at the bottom of the page.
+-   On the export page, there is an option to switch between exporting Pit and Match data.
+-   Once scanned in by a main device, click the entries at the top in order to remove them from the rendering, or you could simply click `Mark All Done`.
 
 ### Data Aggregation
 
--   On the homescreen hit `Aggregate Data`
--   Allow all permissions, and select the correct camera
--   Scan all QR codes of one device in order, and hit `Finish Scout`
--   Once all devices are scanned, hit `export`
+-   On a main device, on the homescreen, hit `Aggregate Data`
+-   Click `Start Camera`.
+-   Scan all QR codes of one device in order, and once all parts have been scanned the data should be automatically bundled. If there is a mistake, click `Cancel Parts`.
+-   Once all devices are scanned, click the appropriate export button.
+
+## Development
+
+The code is very spaghetti and there's limited comments and documentation, so if you need help please reach out to Andrew, who is responsible for the mess.
+
+The code itself is very abstracted, the only thing that needs to be changed from season to season are the JSONs that are integrated throughout the app. They can be found under `src/jsons`. Throughout the app, they are parsed in order to render the forms and generate validation and Protobuf schemas.

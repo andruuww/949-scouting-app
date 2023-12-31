@@ -4,10 +4,13 @@ import { request } from 'bwip-js';
 
 // production
 const ASSETS = [
+    // this has to be in the order in which it is displayed at the end of the build
+    // why? IDK
+    // lost like 4 hours of sleep because of this!
     '/',
-    '/pit',
-    '/match',
     '/export',
+    'match',
+    '/pit',
     '/scan',
     '/settings',
 

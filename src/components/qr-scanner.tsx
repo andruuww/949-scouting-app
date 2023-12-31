@@ -1,96 +1,90 @@
 import React, { useEffect } from 'react';
 
-import { Html5QrcodeScanner } from 'html5-qrcode';
+import { Html5Qrcode } from 'html5-qrcode';
+import { toast } from './ui/use-toast';
+import { Button } from './ui/button';
 
-interface ScannerProps {
-    handleData: (data: string) => void;
-    containerRef: React.RefObject<HTMLDivElement>;
-}
+export default function Scanner({ handleData }: { handleData: (data: string) => void }) {
+    const [scanner, setScanner] = React.useState<Html5Qrcode>();
+    const [isCameraOn, setisCameraOn] = React.useState(false);
 
-function applyTailwindClassesByID(id: string, classes: string[]) {
-    const element = document.getElementById(id);
-    classes.forEach((className) => {
-        element?.classList.add(className);
-    });
-}
-
-const Scanner: React.FC<ScannerProps> = ({ handleData, containerRef }) => {
-    let scanner: Html5QrcodeScanner;
-
-    function success(result: string) {
-        handleData(result);
-    }
-
-    function error(error: string) {
-        // console.warn(error);
-    }
-
+    // stop camera on page leave
     useEffect(() => {
-        if (typeof window !== 'undefined') localStorage.removeItem('HTML5_QRCODE_DATA');
+        return () => {
+            try {
+                scanner?.stop();
+            } catch {}
+        };
+    }, [scanner]);
 
-        // Access the containerRef's current property to get the DOM element
-        const container = containerRef.current;
+    function startCamera(): void {
+        const container = document.getElementById('reader');
 
-        if (container && !scanner) {
-            scanner = new Html5QrcodeScanner(
-                'reader',
-                {
-                    fps: 30,
-                    qrbox: { width: container.offsetWidth - 50, height: container.offsetHeight - 50 },
-                    aspectRatio: container.offsetWidth / container.offsetHeight,
-                    disableFlip: true,
-                },
-                false
-            );
+        Html5Qrcode.getCameras()
+            .then(() => {
+                const html5Qrcode = new Html5Qrcode('reader');
+                setScanner(html5Qrcode);
+                return html5Qrcode.start(
+                    { facingMode: 'environment' },
+                    {
+                        fps: 30,
+                        qrbox: { width: container!.offsetWidth - 50, height: container!.offsetHeight - 50 },
+                        aspectRatio: 1,
+                        disableFlip: true,
+                    },
+                    (result: string) => {
+                        handleData(result);
+                    },
+                    (error: string) => {}
+                );
+            })
+            .then(() => {
+                const videoElement = container?.querySelector('video');
+                if (videoElement) {
+                    videoElement.style.objectFit = 'cover';
+                    videoElement.style.width = '100%';
+                    videoElement.style.height = '100%';
+                }
 
-            scanner.render(success, error);
-        }
+                setisCameraOn(true);
+            })
+            .catch((error) => {
+                toast({
+                    title: error,
+                    description: 'Failed to access the camera. Please double check camera permissions.',
 
-        // css garbage because library awful styling
-        const secondaryButton = ['rounded-xl', 'p-4', 'h-full', 'bg-secondary', 'w-full', 'item-center'];
-
-        applyTailwindClassesByID('reader__dashboard_section', [...secondaryButton, 'm-0']);
-
-        applyTailwindClassesByID('reader__dashboard', ['mt-4']);
-
-        applyTailwindClassesByID('reader', ['h-full', 'flex', 'flex-col', 'justify-between', 'items-center']);
-
-        // applyTailwindClassesByID('html5-qrcode-anchor-scan-type-change', [...secondaryButton]);
-        // applyTailwindClassesByID('html5-qrcode-button-file-selection', [...secondaryButton]);
-
-        if (document.getElementById('reader')) {
-            document.getElementById('reader')!.style.padding = '1rem';
-        }
-
-        // hide the scan by file button, because the ui is so bad
-        const scanTypeChangeAnchor = document.getElementById('html5-qrcode-anchor-scan-type-change');
-        if (scanTypeChangeAnchor) {
-            scanTypeChangeAnchor.style.textDecoration = 'none';
-            scanTypeChangeAnchor.style.display = 'none';
-
-            // Monitor for changes and reset styles if necessary
-            const observer = new MutationObserver(() => {
-                scanTypeChangeAnchor.style.textDecoration = 'none';
-                scanTypeChangeAnchor.style.display = 'none';
+                    repeatable: true,
+                });
             });
-
-            observer.observe(scanTypeChangeAnchor, { attributes: true, childList: true, subtree: true });
-
-            // Cleanup observer on component unmount
-            return () => {
-                observer.disconnect();
-            };
-        }
-    }, [containerRef, typeof window]);
+    }
 
     return (
-        <div
-            id='reader'
-            className='border rounded-xl border-gray-300 dark:border-gray-800 flex flex-col justify-center'
-        ></div>
+        <div className='border rounded-xl border-gray-300 dark:border-gray-800 flex flex-col justify-center p-4'>
+            <div id='reader' className=' w-full aspect-square bg-secondary rounded-md overflow-hidden' />
+
+            {isCameraOn ? (
+                <Button
+                    variant='secondary'
+                    onClick={() => {
+                        scanner!.stop();
+                        setisCameraOn(false);
+                    }}
+                    className='mt-2'
+                    disabled={!isCameraOn}
+                >
+                    Stop Camera
+                </Button>
+            ) : (
+                <Button
+                    variant='secondary'
+                    onClick={() => {
+                        startCamera();
+                    }}
+                    className='mt-2'
+                >
+                    Start Camera
+                </Button>
+            )}
+        </div>
     );
-};
-
-Scanner.displayName = 'Scanner';
-
-export default Scanner;
+}

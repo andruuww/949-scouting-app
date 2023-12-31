@@ -61,6 +61,7 @@ export default function PitScouting() {
                             onClick={() => {
                                 if (formRef.current?.isFormClear()) {
                                     setExportIsLoading(true);
+                                    router.push('/export');
                                 }
                             }}
                             className='w-full'

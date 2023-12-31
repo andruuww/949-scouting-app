@@ -37,7 +37,6 @@ function jsonArrToCSV(jsonArray: Record<string, string>[]): string {
 }
 
 export default function Scanning() {
-    const containerRef = useRef(null);
     let rawData: string[] = [];
     let lastData: string = '';
     let cacheName = '';
@@ -81,7 +80,8 @@ export default function Scanning() {
 
     function bundleQRData() {
         let signature = rawData[0].slice(0, 1);
-        rawData[0] = rawData[0].slice(1).slice(0, -1);
+        rawData[0] = rawData[0].slice(1);
+        rawData[rawData.length - 1] = rawData[rawData.length - 1].slice(0, -1);
 
         if (signature === pitJSON.signature) {
             cacheName = pitJSON.name + 'Scanned';
@@ -137,7 +137,7 @@ export default function Scanning() {
 
     return (
         <>
-            <main className='flex flex-col p-7 min-h-screen max-w-md mx-auto justify-between space-y-4'>
+            <main className='flex flex-col p-7 min-h-screen mx-auto justify-between space-y-4'>
                 <div>
                     <MenuBar
                         backButtonPage='/'
@@ -166,8 +166,8 @@ export default function Scanning() {
                         />
                     </div>
                 </div>
-                <div className='aspect-square' ref={containerRef}>
-                    <Scanner handleData={handleData} containerRef={containerRef} />
+                <div className='w-full'>
+                    <Scanner handleData={handleData} />
                 </div>
                 <div className='flex flex-col space-y-2'>
                     <Button

@@ -113,7 +113,7 @@ export default function SettingsForm() {
                                 <RadioGroup
                                     onValueChange={field.onChange}
                                     defaultValue={field.value}
-                                    className='grid max-w-md grid-cols-2 gap-8 pt-2'
+                                    className='grid w-full grid-cols-2 gap-8 pt-2'
                                 >
                                     <FormItem>
                                         <FormLabel className='[&:has([data-state=checked])>div]:border-primary'>
@@ -164,6 +164,9 @@ export default function SettingsForm() {
                                         </FormLabel>
                                     </FormItem>
                                 </RadioGroup>
+                                <Button type='submit' className='w-full'>
+                                    Update Theme
+                                </Button>
                             </FormItem>
                         )}
                     />
@@ -229,9 +232,6 @@ export default function SettingsForm() {
                             </div>
                         )}
                     </div>
-                    <Button type='submit' className='w-full'>
-                        Update
-                    </Button>
                 </form>
             </Form>
         </main>

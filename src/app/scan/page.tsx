@@ -137,8 +137,8 @@ export default function Scanning() {
 
     return (
         <>
-            <main className='flex flex-col p-7 min-h-screen mx-auto justify-between space-y-4'>
-                <div>
+            <main className='flex flex-col min-h-screen mx-auto justify-between space-y-4'>
+                {/* <div>
                     <MenuBar
                         backButtonPage='/'
                         resetData={() => {
@@ -165,8 +165,8 @@ export default function Scanning() {
                             )}
                         />
                     </div>
-                </div>
-                <div className='w-full'>
+                </div> */}
+                <div className='w-full h-2'>
                     <Scanner handleData={handleData} />
                 </div>
                 <div className='flex flex-col space-y-2'>

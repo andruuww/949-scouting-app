@@ -11,7 +11,7 @@ import { SWStatus } from '@/lib/types';
 import useIsConnected from '@/components/connection-hook';
 import { useTheme } from 'next-themes';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { toast } from '@/components/ui/use-toast';
+import { toast } from 'sonner';
 
 export default function SettingsForm() {
     const { theme, setTheme } = useTheme();
@@ -71,9 +71,7 @@ export default function SettingsForm() {
                         console.error('Error clearing cache:', error);
                     });
             }
-            toast({
-                title: 'Deleted all data',
-            });
+            toast.warning('All data has been cleared');
         }
     }
 

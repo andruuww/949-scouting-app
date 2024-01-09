@@ -3,13 +3,11 @@ import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { ProtobufOperation } from '@/lib/types';
-import MenuBar from '@/components/menu-bar';
 import Scanner from '@/components/qr-scanner';
 import { saveAs } from 'file-saver';
-import { toast } from '@/components/ui/use-toast';
+import { toast } from 'sonner';
 import pitJSON from '@/jsons/2023/pitscoutingjson';
 import matchJSON from '@/jsons/2023/matchscoutingjson';
-import TeamsList from '@/components/teams-list';
 
 function jsonArrToCSV(jsonArray: Record<string, string>[]): string {
     const result: string[] = [];
@@ -64,15 +62,14 @@ export default function Scanning() {
         lastData = data;
         if (!rawData.includes(data)) {
             rawData.push(data);
-            toast({
-                description: `Barcode part ${rawData.length} scanned!`,
+            toast.success('Scanned', {
+                description: `Rart ${rawData.length} has been scanned!`,
             });
             if (data.slice(-1) === '!') {
                 bundleQRData();
             }
         } else {
-            toast({
-                title: 'Duplicate!',
+            toast.success('Duplicate!', {
                 description: `This barcode was scanned as part ${rawData.indexOf(data) + 1}!`,
             });
         }
@@ -105,7 +102,7 @@ export default function Scanning() {
         protoWorker.onmessage = (e) => {
             const parsedData: Record<string, any>[] = e.data.parsedData.items;
             localStorage.setItem(cacheName, JSON.stringify([...scannedData, ...parsedData]));
-            toast({
+            toast.success('Success', {
                 description: `Data successfully imported!`,
             });
             protoWorker.terminate();
@@ -174,9 +171,8 @@ export default function Scanning() {
                         variant='secondary'
                         onClick={() => {
                             rawData = [];
-                            toast({
+                            toast.warning('Cancelled', {
                                 description: 'Scanned parts have been cleared, start scanning from the beginning.',
-                                repeatable: true,
                             });
                         }}
                     >

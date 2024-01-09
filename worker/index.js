@@ -1,6 +1,4 @@
 import { SWStatus } from '@/lib/types';
-import { prefetch } from 'webpack';
-import { request } from 'bwip-js';
 
 // production
 const ASSETS = [
@@ -9,7 +7,7 @@ const ASSETS = [
     // lost like 4 hours of sleep because of this!
     '/',
     '/export',
-    'match',
+    '/match',
     '/pit',
     '/scan',
     '/settings',

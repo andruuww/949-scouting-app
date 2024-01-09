@@ -1,18 +1,18 @@
 'use client';
-import { FormElementsType, JSONFormElement } from '@/lib/types';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { UseFormReturn, useForm } from 'react-hook-form';
-import * as z from 'zod';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Textarea } from './ui/textarea';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Button } from './ui/button';
-import Counter from './counter';
-import { toast } from './ui/use-toast';
+import { FormElementsType, JSONFormElement } from '@/lib/types';
+import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useImperativeHandle } from 'react';
+import { UseFormReturn, useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import * as z from 'zod';
+import Counter from './counter';
+import { Button } from './ui/button';
 import { Switch } from './ui/switch';
+import { Textarea } from './ui/textarea';
 
 // TODO THIS CAN BE MULTITHREADED!!!
 function generateSchemaArray(formElementData: JSONFormElement): { name: string; schema: z.ZodTypeAny }[] {
@@ -422,11 +422,14 @@ const Parser = React.forwardRef(({ formJSON, update }: { formJSON: JSONFormEleme
                 const formValue = formValues[key];
 
                 if (JSON.stringify(formValue) !== JSON.stringify(defaultValue)) {
-                    toast({
-                        title: `Warning: Data Loss!`,
+                    toast.warning(`Data Loss!`, {
                         description: `Please submit or clear the form.`,
-                        variant: 'destructive',
-                        repeatable: true,
+                        action: {
+                            label: 'Clear',
+                            onClick: () => {
+                                formResolver.reset();
+                            },
+                        },
                     });
                     return false;
                 }

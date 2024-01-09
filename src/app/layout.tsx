@@ -4,7 +4,7 @@ import HistoryProvider from '@/components/history-provider';
 import { Inter } from 'next/font/google';
 import type { Metadata } from 'next';
 import { ThemeProvider } from '@/components/theme-provider';
-import { Toaster } from '@/components/ui/toaster';
+import { Toaster } from '@/components/ui/sonner';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -70,8 +70,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <HistoryProvider />
                 <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
                     {children}
-                    <Toaster />
                 </ThemeProvider>
+                <Toaster />
             </body>
         </html>
     );

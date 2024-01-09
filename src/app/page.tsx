@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import MenuBar from '@/components/menu-bar';
-import { toast } from '@/components/ui/use-toast';
+import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { z } from 'zod';
@@ -17,9 +17,7 @@ async function registerSW() {
             navigator.serviceWorker.register('/sw.js').then(() => {
                 const precacheChannel = new BroadcastChannel('precache-messages');
                 precacheChannel.addEventListener('message', (event) => {
-                    toast({
-                        description: `${event.data.type}`,
-                    });
+                    toast.info(`${event.data.type}`);
                 });
             });
         }

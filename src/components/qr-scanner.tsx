@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 
 import { Html5Qrcode } from 'html5-qrcode';
-import { toast } from './ui/use-toast';
-import { Button } from './ui/button';
+import { toast } from 'sonner';
 import useSwipe from './useSwipe';
 
 export default function Scanner({ handleData }: { handleData: (data: string) => void }) {
@@ -50,11 +49,8 @@ export default function Scanner({ handleData }: { handleData: (data: string) => 
                 setisCameraOn(true);
             })
             .catch((error) => {
-                toast({
-                    title: error,
-                    description: 'Failed to access the camera. Please double check camera permissions.',
-
-                    repeatable: true,
+                toast.error('Error', {
+                    description: error,
                 });
             });
     }

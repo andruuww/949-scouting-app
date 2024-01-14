@@ -320,7 +320,7 @@ function renderItem(
                     render={({ field }) => {
                         return (
                             <FormItem key={key} className='h-full'>
-                                <div className='flex flex-row items-center justify-between border h-full rounded-xl border-gray-300 dark:border-gray-800 p-4'>
+                                <div className='flex flex-row items-center justify-between border h-full rounded-xl border-t-input p-4'>
                                     <FormLabel className='leading-relaxed'>{element.label}</FormLabel>
                                     <FormControl>
                                         <Switch
@@ -332,6 +332,19 @@ function renderItem(
                                     <FormMessage className='text-xs' />
                                 </div>
                             </FormItem>
+                            // <FormItem key={key} className='h-full'>
+                            //     <FormControl>
+                            //         <Button
+                            //             className={`flex flex-row items-center justify-center border h-full rounded-xl border-t-input p-4 w-full`}
+                            //             variant={field.value ? 'default' : 'secondary'}
+                            //             type='button'
+                            //             onClick={() => field.onChange(!field.value)}
+                            //         >
+                            //             <FormLabel className='leading-relaxed'>{element.label}</FormLabel>
+                            //             <FormMessage className='text-xs' />
+                            //         </Button>
+                            //     </FormControl>
+                            // </FormItem>
                         );
                     }}
                 />

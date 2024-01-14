@@ -15,6 +15,7 @@ import { useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
 function ResetButton({ resetData }: { resetData?: () => void }) {
     if (!resetData) return null;
@@ -76,15 +77,17 @@ export default function MenuBar({
     resetData,
     backButtonPage,
     navigationCondition = () => true,
+    className,
 }: {
     resetData?: () => void;
     backButtonPage?: string;
     navigationCondition?: () => boolean;
+    className?: string;
 }) {
     const router = useRouter();
 
     return (
-        <div className='flex flex-row justify-between items-center space-x-2 mb-4'>
+        <div className={cn('flex flex-row justify-between items-center space-x-2 mb-4', className)}>
             <div className='text-2xl font-bold align-middle min-w-min'>
                 <span>949 Scouting</span>
             </div>

@@ -8,28 +8,41 @@ import { saveAs } from 'file-saver';
 import { toast } from 'sonner';
 import pitJSON from '@/jsons/2023/pitscoutingjson';
 import matchJSON from '@/jsons/2023/matchscoutingjson';
+import {
+    Drawer,
+    DrawerTrigger,
+    DrawerContent,
+    DrawerHeader,
+    DrawerTitle,
+    DrawerDescription,
+    DrawerFooter,
+} from '@/components/ui/drawer';
+import useSwipe from '@/components/useSwipe';
+import MenuBar from '@/components/menu-bar';
+import TeamsList from '@/components/teams-list';
+
+function jsonToCSV(row: Record<string, any>): string {
+    const rowResult: string[] = [];
+    Object.keys(row).map((key) => {
+        const value = row[key];
+        if (Array.isArray(value) && value.length > 0) {
+            rowResult.push(`"${value.join(',')}"`);
+        } else {
+            rowResult.push(value !== undefined ? String(value) : '');
+        }
+    });
+    return rowResult.join(',');
+}
 
 function jsonArrToCSV(jsonArray: Record<string, string>[]): string {
     const result: string[] = [];
 
     const header = Object.keys(jsonArray[0]);
 
-    jsonArray.map((row) => {
-        if (!row.marked) {
-            const rowResult: string[] = [];
-            Object.keys(row).map((key) => {
-                const value = row[key];
-                if (key !== 'marked') {
-                    if (Array.isArray(value) && value.length > 0) {
-                        rowResult.push(`"${value.join(',')}"`);
-                    } else {
-                        rowResult.push(value !== undefined ? String(value) : '');
-                    }
-                }
-            });
+    console.log(jsonArray);
 
-            result.push(rowResult.join(','));
-        }
+    jsonArray.map((row) => {
+        result.push(jsonToCSV(row));
     });
     return [header.join(','), ...result].join('\n');
 }
@@ -41,6 +54,8 @@ export default function Scanning() {
 
     const [pitScoutingScanned, setPitScoutingScanned] = useState<Record<string, any>[]>([]);
     const [matchScoutingScanned, setMatchScoutingScanned] = useState<Record<string, any>[]>([]);
+
+    const [open, setOpen] = useState(false);
 
     function updateScannedData() {
         const pitScoutingScanned = localStorage.getItem('pitScoutingScanned')
@@ -132,59 +147,100 @@ export default function Scanning() {
         }
     }
 
+    const swipeHandlers = useSwipe({
+        onSwipedUp: () => {
+            setOpen(true);
+        },
+    });
+
     return (
         <>
-            <main className='flex flex-col min-h-screen mx-auto justify-between space-y-4'>
-                {/* <div>
-                    <MenuBar
-                        backButtonPage='/'
-                        resetData={() => {
-                            localStorage.removeItem(`${pitJSON.name}Scanned`);
-                            localStorage.removeItem(`${matchJSON.name}Scanned`);
-                            updateScannedData();
-                        }}
-                    />
-                    <div className='space-y-2'>
-                        <TeamsList
-                            teamsJSON={pitScoutingScanned}
-                            label='Scanned Teams'
-                            mode='delete'
-                            cacheName={`${pitJSON.name}Scanned`}
-                            jsonKeyDisplayName='teamNumber'
-                        />
-                        <TeamsList
-                            teamsJSON={matchScoutingScanned}
-                            label='Scanned Matches'
-                            mode='delete'
-                            cacheName={`${matchJSON.name}Scanned`}
-                            displayDataStringArray={matchScoutingScanned.map(
-                                (i: Record<string, any>) => `#${i.matchNumber.toString()}: ${i.teamNumber.toString()}`
-                            )}
-                        />
-                    </div>
-                </div> */}
-                <div className='w-full h-2'>
-                    <Scanner handleData={handleData} />
-                </div>
-                <div className='flex flex-col space-y-2'>
-                    <Button
-                        variant='secondary'
-                        onClick={() => {
-                            rawData = [];
-                            toast.warning('Cancelled', {
-                                description: 'Scanned parts have been cleared, start scanning from the beginning.',
-                            });
-                        }}
-                    >
-                        Cancel Parts
-                    </Button>
-                    <Button onClick={() => exportData(pitJSON.name + 'Scanned')} variant='default' className='w-full'>
-                        Export {pitJSON.label} Data
-                    </Button>
-                    <Button onClick={() => exportData(matchJSON.name + 'Scanned')} variant='default' className='w-full'>
-                        Export {matchJSON.label} Data
-                    </Button>
-                </div>
+            <main className='flex flex-col h-screen mx-auto'>
+                <Scanner handleData={handleData}></Scanner>
+
+                <MenuBar
+                    className='absolute top-0 inset-x-0 p-7'
+                    backButtonPage='/'
+                    resetData={() => {
+                        localStorage.removeItem(`${pitJSON.name}Scanned`);
+                        localStorage.removeItem(`${matchJSON.name}Scanned`);
+                        updateScannedData();
+                    }}
+                />
+
+                <Drawer open={open} onClose={() => setOpen(false)}>
+                    <DrawerTrigger asChild>
+                        <div
+                            className={`w-full fixed bottom-0 right-0 left-0 pointer-events-auto h-[20rem] p-7 flex flex-col justify-end ${
+                                open && 'pointer-events-none'
+                            }`}
+                            {...swipeHandlers}
+                        >
+                            <Button className='w-full' onClick={() => setOpen(true)}>
+                                Open Console
+                            </Button>
+                        </div>
+                    </DrawerTrigger>
+                    <DrawerContent>
+                        <div className='mx-auto w-full'>
+                            <DrawerHeader>
+                                <DrawerTitle>Scanning Console</DrawerTitle>
+                                <DrawerDescription>View and export scanned teams</DrawerDescription>
+                            </DrawerHeader>
+                            <div className='p-4 pb-0'>
+                                <div>
+                                    <div className='space-y-2'>
+                                        <TeamsList
+                                            teamsJSON={pitScoutingScanned}
+                                            label='Scanned Teams'
+                                            mode='delete'
+                                            cacheName={`${pitJSON.name}Scanned`}
+                                            jsonKeyDisplayName='teamNumber'
+                                        />
+                                        <TeamsList
+                                            teamsJSON={matchScoutingScanned}
+                                            label='Scanned Matches'
+                                            mode='delete'
+                                            cacheName={`${matchJSON.name}Scanned`}
+                                            displayDataStringArray={matchScoutingScanned.map(
+                                                (i: Record<string, any>) =>
+                                                    `#${i.matchNumber.toString()}: ${i.teamNumber.toString()}`
+                                            )}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <DrawerFooter>
+                                <Button
+                                    onClick={() => exportData(pitJSON.name + 'Scanned')}
+                                    variant='default'
+                                    className='w-full'
+                                >
+                                    Export {pitJSON.label} Data
+                                </Button>
+                                <Button
+                                    onClick={() => exportData(matchJSON.name + 'Scanned')}
+                                    variant='default'
+                                    className='w-full'
+                                >
+                                    Export {matchJSON.label} Data
+                                </Button>
+                                <Button
+                                    variant='secondary'
+                                    onClick={() => {
+                                        rawData = [];
+                                        toast.warning('Cancelled', {
+                                            description:
+                                                'Scanned parts have been cleared, start scanning from the beginning.',
+                                        });
+                                    }}
+                                >
+                                    Cancel Parts
+                                </Button>
+                            </DrawerFooter>
+                        </div>
+                    </DrawerContent>
+                </Drawer>
             </main>
         </>
     );

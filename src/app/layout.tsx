@@ -71,7 +71,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
                     {children}
                 </ThemeProvider>
-                <Toaster />
+                <Toaster visibleToasts={1} expand={false} position='top-right' />
             </body>
         </html>
     );

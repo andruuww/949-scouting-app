@@ -36,6 +36,7 @@ export default function Export() {
         setScoutedTeams(data);
         workerRef.current = new Worker(new URL('@/workers/qrworker.ts', import.meta.url));
 
+        console.log(data);
         workerRef.current.postMessage({
             data: data,
             schemaJSON: exportType === 'Pit Data' ? pitJSON : matchJSON,

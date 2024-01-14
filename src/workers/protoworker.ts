@@ -6,21 +6,35 @@ const ROOT_NAME = 'root';
 const ITEM_NAME = 'item';
 const REPEATED_ITEM_NAME = 'repeatedItem';
 
+function toPascalCase(inputString: string) {
+    return inputString
+        .replace(/\b\w/g, function (match) {
+            return match.toUpperCase();
+        })
+        .replace(/\s/g, '');
+}
+
 function generateProtoSchemaArray(json: JSONFormElement): Record<string, string>[] {
     let result: Record<string, string>[] = [];
     if (json.elements && json.elements.length > 0) {
         for (const element of json.elements) {
             const fieldName = element.name || '';
-            const fieldType = getFieldType(element);
+            if (element.type === FormElementsType.CHECKBOX) {
+                element.options?.forEach((option) => {
+                    result.push({ name: `${fieldName}${toPascalCase(option)}`, type: 'bool' });
+                });
+            } else {
+                const fieldType = getFieldType(element);
 
-            if (element.elements) {
-                result = [...result, ...generateProtoSchemaArray(element)];
-            } else if (
-                element.type !== FormElementsType.TITLE &&
-                element.type !== FormElementsType.ROOT &&
-                element.type !== FormElementsType.CLEAR_SUBMIT_BUTTONS
-            ) {
-                result.push({ name: fieldName, type: fieldType });
+                if (element.elements) {
+                    result = [...result, ...generateProtoSchemaArray(element)];
+                } else if (
+                    element.type !== FormElementsType.TITLE &&
+                    element.type !== FormElementsType.ROOT &&
+                    element.type !== FormElementsType.CLEAR_SUBMIT_BUTTONS
+                ) {
+                    result.push({ name: fieldName, type: fieldType });
+                }
             }
         }
     }
@@ -36,8 +50,6 @@ function getFieldType(element: JSONFormElement): string {
             return 'bool';
         case FormElementsType.SELECT:
             return 'string';
-        case FormElementsType.CHECKBOX:
-            return 'CHECKBOX';
         case FormElementsType.COUNTER:
             return 'int32';
         default:
@@ -53,11 +65,7 @@ export function generateProtoRoot(jsonElement: JSONFormElement): protobuf.Root {
     fields.push({ name: 'scoutName', type: 'string' });
 
     fields.forEach((field, index) => {
-        if (field.type === 'CHECKBOX') {
-            item.add(new protobuf.Field(field.name, index + 1, 'string', 'repeated'));
-        } else {
-            item.add(new protobuf.Field(field.name, index + 1, field.type));
-        }
+        item.add(new protobuf.Field(field.name, index + 1, field.type));
     });
     root.define(ROOT_NAME).add(item);
 
@@ -68,8 +76,20 @@ export function generateProtoRoot(jsonElement: JSONFormElement): protobuf.Root {
     return root;
 }
 
-export function protoSerialize(sampleData: { items: JSONFormElement[] }, root: protobuf.Root): string {
+export function protoSerialize(sampleData: { items: Record<string, any>[] }, root: protobuf.Root): string {
     const GeneratedForm = root.lookupType(`${ROOT_NAME}.${REPEATED_ITEM_NAME}`);
+
+    // flatten checkbox options
+    sampleData.items.forEach((row) => {
+        Object.keys(row).forEach((key: string) => {
+            if (Array.isArray(row[key])) {
+                row[key].forEach((option: string) => {
+                    row[`${key}${toPascalCase(option)}`] = true;
+                });
+                delete row[key];
+            }
+        });
+    });
 
     const messageInstance = GeneratedForm.create(sampleData);
 

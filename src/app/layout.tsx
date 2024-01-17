@@ -64,7 +64,7 @@ export const viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
-        <html lang='en' className='w-screen'>
+        <html lang='en' className='w-screen '>
             <body className={inter.className}>
                 <HistoryProvider />
                 <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
@@ -73,8 +73,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <Toaster
                     position='top-right'
                     toastOptions={{
+                        duration: 2000,
+                        unstyled: true,
                         classNames: {
-                            toast: 'mt-[env(safe-area-inset-bottom)]',
+                            toast: 'flex space-x-4 items-center rounded-xl w-full p-4 bg-primary text-secondary border-2 text-base mt-[env(safe-area-inset-top)]',
                         },
                     }}
                 />

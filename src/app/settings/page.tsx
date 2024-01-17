@@ -96,7 +96,7 @@ export default function SettingsForm() {
     }
 
     return (
-        <main className='flex flex-col p-7 min-h-screen mx-auto'>
+        <main className='flex flex-col safe min-h-screen mx-auto'>
             <MenuBar backButtonPage={prevPath.current} />
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(update)} className='space-y-8'>

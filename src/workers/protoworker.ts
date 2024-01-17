@@ -19,6 +19,7 @@ function generateProtoSchemaArray(json: JSONFormElement): Record<string, string>
     if (json.elements && json.elements.length > 0) {
         for (const element of json.elements) {
             const fieldName = element.name || '';
+            // flatten checkbox options
             if (element.type === FormElementsType.CHECKBOX) {
                 element.options?.forEach((option) => {
                     result.push({ name: `${fieldName}${toPascalCase(option)}`, type: 'bool' });
@@ -91,17 +92,11 @@ export function protoSerialize(sampleData: { items: Record<string, any>[] }, roo
         });
     });
 
+    // generate protobuf message
     const messageInstance = GeneratedForm.create(sampleData);
-
-    const verifyError = GeneratedForm.verify(messageInstance);
-    if (verifyError) {
-        console.error('Error verifying message:', verifyError);
-        throw new Error(verifyError);
-    }
-
     const serializedMessage = GeneratedForm.encode(messageInstance).finish();
+    // compress message
     const compressedMessage = fflate.deflateSync(serializedMessage, { level: 9, mem: 12 });
-
     return fflate.strFromU8(compressedMessage, true);
 }
 

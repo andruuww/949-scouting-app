@@ -75,10 +75,6 @@
   }
 }
 
- @viewport {
-   orientation: portrait;
- }
-
 @layer base {
     /* remove arrows */
     /* Chrome, Safari, Edge, Opera */
@@ -97,4 +93,11 @@
 
 img:not(.visible) {
   display: none;
+}
+
+.safe {
+  padding-top: calc(env(safe-area-inset-top) + 1.75rem);
+  padding-right: calc(env(safe-area-inset-right) + 1.75rem);
+  padding-bottom: calc(env(safe-area-inset-bottom) + 1.75rem);
+  padding-left: calc(env(safe-area-inset-left) + 1.75rem);
 }

@@ -1,12 +1,11 @@
 'use client';
+import MenuBar from '@/components/menu-bar';
 import QRCodeSkeleton from '@/components/qrcodeskeleton';
 import TeamsList from '@/components/teams-list';
-import { cache, useEffect, useRef, useState } from 'react';
-import pitJSON from '@/jsons/2023/pitscoutingjson';
-import matchJSON from '@/jsons/2023/matchscoutingjson';
-import MenuBar from '@/components/menu-bar';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { set } from 'zod';
+import matchJSON from '@/jsons/2023/matchscoutingjson';
+import pitJSON from '@/jsons/2023/pitscoutingjson';
+import { useEffect, useRef, useState } from 'react';
 
 function fetchScoutedTeams(cacheName: string): Record<string, string>[] {
     if (typeof window !== 'undefined') {
@@ -36,7 +35,6 @@ export default function Export() {
         setScoutedTeams(data);
         workerRef.current = new Worker(new URL('@/workers/qrworker.ts', import.meta.url));
 
-        console.log(data);
         workerRef.current.postMessage({
             data: data,
             schemaJSON: exportType === 'Pit Data' ? pitJSON : matchJSON,
@@ -54,6 +52,7 @@ export default function Export() {
     }, [cacheName]);
 
     useEffect(() => {
+        // set export type by previous path
         if (typeof window !== 'undefined') {
             const prevPath = globalThis.sessionStorage.getItem('exportBackPath');
             setExportBackPath(prevPath || '/');
@@ -71,7 +70,7 @@ export default function Export() {
     }, []);
 
     return (
-        <main className='flex flex-col p-7 min-h-screen mx-auto'>
+        <main className='flex flex-col safe min-h-screen mx-auto'>
             <MenuBar backButtonPage={exportBackPath} />
 
             <div className='py-2 mb-4'>

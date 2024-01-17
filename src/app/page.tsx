@@ -10,6 +10,14 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from '@/component
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import {
+    Drawer,
+    DrawerTrigger,
+    DrawerContent,
+    DrawerHeader,
+    DrawerTitle,
+    DrawerDescription,
+} from '@/components/ui/drawer';
 
 async function registerSW() {
     try {
@@ -53,8 +61,9 @@ export default function Home() {
     });
 
     return (
-        <main className='flex flex-col p-7 min-h-screen mx-auto'>
+        <main className='flex flex-col safe mx-auto justify-between h-screen'>
             <MenuBar />
+
             <div className='flex flex-col flex-1 justify-center space-y-2'>
                 <Form {...formResolver}>
                     <form>

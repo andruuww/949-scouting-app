@@ -39,8 +39,6 @@ function jsonArrToCSV(jsonArray: Record<string, string>[]): string {
 
     const header = Object.keys(jsonArray[0]);
 
-    console.log(jsonArray);
-
     jsonArray.map((row) => {
         result.push(jsonToCSV(row));
     });
@@ -159,7 +157,7 @@ export default function Scanning() {
                 <Scanner handleData={handleData}></Scanner>
 
                 <MenuBar
-                    className='absolute top-0 inset-x-0 p-7'
+                    className='fixed top-[calc(env(safe-area-inset-top))] inset-x-0 p-7'
                     backButtonPage='/'
                     resetData={() => {
                         localStorage.removeItem(`${pitJSON.name}Scanned`);
@@ -168,7 +166,7 @@ export default function Scanning() {
                     }}
                 />
 
-                <Drawer open={open} onClose={() => setOpen(false)}>
+                <Drawer open={open} onClose={() => setOpen(false)} modal={false}>
                     <DrawerTrigger asChild>
                         <div
                             className={`w-full fixed bottom-0 right-0 left-0 pointer-events-auto h-[20rem] p-7 flex flex-col justify-end ${

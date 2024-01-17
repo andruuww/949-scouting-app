@@ -9,7 +9,7 @@ import { Toaster } from '@/components/ui/sonner';
 const inter = Inter({ subsets: ['latin'] });
 
 const APP_NAME = '949 Scout App';
-const APP_DEFAULT_TITLE = 'Scout App';
+const APP_DEFAULT_TITLE = '949 Scout App';
 const APP_TITLE_TEMPLATE = 'Scout App';
 const APP_DESCRIPTION = "949's custom scouting app";
 
@@ -56,22 +56,28 @@ export const metadata: Metadata = {
 };
 
 export const viewport = {
-    width: 'device-width',
     initialScale: 1,
-    maximumScale: 1,
-    userScalable: false,
     themeColor: '#020817',
+    userScalable: 'no',
+    viewportFit: 'cover',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
-        <html lang='en'>
+        <html lang='en' className='w-screen'>
             <body className={inter.className}>
                 <HistoryProvider />
                 <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
                     {children}
                 </ThemeProvider>
-                <Toaster visibleToasts={1} expand={false} position='top-right' />
+                <Toaster
+                    position='top-right'
+                    toastOptions={{
+                        classNames: {
+                            toast: 'mt-[env(safe-area-inset-bottom)]',
+                        },
+                    }}
+                />
             </body>
         </html>
     );

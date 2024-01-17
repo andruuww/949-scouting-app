@@ -7,6 +7,8 @@ import { set } from 'zod';
 export default function Scanner({ handleData }: { handleData: (data: string) => void }) {
     const [scanner, setScanner] = React.useState<Html5Qrcode>();
 
+    const QR_PADDING = 0;
+
     // stop camera on page leave
     useEffect(() => {
         return () => {
@@ -30,7 +32,10 @@ export default function Scanner({ handleData }: { handleData: (data: string) => 
                     { facingMode: 'environment' },
                     {
                         fps: 30,
-                        qrbox: { width: container!.offsetWidth - 25, height: container!.offsetHeight - 25 },
+                        qrbox: {
+                            width: container!.offsetWidth - QR_PADDING,
+                            height: container!.offsetHeight - QR_PADDING,
+                        },
                         disableFlip: true,
                     },
                     (result: string) => {
@@ -55,8 +60,8 @@ export default function Scanner({ handleData }: { handleData: (data: string) => 
     }
 
     return (
-        <div className='absolute top-0 bottom-0 right-0 left-0 h-full border-gray-300 dark:border-gray-800 flex flex-col justify-center'>
-            <div id='reader' className='w-full h-full bg-secondary'></div>
+        <div className='fixed bottom-0 top-0 h-screen right-0 left-0 bg-secondary'>
+            <div id='reader' className='w-full h-full'></div>
         </div>
     );
 }

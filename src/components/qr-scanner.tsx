@@ -32,8 +32,8 @@ export default function Scanner({ handleData }: { handleData: (data: string) => 
                     {
                         fps: 30,
                         qrbox: {
-                            width: container!.offsetWidth - QR_PADDING,
-                            height: container!.offsetHeight - QR_PADDING,
+                            width: 60,
+                            height: 60,
                         },
                         disableFlip: true,
                     },

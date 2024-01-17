@@ -2,12 +2,11 @@ import React, { useEffect } from 'react';
 
 import { Html5Qrcode } from 'html5-qrcode';
 import { toast } from 'sonner';
-import { set } from 'zod';
 
 export default function Scanner({ handleData }: { handleData: (data: string) => void }) {
     const [scanner, setScanner] = React.useState<Html5Qrcode>();
 
-    const QR_PADDING = 0;
+    const QR_PADDING = 50;
 
     // stop camera on page leave
     useEffect(() => {

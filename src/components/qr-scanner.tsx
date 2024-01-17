@@ -30,10 +30,10 @@ export default function Scanner({ handleData }: { handleData: (data: string) => 
                 return html5Qrcode.start(
                     { facingMode: 'environment' },
                     {
-                        fps: 30,
+                        fps: 15,
                         qrbox: {
-                            width: 60,
-                            height: 60,
+                            width: 500,
+                            height: 500,
                         },
                         disableFlip: true,
                     },

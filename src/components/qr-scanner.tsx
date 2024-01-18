@@ -32,8 +32,8 @@ export default function Scanner({ handleData }: { handleData: (data: string) => 
                     {
                         fps: 15,
                         qrbox: {
-                            width: 500,
-                            height: 500,
+                            width: 300,
+                            height: 300,
                         },
                         disableFlip: true,
                     },

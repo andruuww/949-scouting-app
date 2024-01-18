@@ -59,7 +59,7 @@ export default function Scanner({ handleData }: { handleData: (data: string) => 
     }
 
     return (
-        <div className='fixed bottom-0 top-0 h-screen right-0 left-0 bg-secondary'>
+        <div className='fixed aspect-square bg-secondary'>
             <div id='reader' className='w-full h-full'></div>
         </div>
     );

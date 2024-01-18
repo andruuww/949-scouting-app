@@ -153,7 +153,7 @@ export default function Scanning() {
 
     return (
         <>
-            <main className='flex flex-col h-screen mx-auto'>
+            <main className='flex flex-col h-screen mx-auto justify-between'>
                 <Scanner handleData={handleData}></Scanner>
 
                 <MenuBar

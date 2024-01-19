@@ -17,9 +17,9 @@ export default function Scanner({ handleData }: { handleData: (data: string) => 
                             cameras.push(devices);
                         }
                     });
-                    cameras.forEach((camera, i) => {
-                        toast(`${i}: ${camera.label}`);
-                    });
+                    // cameras.forEach((camera, i) => {
+                    //     toast(`${i}: ${camera.label}`);
+                    // });
                 })
                 .catch((error) => {
                     console.log(error);
@@ -31,7 +31,7 @@ export default function Scanner({ handleData }: { handleData: (data: string) => 
                     const html5Qrcode = new Html5Qrcode('reader');
                     setScanner(html5Qrcode);
                     return html5Qrcode.start(
-                        { deviceId: cameras.at(0)!.deviceId },
+                        { deviceId: cameras[cameras.length - 1]!.deviceId },
                         {
                             fps: 30,
                             disableFlip: true,

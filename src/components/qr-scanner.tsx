@@ -28,7 +28,7 @@ export default function Scanner({ handleData }: { handleData: (data: string) => 
                     const html5Qrcode = new Html5Qrcode('reader');
                     setScanner(html5Qrcode);
                     return html5Qrcode.start(
-                        { deviceId: cameras.at(-1)!.deviceId },
+                        { deviceId: cameras.at(0)!.deviceId },
                         {
                             fps: 30,
                             disableFlip: true,

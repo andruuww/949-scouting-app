@@ -51,9 +51,12 @@ export default function Scanner({ handleData }: { handleData: (data: string) => 
                             cameras.push(devices);
                         }
                     });
-                    // cameras.forEach((camera, i) => {
-                    //     toast(`${i}: ${camera.label}`);
-                    // });
+                    cameras.forEach((camera, i) => {
+                        toast(`${i}: ${camera.label}`);
+                    });
+                    toast('Select camera', {
+                        description: cameras.length - 1,
+                    });
                     startCamera(cameras[cameras.length - 1].deviceId);
                 })
                 .catch((error) => {

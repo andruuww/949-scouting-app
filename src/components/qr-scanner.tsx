@@ -17,6 +17,9 @@ export default function Scanner({ handleData }: { handleData: (data: string) => 
                             cameras.push(devices);
                         }
                     });
+                    cameras.forEach((camera, i) => {
+                        toast(`${i}: ${camera.label}`);
+                    });
                 })
                 .catch((error) => {
                     console.log(error);

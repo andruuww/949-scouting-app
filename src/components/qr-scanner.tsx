@@ -30,12 +30,13 @@ export default function Scanner({ handleData }: { handleData: (data: string) => 
                 return html5Qrcode.start(
                     { facingMode: 'environment' },
                     {
-                        fps: 60,
-                        qrbox: {
-                            width: 350,
-                            height: 350,
-                        },
+                        fps: 30,
+                        // qrbox: {
+                        //     width: 350,
+                        //     height: 350,
+                        // },
                         disableFlip: true,
+                        aspectRatio: container!.offsetWidth / container!.offsetHeight,
                     },
                     (result: string) => {
                         handleData(result);
@@ -59,7 +60,7 @@ export default function Scanner({ handleData }: { handleData: (data: string) => 
     }
 
     return (
-        <div className='fixed aspect-square bg-secondary'>
+        <div className='fixed top-0 bottom-0 right-0 left-0 bg-secondary'>
             <div id='reader' className='w-full h-full'></div>
         </div>
     );

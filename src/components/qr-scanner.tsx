@@ -31,7 +31,7 @@ const Scanner = ({ handleData }: ScannerProps) => {
         };
     }, []);
 
-    return <video></video>;
+    return <video className='fixed'></video>;
 };
 
 export default Scanner;

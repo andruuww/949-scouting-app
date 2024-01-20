@@ -205,7 +205,7 @@ export default function SettingsForm() {
                         <div className='flex-col flex-wrap'>
                             <span>Reload SW</span>
                             <div className='basis-full h-0'></div>
-                            <p className='text-muted-foreground'>WIFI + Restart Required</p>
+                            <p className='text-muted-foreground text-sm'>WIFI + Restart Required</p>
                         </div>
                         <Button
                             type='button'
@@ -220,7 +220,7 @@ export default function SettingsForm() {
                         <div className='flex-col flex-wrap'>
                             <span>Reload Cache</span>
                             <div className='basis-full h-0'></div>
-                            <p className='text-muted-foreground'>WIFI Required</p>
+                            <p className='text-muted-foreground text-sm'>WIFI Required</p>
                         </div>
                         <Button
                             type='button'
@@ -239,7 +239,7 @@ export default function SettingsForm() {
                             <div className='flex-col flex-wrap'>
                                 <span>Delete All Data</span>
                                 <div className='basis-full h-0'></div>
-                                <p className='text-muted-foreground'>Including scout data</p>
+                                <p className='text-muted-foreground text-sm'>Including scout data</p>
                             </div>
                             <Button
                                 type='button'
@@ -256,7 +256,7 @@ export default function SettingsForm() {
                     <div className='flex-col flex-wrap'>
                         <span>Select Camera</span>
                         <div className='basis-full h-0'></div>
-                        <p className='text-muted-foreground'>Scanning Page</p>
+                        <p className='text-muted-foreground text-sm'>Scanning Page</p>
                     </div>
 
                     <Select

@@ -26,7 +26,9 @@ const Scanner = ({ handleData }: ScannerProps) => {
         // @ts-ignore
         qrScanner.$overlay!.childNodes[0].style.display = 'none';
 
-        return () => {};
+        return () => {
+            qrScanner.destroy();
+        };
     }, []);
 
     return <video></video>;

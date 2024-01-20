@@ -11,7 +11,9 @@ import { SWStatus } from '@/lib/types';
 import useIsConnected from '@/components/connection-hook';
 import { useTheme } from 'next-themes';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from 'sonner';
+import Settings from '@/lib/settings';
 
 export default function SettingsForm() {
     const { theme, setTheme } = useTheme();
@@ -20,11 +22,29 @@ export default function SettingsForm() {
 
     const [isUnregistering, setIsUnregistering] = useState(false);
     const [isLoading, setLoading] = useState(true);
+
+    const [cameras, setCameras] = useState<MediaDeviceInfo[]>([]);
+
     let prevPath = useRef('');
     useEffect(() => {
         const storage = globalThis?.sessionStorage;
         prevPath.current = storage!.getItem('settingsBackPath')!;
         setLoading(false);
+
+        if (navigator.mediaDevices) {
+            navigator.mediaDevices
+                .enumerateDevices()
+                .then((devices) => {
+                    devices.forEach((device) => {
+                        if (device.kind == 'videoinput') {
+                            setCameras((cameras) => [...cameras, device]);
+                        }
+                    });
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
     }, []);
 
     async function unregisterSW() {
@@ -98,140 +118,171 @@ export default function SettingsForm() {
     return (
         <main className='flex flex-col safe min-h-screen mx-auto'>
             <MenuBar backButtonPage={prevPath.current} />
-            <Form {...form}>
-                <form onSubmit={form.handleSubmit(update)} className='space-y-8'>
-                    <FormField
-                        control={form.control}
-                        name='theme'
-                        render={({ field }) => (
-                            <FormItem className='space-y-1'>
-                                <FormLabel>Theme</FormLabel>
-                                <FormDescription>Select the theme for the app.</FormDescription>
-                                <FormMessage />
-                                <RadioGroup
-                                    onValueChange={field.onChange}
-                                    defaultValue={field.value}
-                                    className='grid w-full grid-cols-2 gap-8 pt-2'
-                                >
-                                    <FormItem>
-                                        <FormLabel className='[&:has([data-state=checked])>div]:border-primary'>
-                                            <FormControl>
-                                                <RadioGroupItem value='light' className='sr-only' />
-                                            </FormControl>
-                                            <div className='items-center rounded-md border-2 border-muted p-1 hover:border-accent'>
-                                                <div className='space-y-2 rounded-sm bg-[#ecedef] p-2'>
-                                                    <div className='space-y-2 rounded-md bg-white p-2 shadow-sm'>
-                                                        <div className='h-2 w-[40px] rounded-lg bg-[#ecedef]' />
-                                                        <div className='h-2 w-[60px] rounded-lg bg-[#ecedef]' />
-                                                    </div>
-                                                    <div className='flex items-center space-x-2 rounded-md bg-white p-2 shadow-sm'>
-                                                        <div className='h-4 w-4 rounded-full bg-[#ecedef] flex-shrink-0' />
-                                                        <div className='h-2 w-[100px] rounded-lg bg-[#ecedef]' />
-                                                    </div>
-                                                    <div className='flex items-center space-x-2 rounded-md bg-white p-2 shadow-sm'>
-                                                        <div className='h-4 w-4 rounded-full bg-[#ecedef] flex-shrink-0' />
-                                                        <div className='h-2 w-[100px] rounded-lg bg-[#ecedef]' />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <span className='block w-full p-2 text-center font-normal'>Light</span>
-                                        </FormLabel>
-                                    </FormItem>
-                                    <FormItem>
-                                        <FormLabel className='[&:has([data-state=checked])>div]:border-primary'>
-                                            <FormControl>
-                                                <RadioGroupItem value='dark' className='sr-only' />
-                                            </FormControl>
-                                            <div className='items-center rounded-md border-2 border-muted bg-popover p-1 hover:bg-accent hover:text-accent-foreground'>
-                                                <div className='space-y-2 rounded-sm bg-slate-950 p-2'>
-                                                    <div className='space-y-2 rounded-md bg-slate-800 p-2 shadow-sm'>
-                                                        <div className='h-2 w-[40px] rounded-lg bg-slate-400' />
-                                                        <div className='h-2 w-[60px] rounded-lg bg-slate-400' />
-                                                    </div>
-                                                    <div className='flex items-center space-x-2 rounded-md bg-slate-800 p-2 shadow-sm'>
-                                                        <div className='h-4 w-4 rounded-full bg-slate-400 flex-shrink-0' />
-                                                        <div className='h-2 w-[100px] rounded-lg bg-slate-400' />
-                                                    </div>
-                                                    <div className='flex items-center space-x-2 rounded-md bg-slate-800 p-2 shadow-sm'>
-                                                        <div className='h-4 w-4 rounded-full bg-slate-400 flex-shrink-0' />
-                                                        <div className='h-2 w-[100px] rounded-lg bg-slate-400' />
+            <div className='space-y-8'>
+                <Form {...form}>
+                    <form onSubmit={form.handleSubmit(update)} className='space-y-8'>
+                        <FormField
+                            control={form.control}
+                            name='theme'
+                            render={({ field }) => (
+                                <FormItem className='space-y-1'>
+                                    <FormLabel>Theme</FormLabel>
+                                    <FormDescription>Select the theme for the app.</FormDescription>
+                                    <FormMessage />
+                                    <RadioGroup
+                                        onValueChange={field.onChange}
+                                        defaultValue={field.value}
+                                        className='grid w-full grid-cols-2 gap-8 pt-2'
+                                    >
+                                        <FormItem>
+                                            <FormLabel className='[&:has([data-state=checked])>div]:border-primary'>
+                                                <FormControl>
+                                                    <RadioGroupItem value='light' className='sr-only' />
+                                                </FormControl>
+                                                <div className='items-center rounded-md border-2 border-muted p-1 hover:border-accent'>
+                                                    <div className='space-y-2 rounded-sm bg-[#ecedef] p-2'>
+                                                        <div className='space-y-2 rounded-md bg-white p-2 shadow-sm'>
+                                                            <div className='h-2 w-[40px] rounded-lg bg-[#ecedef]' />
+                                                            <div className='h-2 w-[60px] rounded-lg bg-[#ecedef]' />
+                                                        </div>
+                                                        <div className='flex items-center space-x-2 rounded-md bg-white p-2 shadow-sm'>
+                                                            <div className='h-4 w-4 rounded-full bg-[#ecedef] flex-shrink-0' />
+                                                            <div className='h-2 w-[100px] rounded-lg bg-[#ecedef]' />
+                                                        </div>
+                                                        <div className='flex items-center space-x-2 rounded-md bg-white p-2 shadow-sm'>
+                                                            <div className='h-4 w-4 rounded-full bg-[#ecedef] flex-shrink-0' />
+                                                            <div className='h-2 w-[100px] rounded-lg bg-[#ecedef]' />
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <span className='block w-full p-2 text-center font-normal'>Dark</span>
-                                        </FormLabel>
-                                    </FormItem>
-                                </RadioGroup>
-                                <Button type='submit' className='w-full'>
-                                    Update Theme
-                                </Button>
-                            </FormItem>
-                        )}
-                    />
+                                                <span className='block w-full p-2 text-center font-normal'>Light</span>
+                                            </FormLabel>
+                                        </FormItem>
+                                        <FormItem>
+                                            <FormLabel className='[&:has([data-state=checked])>div]:border-primary'>
+                                                <FormControl>
+                                                    <RadioGroupItem value='dark' className='sr-only' />
+                                                </FormControl>
+                                                <div className='items-center rounded-md border-2 border-muted bg-popover p-1 hover:bg-accent hover:text-accent-foreground'>
+                                                    <div className='space-y-2 rounded-sm bg-slate-950 p-2'>
+                                                        <div className='space-y-2 rounded-md bg-slate-800 p-2 shadow-sm'>
+                                                            <div className='h-2 w-[40px] rounded-lg bg-slate-400' />
+                                                            <div className='h-2 w-[60px] rounded-lg bg-slate-400' />
+                                                        </div>
+                                                        <div className='flex items-center space-x-2 rounded-md bg-slate-800 p-2 shadow-sm'>
+                                                            <div className='h-4 w-4 rounded-full bg-slate-400 flex-shrink-0' />
+                                                            <div className='h-2 w-[100px] rounded-lg bg-slate-400' />
+                                                        </div>
+                                                        <div className='flex items-center space-x-2 rounded-md bg-slate-800 p-2 shadow-sm'>
+                                                            <div className='h-4 w-4 rounded-full bg-slate-400 flex-shrink-0' />
+                                                            <div className='h-2 w-[100px] rounded-lg bg-slate-400' />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <span className='block w-full p-2 text-center font-normal'>Dark</span>
+                                            </FormLabel>
+                                        </FormItem>
+                                    </RadioGroup>
+                                    <Button type='submit' className='w-full'>
+                                        Update Theme
+                                    </Button>
+                                </FormItem>
+                            )}
+                        />
+                    </form>
+                </Form>
 
-                    <div className='space-y-2'>
-                        <div>
-                            <FormLabel>Service Worker and Cache</FormLabel>
+                <div className='space-y-4'>
+                    <div>
+                        <span>Service Worker and Cache</span>
 
-                            <div className='basis-full h-0'></div>
-                            <FormDescription className='text-muted-foreground'>
-                                The SW manages the cache. Unregister to update the SW or to try to fix strange issues.
-                            </FormDescription>
-                        </div>
-                        <div className='flex flex-row items-center justify-between rounded-lg border p-4 align-center'>
-                            <div className='flex-col flex-wrap'>
-                                <FormLabel>Reload SW</FormLabel>
-                                <div className='basis-full h-0'></div>
-                                <FormDescription className='text-muted-foreground'>
-                                    WIFI + Restart Required
-                                </FormDescription>
-                            </div>
-                            <Button
-                                type='button'
-                                variant='destructive'
-                                onClick={() => unregisterSW()}
-                                className='min-w-[40%]'
-                            >
-                                {isUnregistering ? <ReloadIcon className='animate-spin' /> : 'Unregister'}
-                            </Button>
-                        </div>
-                        <div className='flex flex-row items-center justify-between rounded-lg border p-4 align-center'>
-                            <div className='flex-col flex-wrap'>
-                                <FormLabel>Reload Cache</FormLabel>
-                                <div className='basis-full h-0'></div>
-                                <FormDescription className='text-muted-foreground'>WIFI Required</FormDescription>
-                            </div>
-                            <Button
-                                type='button'
-                                variant='destructive'
-                                onClick={() => reloadCache()}
-                                className='min-w-[40%]'
-                            >
-                                Reload
-                            </Button>
-                        </div>
-                        {globalThis.sessionStorage.getItem('settingsBackPath') === '/' && (
-                            <div className='flex flex-row items-center justify-between rounded-lg border p-4 align-center'>
-                                <div className='flex-col flex-wrap'>
-                                    <FormLabel>Delete All Data</FormLabel>
-                                    <div className='basis-full h-0'></div>
-                                    <FormDescription className='text-muted-foreground'>
-                                        Including scout data
-                                    </FormDescription>
-                                </div>
-                                <Button
-                                    type='button'
-                                    variant='destructive'
-                                    onClick={() => clearAllData()}
-                                    className='min-w-[40%]'
-                                >
-                                    Clear
-                                </Button>
-                            </div>
-                        )}
+                        <div className='basis-full h-0'></div>
+                        <p className='text-muted-foreground'>
+                            The SW manages the cache. Unregister to update the SW or to try to fix strange issues.
+                        </p>
                     </div>
-                </form>
-            </Form>
+                    <div className='flex flex-row items-center justify-between rounded-lg border p-4 align-center'>
+                        <div className='flex-col flex-wrap'>
+                            <span>Reload SW</span>
+                            <div className='basis-full h-0'></div>
+                            <p className='text-muted-foreground'>WIFI + Restart Required</p>
+                        </div>
+                        <Button
+                            type='button'
+                            variant='destructive'
+                            onClick={() => unregisterSW()}
+                            className='min-w-[40%]'
+                        >
+                            {isUnregistering ? <ReloadIcon className='animate-spin' /> : 'Unregister'}
+                        </Button>
+                    </div>
+                    <div className='flex flex-row items-center justify-between rounded-lg border p-4 align-center'>
+                        <div className='flex-col flex-wrap'>
+                            <span>Reload Cache</span>
+                            <div className='basis-full h-0'></div>
+                            <p className='text-muted-foreground'>WIFI Required</p>
+                        </div>
+                        <Button
+                            type='button'
+                            variant='destructive'
+                            onClick={() => reloadCache()}
+                            className='min-w-[40%]'
+                        >
+                            Reload
+                        </Button>
+                    </div>
+                    <fieldset
+                        disabled={globalThis.sessionStorage.getItem('settingsBackPath') !== '/'}
+                        className='group'
+                    >
+                        <div className='flex flex-row items-center justify-between rounded-lg border p-4 align-center'>
+                            <div className='flex-col flex-wrap'>
+                                <span>Delete All Data</span>
+                                <div className='basis-full h-0'></div>
+                                <p className='text-muted-foreground'>Including scout data</p>
+                            </div>
+                            <Button
+                                type='button'
+                                variant='destructive'
+                                onClick={() => clearAllData()}
+                                className='min-w-[40%]'
+                            >
+                                Clear
+                            </Button>
+                        </div>
+                    </fieldset>
+                </div>
+                <div className='flex flex-row items-center justify-between rounded-lg border p-4 align-center'>
+                    <div className='flex-col flex-wrap'>
+                        <span>Select Camera</span>
+                        <div className='basis-full h-0'></div>
+                        <p className='text-muted-foreground'>Scanning Page</p>
+                    </div>
+
+                    <Select
+                        disabled={cameras.length < 1 || (cameras[0] && cameras[0].label == '')}
+                        defaultValue={Settings.getCameraID()}
+                        onValueChange={(camera) => {
+                            Settings.setCameraID(camera);
+                        }}
+                    >
+                        <SelectTrigger className='w-[40%]'>
+                            {cameras.length < 1 || (cameras[0] && cameras[0].label == '') ? (
+                                <SelectValue>Permissions Denied</SelectValue>
+                            ) : (
+                                <SelectValue></SelectValue>
+                            )}
+                        </SelectTrigger>
+                        <SelectContent>
+                            {cameras.map((camera) => (
+                                <SelectItem key={camera.deviceId} value={camera.deviceId}>
+                                    {camera.label.substring(0, 15) + '...'}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                </div>
+            </div>
         </main>
     );
 }

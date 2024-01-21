@@ -158,7 +158,7 @@ export default function Scanning() {
                 <Scanner handleData={handleData}></Scanner>
 
                 <MenuBar
-                    className='fixed top-[calc(env(safe-area-inset-top))] inset-x-0 p-7 z-[20]'
+                    className='fixed top-[calc(env(safe-area-inset-top))] inset-x-0 p-7'
                     backButtonPage='/'
                     resetData={() => {
                         localStorage.removeItem(`${pitJSON.name}Scanned`);
@@ -170,7 +170,7 @@ export default function Scanning() {
                 <Drawer open={open} onClose={() => setOpen(false)}>
                     <DrawerTrigger asChild>
                         <div
-                            className={`w-full fixed bottom-[calc(env(safe-area-inset-bottom))] right-0 left-0 pointer-events-auto h-[20rem] p-7 flex flex-col justify-end z-[20] ${
+                            className={`w-full fixed bottom-[calc(env(safe-area-inset-bottom))] right-0 left-0 pointer-events-auto h-[20rem] p-7 flex flex-col justify-end ${
                                 open && 'pointer-events-none'
                             }`}
                             {...swipeHandlers}

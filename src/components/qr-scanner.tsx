@@ -44,7 +44,7 @@ const Scanner = ({ handleData }: ScannerProps) => {
         };
     }, []);
 
-    return <video className='fixed bottom-0 top-0 right-0 left-0 z-[10]' />;
+    return <video className='fixed bottom-0 top-0 right-0 left-0' />;
 };
 
 export default Scanner;

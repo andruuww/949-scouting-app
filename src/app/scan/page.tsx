@@ -166,10 +166,10 @@ export default function Scanning() {
                     }}
                 />
 
-                <Drawer open={open} onClose={() => setOpen(false)} modal={false}>
+                <Drawer open={open} onClose={() => setOpen(false)}>
                     <DrawerTrigger asChild>
                         <div
-                            className={`w-full fixed bottom-0 right-0 left-0 pointer-events-auto h-[20rem] p-7 flex flex-col justify-end ${
+                            className={`w-full fixed bottom-[calc(env(safe-area-inset-bottom))] right-0 left-0 pointer-events-auto h-[20rem] p-7 flex flex-col justify-end ${
                                 open && 'pointer-events-none'
                             }`}
                             {...swipeHandlers}

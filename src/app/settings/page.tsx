@@ -21,7 +21,6 @@ export default function SettingsForm() {
     const ping = useIsConnected();
 
     const [isUnregistering, setIsUnregistering] = useState(false);
-    const [isLoading, setLoading] = useState(true);
 
     const [cameras, setCameras] = useState<MediaDeviceInfo[]>([]);
 
@@ -29,7 +28,6 @@ export default function SettingsForm() {
     useEffect(() => {
         const storage = globalThis?.sessionStorage;
         prevPath.current = storage!.getItem('settingsBackPath')!;
-        setLoading(false);
 
         if (navigator.mediaDevices) {
             navigator.mediaDevices
@@ -110,10 +108,6 @@ export default function SettingsForm() {
         resolver: zodResolver(formSchema),
         defaultValues: {},
     });
-
-    if (isLoading) {
-        return null;
-    }
 
     return (
         <main className='flex flex-col safe min-h-screen mx-auto'>
@@ -232,7 +226,9 @@ export default function SettingsForm() {
                         </Button>
                     </div>
                     <fieldset
-                        disabled={globalThis.sessionStorage.getItem('settingsBackPath') !== '/'}
+                        disabled={
+                            globalThis.sessionStorage && globalThis.sessionStorage.getItem('settingsBackPath') !== '/'
+                        }
                         className='group'
                     >
                         <div className='flex flex-row items-center justify-between rounded-lg border p-4 align-center'>

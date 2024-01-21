@@ -10,14 +10,6 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from '@/component
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import {
-    Drawer,
-    DrawerTrigger,
-    DrawerContent,
-    DrawerHeader,
-    DrawerTitle,
-    DrawerDescription,
-} from '@/components/ui/drawer';
 
 async function registerSW() {
     try {

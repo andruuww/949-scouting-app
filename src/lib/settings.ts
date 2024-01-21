@@ -2,6 +2,9 @@ export default class Settings {
     constructor() {}
 
     public static getSetting(setting: string) {
+        if (typeof window === 'undefined') {
+            return {};
+        }
         return localStorage.getItem('SETTINGS') ? JSON.parse(localStorage.getItem('SETTINGS')!)[setting] : {};
     }
 

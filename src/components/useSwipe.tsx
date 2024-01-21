@@ -3,8 +3,8 @@ import { TouchEvent, useState } from 'react';
 interface SwipeInput {
     onSwipedLeft?: () => void;
     onSwipedRight?: () => void;
-    onSwipedUp?: () => void; // New event handler for swiping up
-    onSwipedDown?: () => void; // New event handler for swiping down
+    onSwipedUp?: () => void;
+    onSwipedDown?: () => void;
 }
 
 interface SwipeOutput {
@@ -24,6 +24,7 @@ export default (input: SwipeInput): SwipeOutput => {
     // ...
 
     const onTouchStart = (e: TouchEvent) => {
+        e.preventDefault();
         setTouchEndX(0);
         setTouchStartX(e.targetTouches[0].clientX);
 
@@ -34,18 +35,16 @@ export default (input: SwipeInput): SwipeOutput => {
     };
 
     const onTouchMove = (e: TouchEvent) => {
+        e.preventDefault();
         setTouchEndX(e.targetTouches[0].clientX);
         setTouchEndY(e.targetTouches[0].clientY);
-
         if (touchStartX && touchEndX && touchStartY && touchEndY && !swipeDetected) {
             const distanceX = touchStartX - touchEndX;
             const distanceY = touchStartY - touchEndY;
-
             const isLeftSwipe = distanceX > minSwipeDistance;
             const isRightSwipe = distanceX < -minSwipeDistance;
             const isUpSwipe = distanceY > minSwipeDistance;
             const isDownSwipe = distanceY < -minSwipeDistance;
-
             if (isLeftSwipe) {
                 input.onSwipedLeft?.();
                 setSwipeDetected(true);

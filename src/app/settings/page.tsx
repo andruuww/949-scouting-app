@@ -272,7 +272,7 @@ export default function SettingsForm() {
                         <SelectContent>
                             {cameras.map((camera) => (
                                 <SelectItem key={camera.deviceId} value={camera.deviceId}>
-                                    {camera.label.substring(0, 15) + '...'}
+                                    {camera.label.substring(0, window.innerWidth / 50) + '...'}
                                 </SelectItem>
                             ))}
                         </SelectContent>

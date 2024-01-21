@@ -24,7 +24,6 @@ export default (input: SwipeInput): SwipeOutput => {
     // ...
 
     const onTouchStart = (e: TouchEvent) => {
-        e.preventDefault();
         setTouchEndX(0);
         setTouchStartX(e.targetTouches[0].clientX);
 
@@ -35,7 +34,6 @@ export default (input: SwipeInput): SwipeOutput => {
     };
 
     const onTouchMove = (e: TouchEvent) => {
-        e.preventDefault();
         setTouchEndX(e.targetTouches[0].clientX);
         setTouchEndY(e.targetTouches[0].clientY);
         if (touchStartX && touchEndX && touchStartY && touchEndY && !swipeDetected) {

@@ -7,10 +7,18 @@ type ScannerProps = {
 };
 
 const Scanner = ({ handleData }: ScannerProps) => {
-    const [isStarted, setIsStarted] = useState(false);
-
     useEffect(() => {
+        function startCamera() {}
         const videoElem = document.querySelector('video')!;
+
+        if (
+            navigator.userAgent.indexOf('Safari') != -1 &&
+            navigator.userAgent.indexOf('Mac') != -1 &&
+            navigator.userAgent.indexOf('Chrome') == -1
+        ) {
+            videoElem.setAttribute('crossorigin', 'true');
+        }
+
         videoElem.style.objectFit = 'cover';
         videoElem.style.width = '100%';
         videoElem.style.height = '100%';
@@ -24,11 +32,10 @@ const Scanner = ({ handleData }: ScannerProps) => {
             },
         });
 
-        qrScanner.start();
-        // @ts-ignore
-        qrScanner.$overlay!.childNodes[0].style.display = 'none';
-
-        setIsStarted(true);
+        qrScanner.start().then(() => {
+            // @ts-ignore
+            qrScanner.$overlay!.childNodes[0].style.display = 'none';
+        });
 
         return () => {
             if (document.querySelector('video') === null) {
@@ -37,7 +44,7 @@ const Scanner = ({ handleData }: ScannerProps) => {
         };
     }, []);
 
-    return <video className={`fixed bottom-0 top-0 right-0 left-0 z-[10] ${!isStarted && 'hidden'}`} />;
+    return <video className='fixed bottom-0 top-0 right-0 left-0 z-[10]' />;
 };
 
 export default Scanner;

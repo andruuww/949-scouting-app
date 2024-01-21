@@ -53,6 +53,7 @@ export default function Scanning() {
     const [pitScoutingScanned, setPitScoutingScanned] = useState<Record<string, any>[]>([]);
     const [matchScoutingScanned, setMatchScoutingScanned] = useState<Record<string, any>[]>([]);
 
+    // drawer open
     const [open, setOpen] = useState(false);
 
     function updateScannedData() {

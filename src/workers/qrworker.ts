@@ -1,6 +1,6 @@
+import { JSONFormElement, ProtobufOperation } from '@/lib/types';
 // @ts-ignore
 import { toSVG } from 'bwip-js';
-import { JSONFormElement, ProtobufOperation } from '@/lib/types';
 
 function chunkString(str: string, chunkSize: number) {
     const chunks = [];

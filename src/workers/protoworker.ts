@@ -1,6 +1,6 @@
+import { FormElementsType, JSONFormElement, ProtobufOperation } from '@/lib/types';
 import * as fflate from 'fflate';
 import * as protobuf from 'protobufjs';
-import { FormElementsType, JSONFormElement, ProtobufOperation } from '@/lib/types';
 
 const ROOT_NAME = 'root';
 const ITEM_NAME = 'item';

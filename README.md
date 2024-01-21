@@ -10,7 +10,7 @@ Note: The app hosted on vercel's hosting platform - BSD Wifi (as well as most sc
 
 ![Scouting App Link](scout-app-link.png)
 
-https://949-scouting-app-i4kp.vercel.app/
+https://949-scouting-app-pink.vercel.app
 
 ## Installation
 

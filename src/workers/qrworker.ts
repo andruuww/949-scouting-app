@@ -1,6 +1,5 @@
 import { JSONFormElement, ProtobufOperation } from '@/lib/types';
-// @ts-ignore
-import { toSVG } from 'bwip-js';
+import QRCode from 'qrcode';
 
 function chunkString(str: string, chunkSize: number) {
     const chunks = [];
@@ -11,10 +10,16 @@ function chunkString(str: string, chunkSize: number) {
     return chunks;
 }
 
-function renderQRCodes(compressedData: string): string[] {
+async function renderQRCodes(compressedData: string): Promise<string[]> {
     console.log(compressedData.length);
     const chunks = chunkString(compressedData, 300);
-    const barcodes: string[] = chunks!.map((i) => toSVG({ bcid: 'qrcode', text: i }));
+
+    const barcodes: string[] = await Promise.all(
+        chunks.map(async (i) => {
+            return await QRCode.toString(i, { margin: 0 });
+        })
+    );
+
     return barcodes;
 }
 
@@ -32,10 +37,10 @@ self.onmessage = async (event: {
         schemaJSON: event.data.schemaJSON,
     });
 
-    protoWorker.onmessage = (response) => {
+    protoWorker.onmessage = async (response) => {
         let { seralizedData } = response.data;
         seralizedData = `${event.data.schemaJSON.signature!}${seralizedData}!`;
-        const barcodes = renderQRCodes(seralizedData);
+        const barcodes = await renderQRCodes(seralizedData);
         self.postMessage({ barcodes });
         protoWorker.terminate();
     };

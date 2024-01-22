@@ -14,6 +14,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from 'sonner';
 import Settings from '@/lib/settings';
+import QRCode from 'qrcode';
 
 export default function SettingsForm() {
     const { theme, setTheme } = useTheme();
@@ -23,6 +24,10 @@ export default function SettingsForm() {
     const [isUnregistering, setIsUnregistering] = useState(false);
 
     const [cameras, setCameras] = useState<MediaDeviceInfo[]>([]);
+
+    const [qrCodeSVG, setQRCodeSVG] = useState<string>('');
+
+    const [appLink, setAppLink] = useState<string>('');
 
     let prevPath = useRef('');
     useEffect(() => {
@@ -42,6 +47,13 @@ export default function SettingsForm() {
                 .catch((error) => {
                     console.log(error);
                 });
+        }
+
+        if (typeof window !== 'undefined') {
+            setAppLink(window.location.origin);
+            QRCode.toString(window.location.origin, { width: window.innerWidth, margin: 0 }).then((url) => {
+                setQRCodeSVG(url);
+            });
         }
     }, []);
 
@@ -109,7 +121,7 @@ export default function SettingsForm() {
     return (
         <main className='flex flex-col safe min-h-screen mx-auto'>
             <MenuBar backButtonPage={prevPath.current} />
-            <div className='space-y-16'>
+            <div className='flex flex-col space-y-16 align-middle'>
                 <div>
                     <span className='text-lg font-bold'>Appearance</span>
                     <div className='flex flex-col space-y-8 mt-2'>
@@ -127,7 +139,7 @@ export default function SettingsForm() {
                                             <RadioGroup
                                                 onValueChange={field.onChange}
                                                 defaultValue={field.value}
-                                                className='grid w-full grid-cols-2 gap-8 pt-2'
+                                                className='grid w-full grid-cols-2 gap-4 pt-2'
                                             >
                                                 <FormItem>
                                                     <FormLabel className='[&:has([data-state=checked])>div]:border-primary'>
@@ -185,7 +197,7 @@ export default function SettingsForm() {
                             </form>
                         </Form>
 
-                        <div className='flex flex-col justify-between rounded-md border p-4 align-center space-y'>
+                        <div className='flex flex-col justify-between rounded-md border p-4 align-center'>
                             <span>Counter</span>
                             <p className='text-muted-foreground text-sm'>Select which side the + and - buttons go on</p>
 
@@ -207,7 +219,7 @@ export default function SettingsForm() {
                                 </Select>
                             </div>
                         </div>
-                        <div className='flex flex-col justify-between rounded-md border p-4 align-center space-y'>
+                        <div className='flex flex-col justify-between rounded-md border p-4 align-center'>
                             <span>Switch</span>
                             <p className='text-muted-foreground text-sm'>Select the switch style</p>
 
@@ -228,7 +240,7 @@ export default function SettingsForm() {
                                 </Select>
                             </div>
                         </div>
-                        <div className='flex flex-col justify-between rounded-md border p-4 align-center space-y'>
+                        <div className='flex flex-col justify-between rounded-md border p-4 align-center'>
                             <span>Camera</span>
                             <p className='text-muted-foreground text-sm'>
                                 Select the camera used for the scanning page
@@ -262,7 +274,7 @@ export default function SettingsForm() {
                     </div>
                 </div>
 
-                <div className='space-y-4'>
+                <div className='space-y-8'>
                     <div>
                         <span className='text-lg font-bold'>Service Worker and Cache</span>
 
@@ -323,6 +335,16 @@ export default function SettingsForm() {
                             </Button>
                         </div>
                     </fieldset>
+                </div>
+                <div className='flex flex-col items-center space-y-2'>
+                    <span>Link to App</span>
+                    <div className='bg-white rounded-lg flex flex-col justify-center'>
+                        <img
+                            alt='qrcode'
+                            src={`data:image/svg+xml;base64,${btoa(qrCodeSVG)}`}
+                            className='p-4 visible'
+                        />
+                    </div>
                 </div>
             </div>
         </main>

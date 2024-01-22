@@ -5,6 +5,7 @@ import { Inter } from 'next/font/google';
 import type { Metadata } from 'next';
 import { ThemeProvider } from '@/components/theme-provider';
 import { Toaster } from '@/components/ui/sonner';
+import { Button } from '@/components/ui/button';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -62,16 +63,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
                     {children}
                 </ThemeProvider>
-                <Toaster
-                    position='top-right'
-                    toastOptions={{
-                        duration: 2000,
-                        unstyled: true,
-                        classNames: {
-                            toast: 'flex space-x-4 items-center rounded-xl w-full p-4 bg-primary text-secondary border-2 text-base mt-[env(safe-area-inset-top)]',
-                        },
-                    }}
-                />
+                <Toaster />
             </body>
         </html>
     );

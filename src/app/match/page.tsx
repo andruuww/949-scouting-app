@@ -54,7 +54,7 @@ export default function MatchScouting() {
                     className='mb-4'
                 />
             </div>
-            <div className='space-y-3'>
+            <div className='space-y-2'>
                 <Parser formJSON={matchJSON} update={() => updateFormSubmit()} ref={formRef} />
                 {scoutedTeams.length > 0 &&
                     (!exportIsLoading ? (

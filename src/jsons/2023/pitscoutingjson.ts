@@ -30,7 +30,6 @@ const pitJSON: JSONFormElement = {
             name: 'weight',
         },
         {
-            label: 'Dimensions',
             type: FormElementsType.GROUP,
             name: 'dimensions',
             elements: [

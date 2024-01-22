@@ -1,4 +1,3 @@
-import { Settings } from 'lucide-react';
 import { z } from 'zod';
 
 export interface CounterSettings {
@@ -50,4 +49,15 @@ export enum SWStatus {
 export enum ProtobufOperation {
     SERALIZE = 'SERALIZE',
     PARSE = 'PARSE',
+}
+
+export enum SwitchStyles {
+    NORMAL = 'normal',
+    FULL_BOX = 'fullBox',
+}
+
+export enum CounterStyles {
+    CENTER = 'center',
+    LEFT = 'left',
+    RIGHT = 'right',
 }

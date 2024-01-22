@@ -44,17 +44,17 @@ export default function TeamsList({
 
     return (
         <>
-            <div className={cn('border rounded-xl border-gray-300 dark:border-gray-800 p-4', className)}>
+            <div className={cn('border rounded-md border-input p-4', className)}>
                 {teamsJSON && teamsJSON.length > 0 ? (
                     <>
                         <div className='text-center flex justify-center items-center'>
                             <span className='font-bold'>{label}</span>
                         </div>
-                        <div className='py-2 flex flex-row flex-wrap gap-3 justify-center'>
+                        <div className='py-2 flex flex-row flex-wrap gap-4 justify-center'>
                             {teamsArray.map((i, key) => (
                                 <Button
                                     variant={teamsJSON[key].marked ? 'outline' : 'default'}
-                                    className='pl-4 pr-4 h-8 ext-xs rounded-lg select-none'
+                                    className='pl-4 pr-4 h-8 ext-xs rounded-md select-none'
                                     key={key}
                                     onClick={() => {
                                         if (mode === 'edit') {
@@ -81,11 +81,11 @@ export default function TeamsList({
                     </>
                 ) : (
                     <div className='text-center flex justify-center items-center'>
-                        <span className='font-bold'>No {label}</span>
+                        <span className='text-muted-foreground text-sm font-medium'>No {label}</span>
                     </div>
                 )}
                 {mode === 'mark' && (
-                    <div className='flex justify-center items-center mt-4 gap-3'>
+                    <div className='flex justify-center items-center mt-4 gap-4'>
                         <Button
                             variant='secondary'
                             className='w-full'

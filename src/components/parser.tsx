@@ -3,7 +3,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { FormElementsType, JSONFormElement } from '@/lib/types';
+import { FormElementsType, JSONFormElement, SwitchStyles } from '@/lib/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useImperativeHandle } from 'react';
 import { UseFormReturn, useForm } from 'react-hook-form';
@@ -13,6 +13,7 @@ import Counter from './counter';
 import { Button } from './ui/button';
 import { Switch } from './ui/switch';
 import { Textarea } from './ui/textarea';
+import Settings from '@/lib/settings';
 
 // TODO THIS CAN BE MULTITHREADED!!!
 function generateSchemaArray(formElementData: JSONFormElement): { name: string; schema: z.ZodTypeAny }[] {
@@ -319,32 +320,37 @@ function renderItem(
                     key={key}
                     render={({ field }) => {
                         return (
-                            <FormItem key={key} className='h-full'>
-                                <div className='flex flex-row items-center justify-between border h-full rounded-xl border-t-input p-4'>
-                                    <FormLabel className='leading-relaxed'>{element.label}</FormLabel>
-                                    <FormControl>
-                                        <Switch
-                                            checked={field.value}
-                                            onCheckedChange={(checked) => field.onChange(checked)}
-                                            className='ml-2'
-                                        />
-                                    </FormControl>
-                                    <FormMessage className='text-xs' />
-                                </div>
-                            </FormItem>
-                            // <FormItem key={key} className='h-full'>
-                            //     <FormControl>
-                            //         <Button
-                            //             className={`flex flex-row items-center justify-center border h-full rounded-xl border-t-input p-4 w-full`}
-                            //             variant={field.value ? 'default' : 'secondary'}
-                            //             type='button'
-                            //             onClick={() => field.onChange(!field.value)}
-                            //         >
-                            //             <FormLabel className='leading-relaxed'>{element.label}</FormLabel>
-                            //             <FormMessage className='text-xs' />
-                            //         </Button>
-                            //     </FormControl>
-                            // </FormItem>
+                            <>
+                                {Settings.getSwitchStyle() !== SwitchStyles.FULL_BOX ? (
+                                    <FormItem key={key} className='h-full'>
+                                        <div className='flex flex-row items-center justify-between border h-full rounded-md border-t-input p-4'>
+                                            <FormLabel className='leading-relaxed'>{element.label}</FormLabel>
+                                            <FormControl>
+                                                <Switch
+                                                    checked={field.value}
+                                                    onCheckedChange={(checked) => field.onChange(checked)}
+                                                    className='ml-2'
+                                                />
+                                            </FormControl>
+                                            <FormMessage className='text-xs' />
+                                        </div>
+                                    </FormItem>
+                                ) : (
+                                    <FormItem key={key} className='h-full'>
+                                        <FormControl>
+                                            <Button
+                                                className={`flex flex-row items-center justify-center border h-full rounded-md border-t-input p-4 w-full`}
+                                                variant={field.value ? 'default' : 'outline'}
+                                                type='button'
+                                                onClick={() => field.onChange(!field.value)}
+                                            >
+                                                <FormLabel className='leading-relaxed'>{element.label}</FormLabel>
+                                                <FormMessage className='text-xs' />
+                                            </Button>
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            </>
                         );
                     }}
                 />

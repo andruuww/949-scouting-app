@@ -1,6 +1,6 @@
 import Settings from '@/lib/settings';
 import QrScanner from 'qr-scanner';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect } from 'react';
 
 type ScannerProps = {
     handleData: (data: string) => void;
@@ -8,7 +8,6 @@ type ScannerProps = {
 
 const Scanner = ({ handleData }: ScannerProps) => {
     useEffect(() => {
-        function startCamera() {}
         const videoElem = document.querySelector('video')!;
 
         if (

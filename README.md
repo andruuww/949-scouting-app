@@ -1,8 +1,6 @@
-# 949's Scouting App
+# 949's Scouting App - Osprey
 
 This app was developed to facilitate the process of scouting at FRC competitions with no wifi, instead relying on QR Codes for communication.
-
-It is built on Next.js 14, uses a service worker and PWA for offline use, Protobuf and fflate for data serialization and compression, and bwip-js and html5-qrcode for qrcode generation and scanning.
 
 ## App Link
 
@@ -18,7 +16,7 @@ https://949-scouting-app-pink.vercel.app
 
 -   Open the website.
 -   Click the three dots in the top right corner.
--   Click `Install App` or Add to `Home Screen`.
+-   Click `Install App` or `Add to Home Screen`.
 -   Click Add.
 
 ### IOS
@@ -51,13 +49,6 @@ To update the app:
 
 The login page requires the scouter to submit their name, in order to know who to blame when the data claims 949 lost.
 
-### Settings
-
--   To update theme select the desired theme (`dark` or `light`) then click `Update Theme`.
--   Reloading Service Worker (`Unregister`) will fix most errors and should change the app to the newest version.
--   `Reload Cache` deletes and reloads the cache.
--   `Clear` will delete all data. _Do Not_ select if scouting data is not scanned onto another device.
-
 ### Data Collection
 
 -   Click `Pit Scout` or `Match Scout`.
@@ -68,23 +59,20 @@ The login page requires the scouter to submit their name, in order to know who t
 ### Export to QRCode
 
 -   Once data has been collected, click `Export` at the bottom of the page.
--   On the export page, there is an option to switch between exporting Pit and Match data.
+-   On the export page, choose between exporting Pit and Match data in the select option.
 -   Once scanned in by a main device, click the entries at the top in order to remove them from the rendering, or you could simply click `Mark All Done`.
--   Entries rendered will appear in the opposite color as the theme.
 
 ### Data Aggregation
 
 -   On a main device, on the homescreen, hit `Aggregate Data`
--   Click `Start Camera`.
+-   If the app chose the wrong camera, go to settings and change it.
 -   Scan all QR codes of one device in order, and once all parts have been scanned the data should be automatically bundled. If there is a mistake, click `Cancel Parts`.
--   Once all devices are scanned, click the appropriate export button.
-
-### Miscellaneous
-
--   Toast Notifications can be expanded by clicking on the notifications cascaded behind the most recent.
+-   Once all devices are scanned, swipe up or click `Open Console`, and click the appropriate export button.
 
 ## Development
 
 The code is very spaghetti and there's limited comments and documentation, so if you need help please reach out to Andrew, who is responsible for the mess.
 
-The code itself is very abstracted, the only thing that needs to be changed from season to season are the JSONs that are integrated throughout the app. They can be found under `src/jsons`. Throughout the app, they are parsed in order to render the forms and generate validation and Protobuf schemas.
+### Change the Form (for the different games season to season)
+
+The form code itself is very abstracted, the only thing that needs to be changed from season to season are the JSONs that are integrated throughout the app. They can be found under `src/jsons`. Throughout the app, they are parsed in order to render the forms and generate validation and Protobuf schemas.

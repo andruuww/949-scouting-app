@@ -89,7 +89,7 @@ export default function MenuBar({
     return (
         <div className={cn('flex flex-row justify-between items-center space-x-2 mb-4', className)}>
             <div className='text-2xl font-bold align-middle min-w-min'>
-                <span>949 Scouting</span>
+                <span>949 Osprey</span>
             </div>
             <div className='space-x-2 flex'>
                 <BackButton

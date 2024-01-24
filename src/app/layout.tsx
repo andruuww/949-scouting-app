@@ -5,13 +5,12 @@ import { Inter } from 'next/font/google';
 import type { Metadata } from 'next';
 import { ThemeProvider } from '@/components/theme-provider';
 import { Toaster } from '@/components/ui/sonner';
-import { Button } from '@/components/ui/button';
 
 const inter = Inter({ subsets: ['latin'] });
 
 const APP_NAME = '949 Scout App';
 const APP_DEFAULT_TITLE = '949 Scout App';
-const APP_TITLE_TEMPLATE = 'Scout App';
+const APP_TITLE_TEMPLATE = 'Osprey';
 const APP_DESCRIPTION = "949's custom scouting app";
 
 export const metadata: Metadata = {

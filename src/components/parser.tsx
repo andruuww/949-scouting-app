@@ -24,7 +24,7 @@ function generateSchemaArray(formElementData: JSONFormElement): { name: string; 
     for (const [key, field] of Object.entries(formElementData.elements || {})) {
         const type = field.type;
         const name = field.name;
-        const errorMessage = field.errorMessage || `${field.label} is required`;
+        const errorMessage = field.errorMessage || `${field.label || field.name} is required`;
 
         if (name) {
             let fieldSchema: z.ZodTypeAny | undefined;
@@ -202,9 +202,9 @@ function renderItem(
                     render={({ field }) => {
                         return (
                             <FormItem key={key}>
-                                <FormLabel className='text-base'>{element.label}</FormLabel>
+                                {element.label && <FormLabel className='text-base'>{element.label}</FormLabel>}
                                 <FormControl>
-                                    <Textarea placeholder={element.placeholder} {...field} />
+                                    <Textarea placeholder={element.placeholder} {...field} className='mt-0' />
                                 </FormControl>
                                 <FormMessage className='text-xs' />
                             </FormItem>
@@ -221,7 +221,7 @@ function renderItem(
                     render={({ field }) => {
                         return (
                             <FormItem key={key}>
-                                <FormLabel className='text-base'>{element.label}</FormLabel>
+                                {element.label && <FormLabel className='text-base'>{element.label}</FormLabel>}
                                 <FormControl>
                                     <Input type='number' placeholder={element.placeholder} {...field} />
                                 </FormControl>
@@ -240,7 +240,7 @@ function renderItem(
                     render={({ field }) => {
                         return (
                             <FormItem key={key}>
-                                <FormLabel className='text-base'>{element.label}</FormLabel>
+                                {element.label && <FormLabel className='text-base'>{element.label}</FormLabel>}
                                 <FormControl>
                                     <Input placeholder={element.placeholder} {...field} />
                                 </FormControl>
@@ -289,7 +289,7 @@ function renderItem(
                     render={({ field }) => {
                         return (
                             <FormItem key={key}>
-                                <FormLabel className='text-base'>{element.label}</FormLabel>
+                                {element.label && <FormLabel className='text-base'>{element.label}</FormLabel>}
                                 <Select onValueChange={field.onChange} defaultValue='' value={field.value}>
                                     <FormControl>
                                         <SelectTrigger>
@@ -364,7 +364,7 @@ function renderItem(
                     render={() => {
                         return (
                             <FormItem key={key}>
-                                <FormLabel className='text-base'>{element.label}</FormLabel>
+                                {element.label && <FormLabel className='text-base'>{element.label}</FormLabel>}
                                 <div className='w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6'>
                                     {element.options!.map((option, index) => (
                                         <FormField
@@ -507,8 +507,8 @@ const Parser = React.forwardRef(({ formJSON, update }: { formJSON: JSONFormEleme
     if (!formResolver || !onSubmit) return null;
     return (
         <Form {...formResolver}>
-            <form onSubmit={formResolver.handleSubmit(onSubmit)} autoComplete='off' className='space-y-8' noValidate>
-                <div className='flex flex-col space-y-4'>{formDOM.map((element) => element)}</div>
+            <form onSubmit={formResolver.handleSubmit(onSubmit)} autoComplete='off' noValidate>
+                <div className='flex flex-col space-y-6'>{formDOM.map((element) => element)}</div>
             </form>
         </Form>
     );

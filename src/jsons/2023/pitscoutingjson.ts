@@ -9,6 +9,10 @@ const pitJSON: JSONFormElement = {
     signature: '#',
     elements: [
         {
+            label: 'Pit Scouting',
+            type: FormElementsType.TITLE,
+        },
+        {
             label: 'Team Number',
             placeholder: '949',
             type: FormElementsType.NUMBER,

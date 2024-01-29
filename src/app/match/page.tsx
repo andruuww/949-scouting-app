@@ -51,7 +51,6 @@ export default function MatchScouting() {
                     )}
                     mode='edit'
                     setFormValues={(index) => formRef.current?.setValues(index)}
-                    className='mb-4'
                 />
             </div>
             <div className='space-y-2'>

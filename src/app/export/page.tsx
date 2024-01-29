@@ -75,7 +75,7 @@ export default function Export() {
 
             <div className='py-2 mb-4'>
                 {cacheName && (
-                    <div className='mb-2'>
+                    <div className='mb-3'>
                         {exportType === 'Pit Data' ? (
                             <TeamsList
                                 teamsJSON={scoutedTeams}

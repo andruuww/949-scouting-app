@@ -101,3 +101,7 @@ img:not(.visible) {
   padding-bottom: calc(env(safe-area-inset-bottom) + 1.75rem);
   padding-left: calc(env(safe-area-inset-left) + 1.75rem);
 }
+
+body {
+  user-select: none;
+}

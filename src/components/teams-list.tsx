@@ -50,7 +50,7 @@ export default function TeamsList({
                         <div className='text-center flex justify-center items-center'>
                             <span className='font-bold'>{label}</span>
                         </div>
-                        <div className='py-2 flex flex-row flex-wrap gap-4 justify-center'>
+                        <div className='py-2 flex flex-row flex-wrap gap-3 justify-center'>
                             {teamsArray.map((i, key) => (
                                 <Button
                                     variant={teamsJSON[key].marked ? 'outline' : 'default'}
@@ -85,7 +85,7 @@ export default function TeamsList({
                     </div>
                 )}
                 {mode === 'mark' && (
-                    <div className='flex justify-center items-center mt-4 gap-4'>
+                    <div className='flex justify-center items-center mt-4 gap-3'>
                         <Button
                             variant='secondary'
                             className='w-full'

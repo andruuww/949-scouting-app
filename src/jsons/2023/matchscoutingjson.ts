@@ -1,6 +1,6 @@
 import { FormElementsType, JSONFormElement } from '@/lib/types';
 
-const pitJSON: JSONFormElement = {
+const matchJSON: JSONFormElement = {
     type: FormElementsType.ROOT,
     name: 'matchScouting',
     label: 'Match Scouting',
@@ -50,16 +50,16 @@ const pitJSON: JSONFormElement = {
                     name: 'leftCommunity',
                 },
                 {
-                    label: 'Auto Charge Station',
+                    label: 'Charge Station Engaged',
                     type: FormElementsType.SWITCH,
-                    name: 'chargeStation',
+                    name: 'isChargeStationEngaged',
                 },
             ],
         },
         {
-            label: 'Auto Scored Low',
+            label: 'Auto Scored High',
             type: FormElementsType.COUNTER,
-            name: 'autoScoredLow',
+            name: 'autoScoredHigh',
             settings: {
                 increment: 1,
                 min: 0,
@@ -77,9 +77,9 @@ const pitJSON: JSONFormElement = {
             },
         },
         {
-            label: 'Auto Scored High',
+            label: 'Auto Scored Low',
             type: FormElementsType.COUNTER,
-            name: 'autoScoredHigh',
+            name: 'autoScoredLow',
             settings: {
                 increment: 1,
                 min: 0,
@@ -98,9 +98,9 @@ const pitJSON: JSONFormElement = {
             required: false,
         },
         {
-            label: 'Scored Low',
+            label: 'Scored High',
             type: FormElementsType.COUNTER,
-            name: 'scoredLow',
+            name: 'scoredHigh',
             settings: {
                 increment: 1,
                 min: 0,
@@ -118,9 +118,9 @@ const pitJSON: JSONFormElement = {
             },
         },
         {
-            label: 'Scored High',
+            label: 'Scored Low',
             type: FormElementsType.COUNTER,
-            name: 'scoredHigh',
+            name: 'scoredLow',
             settings: {
                 increment: 1,
                 min: 0,
@@ -138,15 +138,20 @@ const pitJSON: JSONFormElement = {
             },
         },
         {
-            label: 'Playstsyle',
+            label: 'Playstyle',
             placeholder: 'Select Playstyle',
             type: FormElementsType.SELECT,
             name: 'playstyle',
-            options: ['Offensive', 'Defensive', 'Balanced'],
+            options: ['None', 'Offensive', 'Defensive', 'Balanced'],
         },
         {
             label: 'Overall Match Notes',
             type: FormElementsType.TITLE,
+        },
+        {
+            label: 'Yellow Card',
+            type: FormElementsType.SWITCH,
+            name: 'yellowCard',
         },
         {
             label: 'Broke Down',
@@ -154,9 +159,10 @@ const pitJSON: JSONFormElement = {
             name: 'brokeDown',
         },
         {
-            label: 'Yellow Card',
-            type: FormElementsType.SWITCH,
-            name: 'yellowCard',
+            type: FormElementsType.TEXTAREA,
+            name: 'breakdownDescription',
+            placeholder: 'Describe the breakdown',
+            required: false,
         },
         {
             label: 'Links',
@@ -207,10 +213,17 @@ const pitJSON: JSONFormElement = {
             required: false,
         },
         {
+            label: 'Additional Notes',
+            type: FormElementsType.TEXTAREA,
+            name: 'additionalNotes',
+            placeholder: 'Enter any additional notes here',
+            required: false,
+        },
+        {
             type: FormElementsType.CLEAR_SUBMIT_BUTTONS,
             options: ['Clear', 'Submit'],
         },
     ],
 };
 
-export default pitJSON;
+export default matchJSON;

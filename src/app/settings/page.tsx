@@ -346,6 +346,9 @@ export default function SettingsForm() {
                         />
                     </div>
                 </div>
+                <a href='https://forms.gle/kahToESSzkcE42sM8' target='_blank'>
+                    Send Feedback
+                </a>
             </div>
         </main>
     );

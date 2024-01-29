@@ -124,14 +124,26 @@ self.addEventListener('message', (event) => {
         });
     }
 });
-
 self.addEventListener('fetch', (event) => {
     event.respondWith(
         caches.match(event.request, { ignoreSearch: true }).then((response) => {
             if (response) {
                 return response;
             }
-            return fetch(event.request);
+
+            return fetch(event.request).then((networkResponse) => {
+                if (!networkResponse || networkResponse.status !== 200 || networkResponse.type !== 'basic') {
+                    return networkResponse;
+                }
+
+                const responseToCache = networkResponse.clone();
+
+                caches.open(PRECACHE_NAME).then((cache) => {
+                    cache.put(event.request, responseToCache);
+                });
+
+                return networkResponse;
+            });
         })
     );
 });

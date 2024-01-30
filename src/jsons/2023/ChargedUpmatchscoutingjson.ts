@@ -17,11 +17,11 @@ const matchJSON: JSONFormElement = {
             elements: [
                 {
                     label: 'Match Number',
-                    placeholder: '1-64',
+                    placeholder: '64',
                     type: FormElementsType.NUMBER,
                     name: 'matchNumber',
                     required: true,
-                    errorMessage: 'Please provide a match number.,
+                    errorMessage: 'Match number is required',
                 },
                 {
                     label: 'Team Number',
@@ -29,13 +29,13 @@ const matchJSON: JSONFormElement = {
                     type: FormElementsType.NUMBER,
                     name: 'teamNumber',
                     required: true,
-                    errorMessage: 'Please provide a team number',
+                    errorMessage: 'Team number is required',
                 },
             ],
         },
         {
             label: 'Robot Position',
-            placeholder: 'Select',
+            placeholder: 'Select Position',
             type: FormElementsType.SELECT,
             name: 'robotPosition',
             options: ['Red 1', 'Red 2', 'Red 3', 'Blue 1', 'Blue 2', 'Blue 3'],
@@ -45,9 +45,9 @@ const matchJSON: JSONFormElement = {
             name: 'robotInfo',
             elements: [
                 {
-                    label: 'Left Starting Zone',
+                    label: 'Left Community',
                     type: FormElementsType.SWITCH,
-                    name: 'leftStartingZone',
+                    name: 'leftCommunity',
                 },
                 {
                     label: 'Charge Station Engaged',
@@ -57,9 +57,9 @@ const matchJSON: JSONFormElement = {
             ],
         },
         {
-            label: 'Auto Scored Speaker',
+            label: 'Auto Scored High',
             type: FormElementsType.COUNTER,
-            name: 'autoScoredSpeaker',
+            name: 'autoScoredHigh',
             settings: {
                 increment: 1,
                 min: 0,
@@ -67,9 +67,19 @@ const matchJSON: JSONFormElement = {
             },
         },
         {
-            label: 'Auto Scored Amp',
+            label: 'Auto Scored Medium',
             type: FormElementsType.COUNTER,
-            name: 'autoScoredAmp',
+            name: 'autoScoredMedium',
+            settings: {
+                increment: 1,
+                min: 0,
+                max: 100,
+            },
+        },
+        {
+            label: 'Auto Scored Low',
+            type: FormElementsType.COUNTER,
+            name: 'autoScoredLow',
             settings: {
                 increment: 1,
                 min: 0,
@@ -78,12 +88,19 @@ const matchJSON: JSONFormElement = {
         },
         {
             type: FormElementsType.TITLE,
-            label: 'TeleOperated',
+            label: 'Teleoperated',
         },
         {
-            label: 'TeleOp Scored Speaker',
+            label: 'Game Pieces Scored',
+            type: FormElementsType.CHECKBOX,
+            name: 'gamePiecesScored',
+            options: ['Cones', 'Cubes'],
+            required: false,
+        },
+        {
+            label: 'Scored High',
             type: FormElementsType.COUNTER,
-            name: 'teleopScoredSpeaker',
+            name: 'scoredHigh',
             settings: {
                 increment: 1,
                 min: 0,
@@ -91,9 +108,19 @@ const matchJSON: JSONFormElement = {
             },
         },
         {
-            label: 'TeleOp Scored Amp',
+            label: 'Scored Medium',
             type: FormElementsType.COUNTER,
-            name: 'teleOpScoredAmp',
+            name: 'scoredMedium',
+            settings: {
+                increment: 1,
+                min: 0,
+                max: 100,
+            },
+        },
+        {
+            label: 'Scored Low',
+            type: FormElementsType.COUNTER,
+            name: 'scoredLow',
             settings: {
                 increment: 1,
                 min: 0,

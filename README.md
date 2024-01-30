@@ -4,11 +4,10 @@ This app was developed to facilitate the process of scouting at FRC competitions
 
 ## App Link
 
-Note: The app hosted on vercel's hosting platform - BSD Wifi (as well as most school wifis) blocks this domain.
-
 ![Scouting App Link](scout-app-link.png)
 
 https://949-scouting-app-pink.vercel.app
+https://scout.evang.dev
 
 ## Installation
 

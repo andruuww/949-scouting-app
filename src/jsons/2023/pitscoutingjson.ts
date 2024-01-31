@@ -18,33 +18,27 @@ const pitJSON: JSONFormElement = {
             type: FormElementsType.NUMBER,
             name: 'teamNumber',
             required: true,
-            errorMessage: 'Team number is required',
+            errorMessage: 'Please provide a team number.',
         },
         {
             label: 'Drivetrain',
-            placeholder: 'Select a drivetrain',
+            placeholder: 'Select',
             type: FormElementsType.SELECT,
             name: 'drivetrain',
             options: ['Swerve', 'Tank', 'Mecanum', 'Other'],
-        },
-        {
-            label: 'Weight',
-            placeholder: '100',
-            type: FormElementsType.NUMBER,
-            name: 'weight',
         },
         {
             type: FormElementsType.GROUP,
             name: 'dimensions',
             elements: [
                 {
-                    placeholder: '28',
+                    placeholder: '28 in',
                     label: 'Length',
                     type: FormElementsType.NUMBER,
                     name: 'length',
                 },
                 {
-                    placeholder: '32',
+                    placeholder: '32 in',
                     label: 'Width',
                     type: FormElementsType.NUMBER,
                     name: 'width',
@@ -52,8 +46,8 @@ const pitJSON: JSONFormElement = {
             ],
         },
         {
-            label: 'Driver Hours',
-            placeholder: '40',
+            label: 'Driver Practice Time',
+            placeholder: '40 hrs',
             type: FormElementsType.NUMBER,
             name: 'driverHours',
         },

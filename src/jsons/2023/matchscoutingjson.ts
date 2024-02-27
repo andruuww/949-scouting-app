@@ -1,5 +1,5 @@
 import { FormElementsType, JSONFormElement } from '@/lib/types';
-
+ 
 const matchJSON: JSONFormElement = {
     type: FormElementsType.ROOT,
     name: 'matchScouting',
@@ -35,31 +35,20 @@ const matchJSON: JSONFormElement = {
         },
         {
             label: 'Robot Position',
-            placeholder: 'Select Position',
+            //placeholder: 'Select Position',
             type: FormElementsType.SELECT,
             name: 'robotPosition',
             options: ['Red 1', 'Red 2', 'Red 3', 'Blue 1', 'Blue 2', 'Blue 3'],
         },
         {
-            type: FormElementsType.GROUP,
-            name: 'robotInfo',
-            elements: [
-                {
-                    label: 'Left Community',
-                    type: FormElementsType.SWITCH,
-                    name: 'leftCommunity',
-                },
-                {
-                    label: 'Charge Station Engaged',
-                    type: FormElementsType.SWITCH,
-                    name: 'isChargeStationEngaged',
-                },
-            ],
+            label: 'Left Community',
+            type: FormElementsType.SWITCH,
+            name: 'leftCommunity',
         },
         {
-            label: 'Auto Scored High',
+            label: 'Amp Notes Scored',
             type: FormElementsType.COUNTER,
-            name: 'autoScoredHigh',
+            name: 'autoAmp',
             settings: {
                 increment: 1,
                 min: 0,
@@ -67,19 +56,9 @@ const matchJSON: JSONFormElement = {
             },
         },
         {
-            label: 'Auto Scored Medium',
+            label: 'Speaker Notes Scored',
             type: FormElementsType.COUNTER,
-            name: 'autoScoredMedium',
-            settings: {
-                increment: 1,
-                min: 0,
-                max: 100,
-            },
-        },
-        {
-            label: 'Auto Scored Low',
-            type: FormElementsType.COUNTER,
-            name: 'autoScoredLow',
+            name: 'autoSpeaker',
             settings: {
                 increment: 1,
                 min: 0,
@@ -91,16 +70,9 @@ const matchJSON: JSONFormElement = {
             label: 'Teleoperated',
         },
         {
-            label: 'Game Pieces Scored',
-            type: FormElementsType.CHECKBOX,
-            name: 'gamePiecesScored',
-            options: ['Cones', 'Cubes'],
-            required: false,
-        },
-        {
-            label: 'Scored High',
+            label: 'Amp Notes Scored',
             type: FormElementsType.COUNTER,
-            name: 'scoredHigh',
+            name: 'teleopAmp',
             settings: {
                 increment: 1,
                 min: 0,
@@ -108,19 +80,9 @@ const matchJSON: JSONFormElement = {
             },
         },
         {
-            label: 'Scored Medium',
+            label: 'Speaker Notes Scored',
             type: FormElementsType.COUNTER,
-            name: 'scoredMedium',
-            settings: {
-                increment: 1,
-                min: 0,
-                max: 100,
-            },
-        },
-        {
-            label: 'Scored Low',
-            type: FormElementsType.COUNTER,
-            name: 'scoredLow',
+            name: 'teleopSpeaker',
             settings: {
                 increment: 1,
                 min: 0,
@@ -137,16 +99,62 @@ const matchJSON: JSONFormElement = {
                 max: 100,
             },
         },
+       
+        {
+            label: 'Endgame',
+            type: FormElementsType.TITLE,
+        },
+        {
+            label: 'Trap',
+            type: FormElementsType.COUNTER,
+            name: 'Trap',
+            settings:{
+                increment:1,
+                min:0,
+                max:3,
+            },
+        },
+        {
+            label: 'Ending State',
+            type: FormElementsType.SELECT,
+            name: 'endgameState',
+            options: ['None','Parked','Climb','Harmony','Double Harmony'],
+        },
+        {
+            label: "Mic",
+            type: FormElementsType.SWITCH,
+            name: 'mic',
+        },
+        {
+            label: 'Overall',
+            type: FormElementsType.TITLE,
+        },
+        {
+            label: 'Fouls',
+            type: FormElementsType.COUNTER,
+            name: 'fouls',
+            settings: {
+                increment: 1,
+                min: 0,
+                max: 100,
+            },
+        },
+        {
+            label: 'Tech Fouls',
+            type: FormElementsType.COUNTER,
+            name: 'techFouls',
+            settings: {
+                increment: 1,
+                min: 0,
+                max: 100,
+            },
+        },
         {
             label: 'Playstyle',
             placeholder: 'Select Playstyle',
             type: FormElementsType.SELECT,
             name: 'playstyle',
             options: ['None', 'Offensive', 'Defensive', 'Balanced'],
-        },
-        {
-            label: 'Overall Match Notes',
-            type: FormElementsType.TITLE,
         },
         {
             label: 'Yellow Card',
@@ -159,65 +167,37 @@ const matchJSON: JSONFormElement = {
             name: 'brokeDown',
         },
         {
+            label: 'Notes',
             type: FormElementsType.TEXTAREA,
-            name: 'breakdownDescription',
-            placeholder: 'Describe the breakdown',
+            name: 'notes',
+            placeholder: 'Enter observations here, ie breakdown description',
             required: false,
         },
         {
-            label: 'Links',
-            type: FormElementsType.COUNTER,
-            name: 'links',
-            settings: {
-                increment: 1,
-                min: 0,
-                max: 100,
-            },
+            label: 'Results',
+            type: FormElementsType.TITLE,
         },
         {
-            label: 'Fouls',
-            type: FormElementsType.COUNTER,
-            name: 'fouls',
-            settings: {
-                increment: 5,
-                min: 0,
-                max: 100,
-            },
+            label: 'Results',
+            type: FormElementsType.SWITCH,
+            options: ['Red Win','Blue Win','Tie'],
+            name: 'matchResult'
         },
         {
-            label: 'Tech Fouls',
-            type: FormElementsType.COUNTER,
-            name: 'techFouls',
-            settings: {
-                increment: 12,
-                min: 0,
-                max: 100,
-            },
-        },
-
-        {
-            label: 'Charge Station Points',
-            type: FormElementsType.COUNTER,
-            name: 'chargeStationPoints',
-            settings: {
-                increment: 10,
-                min: 0,
-                max: 30,
-            },
-        },
-        {
-            label: 'Bonuses',
-            type: FormElementsType.CHECKBOX,
-            name: 'bonuses',
-            options: ['Sustainability', 'Cooperation', 'Activation'],
-            required: false,
-        },
-        {
-            label: 'Additional Notes',
-            type: FormElementsType.TEXTAREA,
-            name: 'additionalNotes',
-            placeholder: 'Enter any additional notes here',
-            required: false,
+            type: FormElementsType.GROUP,
+            name: 'score',
+            elements: [
+                {
+                    label: 'Red Score',
+                    type: FormElementsType.NUMBER,
+                    name: 'redScore',
+                },
+                {
+                    label: 'Blue Score',
+                    type: FormElementsType.NUMBER,
+                    name: 'blueScore',
+                },
+            ],
         },
         {
             type: FormElementsType.CLEAR_SUBMIT_BUTTONS,

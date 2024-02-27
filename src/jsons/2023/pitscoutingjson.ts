@@ -1,5 +1,5 @@
 import { FormElementsType, JSONFormElement } from '@/lib/types';
-
+ 
 const pitJSON: JSONFormElement = {
     type: FormElementsType.ROOT,
     name: 'pitScouting',
@@ -58,18 +58,31 @@ const pitJSON: JSONFormElement = {
             name: 'driverHours',
         },
         {
-            label: 'Scoring Level',
+            label: 'Scoring Capability',
             type: FormElementsType.CHECKBOX,
-            name: 'scoringLevel',
-            options: ['Low', 'Medium', 'High'],
+            name: 'scoringLevelCapability',
+            options: ['Trap', 'Amp', 'Speaker'],
+        },
+        {
+            label: 'Scoring Preference',
+            type: FormElementsType.SELECT,
+            name: 'scoringLevelPreference',
+            options: ['Amp', 'Speaker'],
+        },
+        {
+            label: 'Speaker Score Distance',
+            type: FormElementsType.NUMBER,
+            name: 'speakerScoreDistance',
+            placeholder: 'in feet, if can score speaker',
+            required: false,
         },
         {
             label: 'Intake Capability',
             type: FormElementsType.CHECKBOX,
             name: 'intakeCapability',
-            options: ['Cones', 'Cubes', 'Floor', 'Station'],
+            options: ['Floor', 'Station'],
         },
-        {
+        /*{
             label: 'Members',
             type: FormElementsType.COUNTER,
             name: 'members',
@@ -78,10 +91,16 @@ const pitJSON: JSONFormElement = {
                 min: 0,
                 max: 200,
             },
+        },*/
+        {
+            label: 'Climb Capability',
+            type: FormElementsType.CHECKBOX,
+            name: 'climbCapability',
+            options: ['Climb','Harmony','Double', 'None'],
         },
         {
             label: 'Additional Notes',
-            placeholder: 'team lacked spare parts',
+            placeholder: 'If any above section is blank or unknown explain here',
             type: FormElementsType.TEXTAREA,
             name: 'additionalNotes',
             required: false,
@@ -92,5 +111,6 @@ const pitJSON: JSONFormElement = {
         },
     ],
 };
-
+ 
 export default pitJSON;
+ 

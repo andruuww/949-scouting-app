@@ -73,7 +73,7 @@ const pitJSON: JSONFormElement = {
             label: 'Speaker Score Distance',
             type: FormElementsType.NUMBER,
             name: 'speakerScoreDistance',
-            placeholder: 'in feet, if can score speaker',
+            placeholder: 'In feet, if can score speaker',
             required: false,
         },
         {
@@ -99,10 +99,10 @@ const pitJSON: JSONFormElement = {
             options: ['Climb','Harmony','Double', 'None'],
         },
         {
-            label: 'Additional Notes',
+            label: 'Additional Observations',
             placeholder: 'If any above section is blank or unknown explain here',
             type: FormElementsType.TEXTAREA,
-            name: 'additionalNotes',
+            name: 'additionalObservations',
             required: false,
         },
         {

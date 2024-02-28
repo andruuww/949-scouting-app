@@ -80,14 +80,30 @@ const matchJSON: JSONFormElement = {
             },
         },
         {
-            label: 'Speaker Notes Scored',
-            type: FormElementsType.COUNTER,
-            name: 'teleopSpeaker',
-            settings: {
-                increment: 1,
-                min: 0,
-                max: 100,
-            },
+            type: FormElementsType.GROUP,
+            name: 'speakerData',
+            elements: [
+                {
+                    label: 'Unamped Speaker Notes Scored',
+                    type: FormElementsType.COUNTER,
+                    name: 'teleopSpeaker',
+                    settings: {
+                        increment: 1,
+                        min: 0,
+                        max: 100,
+                    },
+                },
+                {
+                    label: 'Amped Speaker Notes Scored',
+                    type: FormElementsType.COUNTER,
+                    name: 'teleopAmpedSpeaker',
+                    settings: {
+                        increment: 1,
+                        min: 0,
+                        max: 100,
+                    },
+                },
+            ],
         },
         {
             label: 'Missed',
@@ -167,9 +183,9 @@ const matchJSON: JSONFormElement = {
             name: 'brokeDown',
         },
         {
-            label: 'Notes',
+            label: 'Observations',
             type: FormElementsType.TEXTAREA,
-            name: 'notes',
+            name: 'observations',
             placeholder: 'Enter observations here, ie breakdown description',
             required: false,
         },
@@ -179,7 +195,7 @@ const matchJSON: JSONFormElement = {
         },
         {
             label: 'Results',
-            type: FormElementsType.SWITCH,
+            type: FormElementsType.SELECT,
             options: ['Red Win','Blue Win','Tie'],
             name: 'matchResult'
         },

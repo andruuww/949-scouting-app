@@ -7,7 +7,7 @@ import MenuBar from '@/components/menu-bar';
 import { ReloadIcon } from '@radix-ui/react-icons';
 import TeamsList from '@/components/teams-list';
 import Parser from '@/components/parser';
-import pitJSON from '@/jsons/2023/pitscoutingjson';
+import pitJSON from '@/jsons/2024/pitscoutingjson';
 
 export default function PitScouting() {
     const [exportIsLoading, setExportIsLoading] = useState(false);

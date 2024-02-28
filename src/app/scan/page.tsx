@@ -1,13 +1,13 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { ProtobufOperation } from '@/lib/types';
 import Scanner from '@/components/qr-scanner';
 import { saveAs } from 'file-saver';
 import { toast } from 'sonner';
-import pitJSON from '@/jsons/2023/pitscoutingjson';
-import matchJSON from '@/jsons/2023/matchscoutingjson';
+import pitJSON from '@/jsons/2024/pitscoutingjson';
+import matchJSON from '@/jsons/2024/matchscoutingjson';
 import {
     Drawer,
     DrawerTrigger,
@@ -46,9 +46,9 @@ function jsonArrToCSV(jsonArray: Record<string, string>[]): string {
 }
 
 export default function Scanning() {
-    let rawData: string[] = [];
-    let lastData: string = '';
-    let cacheName = '';
+    let rawData = useRef<string[]>([]);
+    let lastData = useRef<string>('');
+    let cacheName = useRef<string>('');
 
     const [pitScoutingScanned, setPitScoutingScanned] = useState<Record<string, any>[]>([]);
     const [matchScoutingScanned, setMatchScoutingScanned] = useState<Record<string, any>[]>([]);
@@ -72,55 +72,57 @@ export default function Scanning() {
     }, []);
 
     function handleData(data: string) {
-        if (lastData === data) return;
-        lastData = data;
-        if (!rawData.includes(data)) {
-            rawData.push(data);
+        if (lastData.current === data) {
+            return;
+        }
+        lastData.current = data;
+        if (!rawData.current.includes(data)) {
+            rawData.current.push(data);
             toast.success('Scanned', {
-                description: `Rart ${rawData.length} has been scanned!`,
+                description: `Rart ${rawData.current.length} has been scanned!`,
             });
             if (data.slice(-1) === '!') {
                 bundleQRData();
             }
         } else {
             toast.success('Duplicate!', {
-                description: `This barcode was scanned as part ${rawData.indexOf(data) + 1}!`,
+                description: `This barcode was scanned as part ${rawData.current.indexOf(data) + 1}!`,
             });
         }
     }
 
     function bundleQRData() {
-        let signature = rawData[0].slice(0, 1);
-        rawData[0] = rawData[0].slice(1);
-        rawData[rawData.length - 1] = rawData[rawData.length - 1].slice(0, -1);
+        let signature = rawData.current[0].slice(0, 1);
+        rawData.current[0] = rawData.current[0].slice(1);
+        rawData.current[rawData.current.length - 1] = rawData.current[rawData.current.length - 1].slice(0, -1);
 
         if (signature === pitJSON.signature) {
-            cacheName = pitJSON.name + 'Scanned';
+            cacheName.current = pitJSON.name + 'Scanned';
         } else if (signature === matchJSON.signature) {
-            cacheName = matchJSON.name + 'Scanned';
+            cacheName.current = matchJSON.name + 'Scanned';
         }
 
-        if (!localStorage.getItem(cacheName)) {
-            localStorage.setItem(cacheName, JSON.stringify([]));
+        if (!localStorage.getItem(cacheName.current)) {
+            localStorage.setItem(cacheName.current, JSON.stringify([]));
         }
 
-        const scannedData: string[] = JSON.parse(localStorage.getItem(cacheName)!);
+        const scannedData: string[] = JSON.parse(localStorage.getItem(cacheName.current)!);
 
         const protoWorker = new Worker(new URL('@/workers/protoworker.ts', import.meta.url));
         protoWorker.postMessage({
-            data: rawData.join(''),
+            data: rawData.current.join(''),
             schemaJSON: signature === pitJSON.signature ? pitJSON : matchJSON,
             operation: ProtobufOperation.PARSE,
         });
 
         protoWorker.onmessage = (e) => {
             const parsedData: Record<string, any>[] = e.data.parsedData.items;
-            localStorage.setItem(cacheName, JSON.stringify([...scannedData, ...parsedData]));
+            localStorage.setItem(cacheName.current, JSON.stringify([...scannedData, ...parsedData]));
             toast.success('Success', {
                 description: `Data successfully imported!`,
             });
             protoWorker.terminate();
-            rawData = [];
+            rawData.current = [];
             updateScannedData();
         };
     }
@@ -227,7 +229,9 @@ export default function Scanning() {
                                 <Button
                                     variant='secondary'
                                     onClick={() => {
-                                        rawData = [];
+                                        rawData.current = [];
+                                        lastData.current = '';
+                                        console.log(lastData.current);
                                         toast.warning('Cancelled', {
                                             description:
                                                 'Scanned parts have been cleared, start scanning from the beginning.',

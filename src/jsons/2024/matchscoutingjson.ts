@@ -1,5 +1,5 @@
 import { FormElementsType, JSONFormElement } from '@/lib/types';
- 
+
 const matchJSON: JSONFormElement = {
     type: FormElementsType.ROOT,
     name: 'matchScouting',
@@ -79,31 +79,26 @@ const matchJSON: JSONFormElement = {
                 max: 100,
             },
         },
+
         {
-            type: FormElementsType.GROUP,
-            name: 'speakerData',
-            elements: [
-                {
-                    label: 'Unamped Speaker Notes Scored',
-                    type: FormElementsType.COUNTER,
-                    name: 'teleopSpeaker',
-                    settings: {
-                        increment: 1,
-                        min: 0,
-                        max: 100,
-                    },
-                },
-                {
-                    label: 'Amped Speaker Notes Scored',
-                    type: FormElementsType.COUNTER,
-                    name: 'teleopAmpedSpeaker',
-                    settings: {
-                        increment: 1,
-                        min: 0,
-                        max: 100,
-                    },
-                },
-            ],
+            label: 'Unamped Speaker Notes Scored',
+            type: FormElementsType.COUNTER,
+            name: 'teleopSpeaker',
+            settings: {
+                increment: 1,
+                min: 0,
+                max: 100,
+            },
+        },
+        {
+            label: 'Amped Speaker Notes Scored',
+            type: FormElementsType.COUNTER,
+            name: 'teleopAmpedSpeaker',
+            settings: {
+                increment: 1,
+                min: 0,
+                max: 100,
+            },
         },
         {
             label: 'Missed',
@@ -115,7 +110,7 @@ const matchJSON: JSONFormElement = {
                 max: 100,
             },
         },
-       
+
         {
             label: 'Endgame',
             type: FormElementsType.TITLE,
@@ -124,26 +119,36 @@ const matchJSON: JSONFormElement = {
             label: 'Trap',
             type: FormElementsType.COUNTER,
             name: 'Trap',
-            settings:{
-                increment:1,
-                min:0,
-                max:3,
+            settings: {
+                increment: 1,
+                min: 0,
+                max: 3,
             },
         },
         {
             label: 'Ending State',
             type: FormElementsType.SELECT,
             name: 'endgameState',
-            options: ['None','Parked','Climb','Harmony','Double Harmony'],
+            options: ['None', 'Parked', 'Climb', 'Harmony', 'Double Harmony'],
         },
         {
-            label: "Mic",
+            label: 'Mic',
             type: FormElementsType.SWITCH,
             name: 'mic',
         },
         {
             label: 'Overall',
             type: FormElementsType.TITLE,
+        },
+        {
+            label: 'Yellow Card',
+            type: FormElementsType.SWITCH,
+            name: 'yellowCard',
+        },
+        {
+            label: 'Broke Down',
+            type: FormElementsType.SWITCH,
+            name: 'brokeDown',
         },
         {
             label: 'Fouls',
@@ -173,31 +178,15 @@ const matchJSON: JSONFormElement = {
             options: ['None', 'Offensive', 'Defensive', 'Balanced'],
         },
         {
-            label: 'Yellow Card',
-            type: FormElementsType.SWITCH,
-            name: 'yellowCard',
-        },
-        {
-            label: 'Broke Down',
-            type: FormElementsType.SWITCH,
-            name: 'brokeDown',
-        },
-        {
             label: 'Observations',
             type: FormElementsType.TEXTAREA,
             name: 'observations',
-            placeholder: 'Enter observations here, ie breakdown description',
+            placeholder: 'If the robot broke down, enter the nature of the breakdown here.',
             required: false,
         },
         {
             label: 'Results',
             type: FormElementsType.TITLE,
-        },
-        {
-            label: 'Results',
-            type: FormElementsType.SELECT,
-            options: ['Red Win','Blue Win','Tie'],
-            name: 'matchResult'
         },
         {
             type: FormElementsType.GROUP,
@@ -214,6 +203,11 @@ const matchJSON: JSONFormElement = {
                     name: 'blueScore',
                 },
             ],
+        },
+        {
+            label: 'Match Win',
+            type: FormElementsType.SWITCH,
+            name: 'didWin',
         },
         {
             type: FormElementsType.CLEAR_SUBMIT_BUTTONS,

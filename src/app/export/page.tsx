@@ -3,8 +3,8 @@ import MenuBar from '@/components/menu-bar';
 import QRCodeSkeleton from '@/components/qrcodeskeleton';
 import TeamsList from '@/components/teams-list';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import matchJSON from '@/jsons/2023/matchscoutingjson';
-import pitJSON from '@/jsons/2023/pitscoutingjson';
+import matchJSON from '@/jsons/2024/matchscoutingjson';
+import pitJSON from '@/jsons/2024/pitscoutingjson';
 import { useEffect, useRef, useState } from 'react';
 
 function fetchScoutedTeams(cacheName: string): Record<string, string>[] {

@@ -7,7 +7,7 @@ import MenuBar from '@/components/menu-bar';
 import { ReloadIcon } from '@radix-ui/react-icons';
 import TeamsList from '@/components/teams-list';
 import Parser from '@/components/parser';
-import matchJSON from '@/jsons/2023/matchscoutingjson';
+import matchJSON from '@/jsons/2024/matchscoutingjson';
 
 export default function MatchScouting() {
     const [exportIsLoading, setExportIsLoading] = useState(false);

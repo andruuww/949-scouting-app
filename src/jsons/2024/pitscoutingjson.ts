@@ -1,5 +1,5 @@
 import { FormElementsType, JSONFormElement } from '@/lib/types';
- 
+
 const pitJSON: JSONFormElement = {
     type: FormElementsType.ROOT,
     name: 'pitScouting',
@@ -32,6 +32,7 @@ const pitJSON: JSONFormElement = {
             placeholder: '100',
             type: FormElementsType.NUMBER,
             name: 'weight',
+            required: false,
         },
         {
             type: FormElementsType.GROUP,
@@ -42,12 +43,14 @@ const pitJSON: JSONFormElement = {
                     label: 'Length',
                     type: FormElementsType.NUMBER,
                     name: 'length',
+                    required: false,
                 },
                 {
                     placeholder: '32',
                     label: 'Width',
                     type: FormElementsType.NUMBER,
                     name: 'width',
+                    required: false,
                 },
             ],
         },
@@ -61,13 +64,13 @@ const pitJSON: JSONFormElement = {
             label: 'Scoring Capability',
             type: FormElementsType.CHECKBOX,
             name: 'scoringLevelCapability',
-            options: ['Trap', 'Amp', 'Speaker'],
+            options: ['Trap', 'Amp', 'Speaker', 'None'],
         },
         {
             label: 'Scoring Preference',
             type: FormElementsType.SELECT,
             name: 'scoringLevelPreference',
-            options: ['Amp', 'Speaker'],
+            options: ['Trap', 'Amp', 'Speaker', 'None'],
         },
         {
             label: 'Speaker Score Distance',
@@ -80,23 +83,13 @@ const pitJSON: JSONFormElement = {
             label: 'Intake Capability',
             type: FormElementsType.CHECKBOX,
             name: 'intakeCapability',
-            options: ['Floor', 'Station'],
+            options: ['Floor', 'Station', 'None'],
         },
-        /*{
-            label: 'Members',
-            type: FormElementsType.COUNTER,
-            name: 'members',
-            settings: {
-                increment: 10,
-                min: 0,
-                max: 200,
-            },
-        },*/
         {
             label: 'Climb Capability',
             type: FormElementsType.CHECKBOX,
             name: 'climbCapability',
-            options: ['Climb','Harmony','Double', 'None'],
+            options: ['Climb', 'Harmony', 'Buddy', 'None'],
         },
         {
             label: 'Additional Observations',
@@ -111,6 +104,5 @@ const pitJSON: JSONFormElement = {
         },
     ],
 };
- 
+
 export default pitJSON;
- 

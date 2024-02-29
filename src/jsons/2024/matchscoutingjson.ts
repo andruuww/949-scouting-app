@@ -130,6 +130,7 @@ const matchJSON: JSONFormElement = {
             type: FormElementsType.SELECT,
             name: 'endgameState',
             options: ['None', 'Parked', 'Climb', 'Harmony', 'Double Harmony'],
+            placeholder: 'Select Ending State',
         },
         {
             label: 'Mic',

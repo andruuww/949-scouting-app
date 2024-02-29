@@ -71,12 +71,13 @@ const pitJSON: JSONFormElement = {
             type: FormElementsType.SELECT,
             name: 'scoringLevelPreference',
             options: ['Trap', 'Amp', 'Speaker', 'None'],
+            placeholder: 'Select a scoring preference',
         },
         {
             label: 'Speaker Score Distance',
             type: FormElementsType.NUMBER,
             name: 'speakerScoreDistance',
-            placeholder: 'In feet, if can score speaker',
+            placeholder: '30 feet',
             required: false,
         },
         {
@@ -93,7 +94,7 @@ const pitJSON: JSONFormElement = {
         },
         {
             label: 'Additional Observations',
-            placeholder: 'If any above section is blank or unknown explain here',
+            placeholder: 'Missing backup parts, robot not put together',
             type: FormElementsType.TEXTAREA,
             name: 'additionalObservations',
             required: false,

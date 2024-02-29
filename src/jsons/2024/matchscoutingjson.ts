@@ -196,11 +196,13 @@ const matchJSON: JSONFormElement = {
                     label: 'Red Score',
                     type: FormElementsType.NUMBER,
                     name: 'redScore',
+                    placeholder: '10',
                 },
                 {
                     label: 'Blue Score',
                     type: FormElementsType.NUMBER,
                     name: 'blueScore',
+                    placeholder: '19',
                 },
             ],
         },

@@ -1,4 +1,5 @@
 import { FormElementsType, JSONFormElement } from '@/lib/types';
+import { Label } from '@radix-ui/react-label';
 
 const matchJSON: JSONFormElement = {
     type: FormElementsType.ROOT,
@@ -211,6 +212,22 @@ const matchJSON: JSONFormElement = {
             label: 'Match Win',
             type: FormElementsType.SWITCH,
             name: 'didWin',
+        },
+        {
+            type: FormElementsType.GROUP,
+            name: 'rankingBonus',
+            elements:[
+                {
+                    type: FormElementsType.SWITCH,
+                    name: 'melody',
+                    label: 'Melody',
+                },
+                {
+                    type: FormElementsType.SWITCH,
+                    name: 'ensemble',
+                    label: 'Ensemble',
+                }
+            ],
         },
         {
             type: FormElementsType.CLEAR_SUBMIT_BUTTONS,

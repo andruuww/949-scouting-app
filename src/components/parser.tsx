@@ -11,6 +11,17 @@ import { toast } from 'sonner';
 import * as z from 'zod';
 import Counter from './counter';
 import { Button } from './ui/button';
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 import { Switch } from './ui/switch';
 import { Textarea } from './ui/textarea';
 import Settings from '@/lib/settings';
@@ -416,9 +427,25 @@ function renderItem(
             return (
                 <div key={key}>
                     <div className='space-y-2 mt-4'>
-                        <Button type='button' variant='default' className='w-full' onClick={form.reset}>
-                            {element.options![0]}
-                        </Button>
+                        <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                                <Button type='button' variant='default' className='w-full'>
+                                    {element.options![0]}
+                                </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                                <AlertDialogHeader>
+                                    <AlertDialogTitle>Do you want to clear data?</AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                        This action cannot be undone. This will clear the current form data.
+                                    </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                    <AlertDialogAction onClick={form.reset}>Continue</AlertDialogAction>
+                                </AlertDialogFooter>
+                            </AlertDialogContent>
+                        </AlertDialog>
                         <Button type='submit' variant='default' className='w-full'>
                             {element.options![1]}
                         </Button>

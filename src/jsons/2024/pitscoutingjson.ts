@@ -39,19 +39,19 @@ const pitJSON: JSONFormElement = {
             name: 'dimensions',
             elements: [
                 {
-                    placeholder: '28',
-                    label: 'Length',
-                    type: FormElementsType.NUMBER,
-                    name: 'length',
-                    required: false,
-                },
-                {
                     placeholder: '32',
                     label: 'Width',
                     type: FormElementsType.NUMBER,
                     name: 'width',
                     required: false,
                 },
+                {
+                    placeholder: '28',
+                    label: 'Length',
+                    type: FormElementsType.NUMBER,
+                    name: 'length',
+                    required: false,
+                }
             ],
         },
         {

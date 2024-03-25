@@ -39,7 +39,7 @@ const matchJSON: JSONFormElement = {
             placeholder: 'Select Position',
             type: FormElementsType.SELECT,
             name: 'robotPosition',
-            options: ['Red 1', 'Red 2', 'Red 3', 'Blue 1', 'Blue 2', 'Blue 3'],
+            options: ['Red Close', 'Red Middle', 'Red Far', 'Blue Close', 'Blue Middle', 'Blue Far'],
         },
         {
             label: 'Left Community',
